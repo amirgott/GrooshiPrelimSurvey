@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שאלון מחקר - ניהול הורות</title>
+    <script src="user_survey.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap');
+        body { font-family: 'Assistant', sans-serif; background-color: #f9fafb; color: #1f2937; }
+        .step { display: none; }
+        .step.active { display: block; }
+        .logic-box { display: none; }
+        .logic-box.visible { display: block; }
+        input[type="range"] { accent-color: #4f46e5; }
+        .section-tag { background-color: #e0e7ff; color: #4338ca; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.875rem; }
+        .mic-btn.recording { color: #ef4444; animation: pulse 1.5s infinite; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-12">
+
+    <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
+        
+        <!-- Progress Bar -->
+        <div class="bg-gray-100 h-2 w-full">
+            <div id="progressBar" class="bg-indigo-600 h-full transition-all duration-500" style="width: 20%"></div>
+        </div>
+
+        <form id="masterForm" class="p-6 md:p-10 space-y-10">
+
+            <!-- STEP 1: יצירת תמונה כללית -->
+            <div class="step active" id="step1">
+                <div class="mb-8 border-b pb-4">
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 1: יצירת תמונה כללית</h1>
+                </div>
+
+                <div class="space-y-8">
+                    <!-- 1.1 -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold"><span class="section-tag ml-2">1.1</span>האם ההורה האחר מילא את השאלון גם כן (עד כמה שאת/ה יודע/ת)?</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_other_filled" value="כן"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_other_filled" value="לא"> לא</label>
+                        </div>
+                        
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <input type="number" name="1.1_num_kids" placeholder="מספר ילדים" class="p-2 border rounded-lg">
+                                <input type="text" name="1.1_kids_ages" placeholder="גילאי ילדים" class="p-2 border rounded-lg">
+                            </div>
+                            <div class="space-y-2">
+                                <p class="text-sm font-bold">סוג משמורת:</p>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="1.1_custody" value="חלקית שלי"> חלקית שלי</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="1.1_custody" value="משותפת"> משותפת</label>
+                                <label class="flex items-center gap-2 text-sm"><input type="checkbox" name="1.1_custody" value="חלקית של ההורה"> חלקית של ההורה האחר</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 1.2 -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold"><span class="section-tag ml-2">1.2</span>כמה זמן עבר מאז הגירושין?</label>
+                        <select name="1.2_status" class="w-full p-3 border rounded-xl outline-none" onchange="syncLogic()">
+                            <option value="">בחרו סטאטוס...</option>
+                            <option value="עדיין פרודים">עדיין פרודים</option>
+                            <option value="גרושים טריים">גרושים טריים (עד שנה)</option>
+                            <option value="1-3 שנים">1-3 שנים</option>
+                            <option value="3+ שנים">3 שנים ומעלה</option>
+                        </select>
+                    </div>
+
+                    <!-- 1.3 -->
+                    <div class="space-y-6">
+                        <label class="block font-semibold"><span class="section-tag ml-2">1.3</span>טיב התקשורת ורמת הארגון כיום</label>
+                        <div>
+                            <p class="text-sm mb-2">טיב התקשורת (1-קונפליקטואלית, 5-שיתופית):</p>
+                            <input type="range" id="1.3_comm" name="1.3_comm_quality" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
+                        </div>
+                        <div>
+                            <p class="text-sm mb-2">רמת ארגון (1-כאוס, 5-מסודר):</p>
+                            <input type="range" id="1.3_org" name="1.3_org_level" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
+                        </div>
+                    </div>
+
+                    <div id="logicBoxA" class="logic-box bg-yellow-50 p-6 rounded-2xl border border-yellow-200">
+                        <label class="block font-bold text-yellow-900 mb-3">האם יש או היה ביניכם קושי רגשי או אירוע מתסכל מאד?</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.3_emotional_event" value="כן" onchange="syncLogic()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.3_emotional_event" value="לא" onchange="syncLogic()"> לא</label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block font-semibold mb-3">מהן הפלטפורמות שמשמשות אתכם לתקשורת?</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="וואטסאפ" onchange="syncLogic()"> וואטסאפ</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="אימייל"> אימייל</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="טלפון"> טלפון</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="אחר"> אחר</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-10 flex justify-end">
+                    <button type="button" onclick="goToStep(2)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 2</button>
+                </div>
+            </div>
+
+            <!-- STEP 2: ניהול הילדים ביומיום -->
+            <div class="step" id="step2">
+                <div class="mb-8 border-b pb-4">
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: ניהול הילדים ביומיום</h1>
+                </div>
+
+                <div class="space-y-10">
+                    <!-- 2.1 -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-semibold"><span class="section-tag ml-2">2.1</span>איך מתנהלת היום התקשורת סביב הילדים?</label>
+                            <button type="button" onclick="startSTT('2.1_daily_comm_desc', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-500">(שגרה, חוגים, חופשות, בריאות, ביגוד...)</p>
+                        <textarea id="2.1_daily_comm_desc" name="2.1_daily_comm_desc" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="ספר/י לנו קצת על הדינמיקה..."></textarea>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <label class="block text-sm font-bold mb-2">מי מוביל את התיאומים?</label>
+                                <input type="text" name="2.1_leader" class="w-full p-2 border rounded-lg text-sm">
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <label class="block text-sm font-bold mb-2">זמן תגובה ממוצע של הצד השני?</label>
+                                <select name="2.1_response_speed" class="w-full p-2 border rounded-lg text-sm">
+                                    <option value="מהיר">מהיר מאוד</option>
+                                    <option value="סביר">סביר</option>
+                                    <option value="איטי">איטי ומעכב</option>
+                                    <option value="בכלל לא">לרוב לא מגיב/ה</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.2 -->
+                    <div class="space-y-6">
+                        <label class="block font-semibold"><span class="section-tag ml-2">2.2</span>עד כמה קשה לכם להגיע להסכמות בנושאים הבאים?</label>
+                        <p class="text-xs text-gray-400 font-bold">(1-קל מאוד, 7-כמעט בלתי אפשרי)</p>
+                        
+                        <div class="space-y-6 bg-indigo-50 p-6 rounded-2xl">
+                            <div>
+                                <label class="text-sm block mb-1">שגרה (לו"ז ותורנויות):</label>
+                                <input type="range" name="2.2_score_schedule" min="1" max="7" value="4" class="w-full">
+                            </div>
+                            <div>
+                                <label class="text-sm block mb-1">הוצאות והחזרים (ביגוד, חוגים):</label>
+                                <input type="range" name="2.2_score_expenses" min="1" max="7" value="4" class="w-full">
+                            </div>
+                            <div>
+                                <label class="text-sm block mb-1">החלטות חינוכיות ובריאותיות:</label>
+                                <input type="range" name="2.2_score_edu_health" min="1" max="7" value="4" class="w-full">
+                            </div>
+                            <div>
+                                <label class="text-sm block mb-1">שינוי לו"ז (החלפת ימים/שבתות):</label>
+                                <input type="range" name="2.2_score_changes" min="1" max="7" value="4" class="w-full">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.3 -->
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-semibold"><span class="section-tag ml-2">2.3</span>תוכל/י לתת דוגמה קונקרטית למקרה מהחודשים האחרונים שהיה ממש מתסכל?</label>
+                            <button type="button" onclick="startSTT('2.3_frustrating_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <textarea id="2.3_frustrating_example" name="2.3_frustrating_example" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="מה קרה? מה היה הכי מתסכל? איך זה הסתיים?"></textarea>
+                        <div class="flex items-center gap-4">
+                            <span class="text-sm font-bold">תדירות מקרים כאלו:</span>
+                            <select name="2.3_frequency" class="border rounded-lg p-1 text-sm">
+                                <option value="חד פעמי">חד פעמי</option>
+                                <option value="חודשי">פעם בחודש</option>
+                                <option value="שבועי">פעם בשבוע</option>
+                                <option value="יומי">כמעט כל יום</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 2.4 -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold"><span class="section-tag ml-2">2.4</span>מה קורה כשיש שינוי לא מתוכנן (ילד חולה, איחור)?</label>
+                        <p class="text-sm mb-2">עד כמה השינויים הללו גורמים לחיכוכים? (1-קל, 7-מריבה)</p>
+                        <input type="range" name="2.4_friction_on_change" min="1" max="7" value="4" class="w-full">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div class="relative">
+                                <textarea id="2.4_emotional_price" name="2.4_emotional_price" class="w-full border rounded-xl p-3 h-20 text-sm" placeholder="מה המחיר הרגשי של המצבים האלה עבורך?"></textarea>
+                                <button type="button" onclick="startSTT('2.4_emotional_price', this)" class="mic-btn absolute left-2 top-2 text-indigo-400 hover:text-indigo-600 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="p-3 bg-red-50 rounded-xl border border-red-100">
+                                <label class="flex items-center gap-2 text-sm font-bold text-red-900 mb-2">עוצמת הכאב שהובע:</label>
+                                <div class="flex flex-col gap-1 text-xs">
+                                    <label><input type="radio" name="2.4_pain_intensity" value="ללא"> ללא</label>
+                                    <label><input type="radio" name="2.4_pain_intensity" value="קל"> קל</label>
+                                    <label><input type="radio" name="2.4_pain_intensity" value="חזק"> חזק</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2.5 -->
+                    <div class="space-y-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-semibold"><span class="section-tag ml-2">2.5</span>תחושת איזון וקיפוח</label>
+                            <button type="button" onclick="startSTT('2.5_imbalance_desc', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-sm">האם יש לך תחושה של חוסר איזון בחלוקת הנטל? (טיפול, כלכלה, גמישות...)</p>
+                        <div class="pt-2">
+                            <p class="text-xs font-bold text-gray-400 mb-2">עד כמה את/ה מרגיש/ה שהחלוקה הוגנת? (1-לא הוגן, 7-הוגן לחלוטין)</p>
+                            <input type="range" name="2.5_fairness_score" min="1" max="7" value="4" class="w-full">
+                        </div>
+                        <textarea id="2.5_imbalance_desc" name="2.5_imbalance_desc" class="w-full border rounded-xl p-3 h-20 text-sm mt-2" placeholder="פרט/י במידה ותרצי/ה..."></textarea>
+                    </div>
+                </div>
+
+                <div class="pt-10 flex justify-between">
+                    <button type="button" onclick="goToStep(1)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 1</button>
+                    <button type="button" onclick="finishSurvey()" class="bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all">סיום והצגת סיכום</button>
+                </div>
+            </div>
+
+            <!-- SUMMARY -->
+            <div class="step" id="stepFinal">
+                <div class="text-center space-y-6">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 text-green-600 rounded-full">
+                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    </div>
+                    <h2 class="text-3xl font-bold text-indigo-900">תודה על השיתוף המפורט!</h2>
+                    <p class="text-gray-600">סיימת את שני החלקים הראשונים של השאלון. להלן סיכום הנתונים לזיהוי המקרה שלך:</p>
+                    
+                    <div class="bg-gray-50 p-6 rounded-2xl border-2 border-dashed border-indigo-200 text-right">
+                        <pre id="summaryText" class="whitespace-pre-wrap text-xs text-gray-700 font-mono text-left" dir="ltr"></pre>
+                    </div>
+                    
+                    <button type="button" onclick="copyResults()" id="copyBtn" class="bg-gray-400 text-white px-8 py-3 rounded-full font-bold hover:bg-gray-500 transition">העתקת הסיכום</button>
+                    <button type="button" onclick="submitSurvey()" class="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold hover:bg-indigo-700 transition mt-3">שליחת השאלון</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        // Speech to Text Logic
+        function startSTT(fieldId, btn) {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            
+            if (!window.SpeechRecognition) {
+                alert("מצטערים, הדפדפן שלך אינו תומך בזיהוי קולי.");
+                return;
+            }
+
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'he-IL';
+            recognition.interimResults = false;
+
+            recognition.onstart = () => {
+                btn.classList.add('recording');
+            };
+
+            recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                const textarea = document.getElementById(fieldId);
+                textarea.value = (textarea.value ? textarea.value + ' ' : '') + transcript;
+            };
+
+            recognition.onend = () => {
+                btn.classList.remove('recording');
+            };
+
+            recognition.onerror = (event) => {
+                btn.classList.remove('recording');
+                console.error("Speech recognition error:", event.error);
+            };
+
+            recognition.start();
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+            
+            const progress = step === 1 ? 20 : (step === 2 ? 60 : 100);
+            document.getElementById('progressBar').style.width = progress + '%';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function syncLogic() {
+            const comm = parseInt(document.getElementById('1.3_comm').value);
+            const org = parseInt(document.getElementById('1.3_org').value);
+            const status = document.querySelector('select[name="1.2_status"]').value;
+            const logicBoxA = document.getElementById('logicBoxA');
+
+            if (comm === 5 && org === 5) {
+                logicBoxA.classList.add('visible');
+            } else {
+                logicBoxA.classList.remove('visible');
+            }
+        }
+
+        function finishSurvey() {
+            const formData = new FormData(document.getElementById('masterForm'));
+            let output = "--- נתוני שאלון הורות משותפת (חלק 1+2) ---\n\n";
+            
+            formData.forEach((value, key) => {
+                if(value) output += `[${key}] ${value}\n`;
+            });
+            
+            document.getElementById('summaryText').textContent = output;
+            goToStep('Final');
+        }
+
+        function copyResults() {
+            const text = document.getElementById('summaryText').textContent;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            const btn = document.getElementById('copyBtn');
+            btn.textContent = "הועתק!";
+            btn.classList.replace('bg-indigo-600', 'bg-green-600');
+        }
+    </script>
+</body>
+</html>
