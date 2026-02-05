@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const response = await fetch(WORKER_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ survey_data: JSON.stringify(payload) }),
       });
 
       if (response.ok) {

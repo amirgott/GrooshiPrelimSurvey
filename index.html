@@ -121,17 +121,17 @@
                         </div>
                     </div>
 
-                    <!-- 1.3 -->
+                    <!-- 1.2 -->
                     <div class="space-y-6">
-                        <label class="block font-semibold"><span class="section-tag ml-2">1.3</span>אפיון התקשורת הכללי</label>
+                        <label class="block font-semibold"><span class="section-tag ml-2">1.2</span>אפיון התקשורת הכללי</label>
                         <div>
                             <p class="text-sm mb-2">איך היית מתאר/ת את טיב התקשורת בינך לבין ההורה האחר כיום?</p>
-                            <input type="range" id="1.3_comm" name="1.3_comm_quality" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
+                            <input type="range" id="1.2_comm" name="1.2_comm_quality" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
                             <div class="range-labels"><span>1 - שיתופית ומכבדת</span><span>5 - קונפליקטואלית מאוד</span></div>
                         </div>
                         <div>
                             <p class="text-sm mb-2">עד כמה ניהול הילדים והכספים ביניכם מאורגן ומוסדר?</p>
-                            <input type="range" id="1.3_org" name="1.3_org_level" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
+                            <input type="range" id="1.2_org" name="1.2_org_level" min="1" max="5" value="3" class="w-full" oninput="syncLogic()">
                             <div class="range-labels"><span>1 - מאורגן ומסודר</span><span>5 - בלאגן וכאוס</span></div>
                         </div>
                     </div>
@@ -140,8 +140,8 @@
                     <div id="logicBoxA" class="logic-box bg-yellow-50 p-6 rounded-2xl border border-yellow-200">
                         <label class="block font-bold text-yellow-900 mb-3">האם יש או היה ביניכם קושי רגשי או אירוע מתסכל מאד?</label>
                         <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.3_emotional_event" value="כן" onchange="syncLogic()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.3_emotional_event" value="לא" onchange="syncLogic()"> לא</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_emotional_event" value="כן" onchange="syncLogic()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_emotional_event" value="לא" onchange="syncLogic()"> לא</label>
                         </div>
                     </div>
 
@@ -161,7 +161,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div class="p-4 bg-gray-50 rounded-xl">
                                 <label class="block text-sm font-bold mb-2">מתח רגשי:</label>
-                                <select name="1.3_tension_emotional" class="w-full p-2 border rounded-lg text-sm">
+                                <select name="1.2_tension_emotional" class="w-full p-2 border rounded-lg text-sm">
                                     <option value="">בחר/י...</option>
                                     <option value="אין">אין</option>
                                     <option value="קל">קל</option>
@@ -171,7 +171,7 @@
                             </div>
                             <div class="p-4 bg-gray-50 rounded-xl">
                                 <label class="block text-sm font-bold mb-2">קושי ארגוני:</label>
-                                <select name="1.3_tension_organizational" class="w-full p-2 border rounded-lg text-sm">
+                                <select name="1.2_tension_organizational" class="w-full p-2 border rounded-lg text-sm">
                                     <option value="">בחר/י...</option>
                                     <option value="אין">אין</option>
                                     <option value="קל">קל</option>
@@ -185,19 +185,19 @@
                     <!-- Communication frequency -->
                     <div class="space-y-2">
                         <label class="block font-semibold">כמה פעמים בחודש אתם צריכים לתקשר בממוצע?</label>
-                        <input type="number" name="1.3_comm_frequency" class="w-full p-3 border rounded-xl outline-none" min="0" placeholder="מספר פעמים בחודש">
+                        <input type="number" name="1.2_comm_frequency" class="w-full p-3 border rounded-xl outline-none" min="0" placeholder="מספר פעמים בחודש">
                     </div>
 
                     <!-- Platforms -->
                     <div>
                         <label class="block font-semibold mb-3">מהן הפלטפורמות שמשמשות אתכם לתקשורת (אפשר לסמן כמה):</label>
                         <div class="grid grid-cols-2 gap-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="וואטסאפ"> וואטסאפ (או אפליקצית הודעות אחרת)</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="אימייל"> אימייל</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="טלפון"> טלפון</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.3_platforms" value="אחר" onchange="document.getElementById('1.3_platforms_other').style.display=this.checked?'block':'none'"> אחר</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="וואטסאפ"> וואטסאפ (או אפליקצית הודעות אחרת)</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="אימייל"> אימייל</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="טלפון"> טלפון</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="אחר" onchange="document.getElementById('1.2_platforms_other').style.display=this.checked?'block':'none'"> אחר</label>
                         </div>
-                        <input type="text" id="1.3_platforms_other" name="1.3_platforms_other" class="w-full p-2 border rounded-lg mt-2 text-sm" placeholder="פרט/י..." style="display:none">
+                        <input type="text" id="1.2_platforms_other" name="1.2_platforms_other" class="w-full p-2 border rounded-lg mt-2 text-sm" placeholder="פרט/י..." style="display:none">
                     </div>
                 </div>
 
@@ -389,22 +389,24 @@
                                 <textarea id="3.3_tracking" name="3.3_tracking" class="w-full border rounded-lg p-2 h-16 text-sm outline-none"></textarea>
                             </div>
                             <div>
-                                <div class="flex justify-between items-center mb-1">
-                                    <label class="text-sm font-bold">מה התדירות שבה אתם מבצעים את התיאום?</label>
-                                    <button type="button" onclick="startSTT('3.3_coordination_freq', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול" style="display:none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                    </button>
-                                </div>
-                                <input type="text" id="3.3_coordination_freq" name="3.3_coordination_freq" class="w-full p-2 border rounded-lg text-sm">
+                                <label class="text-sm font-bold block mb-1">מה התדירות שבה אתם מבצעים את התיאום?</label>
+                                <select name="3.3_coordination_freq" class="w-full p-2 border rounded-lg text-sm">
+                                    <option value="" selected disabled>בחר/י...</option>
+                                    <option value="חד-פעמי לפי המקרה">חד-פעמי לפי המקרה</option>
+                                    <option value="שבועי">שבועי</option>
+                                    <option value="חודשי">חודשי</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
                             </div>
                             <div>
-                                <div class="flex justify-between items-center mb-1">
-                                    <label class="text-sm font-bold">כמה זמן לוקח לקבל החזר?</label>
-                                    <button type="button" onclick="startSTT('3.3_reimbursement_time', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול" style="display:none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                    </button>
-                                </div>
-                                <input type="text" id="3.3_reimbursement_time" name="3.3_reimbursement_time" class="w-full p-2 border rounded-lg text-sm">
+                                <label class="text-sm font-bold block mb-1">כמה זמן לוקח לקבל החזר?</label>
+                                <select name="3.3_reimbursement_time" class="w-full p-2 border rounded-lg text-sm">
+                                    <option value="" selected disabled>בחר/י...</option>
+                                    <option value="באותו יום">באותו יום</option>
+                                    <option value="כשבוע">כשבוע</option>
+                                    <option value="כחודש">כחודש</option>
+                                    <option value="כמה חודשים">כמה חודשים</option>
+                                </select>
                             </div>
                             <div>
                                 <label class="text-sm font-bold block mb-1">היו מקרים שנשארת בחסר כי לא הצלחת לתעד?</label>
@@ -730,7 +732,7 @@
                         </div>
                         <div id="logicBox7OtherId" class="logic-box">
                             <label class="text-sm font-bold block mb-1">מה מספר השאלון שלו/שלה?</label>
-                            <input type="text" name="7_other_survey_id" class="w-full p-2 border rounded-lg text-sm" placeholder="לדוגמה: 42B">
+                            <input type="text" name="7_other_survey_id" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="לדוגמה: 42B — השאר/י ריק אם לא ידוע">
                         </div>
                     </div>
 
@@ -740,7 +742,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                         </button>
                     </div>
-                    <textarea id="7_final_notes" name="7_final_notes" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="הערות חופשיות..."></textarea>
+                    <textarea id="7_final_notes" name="7_final_notes" data-optional="true" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="הערות חופשיות..."></textarea>
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -775,6 +777,7 @@
     <script>
         // Validation mode: true = validate only when finishing, false = validate per step
         const VALIDATE_ONLY_AT_END = true;
+        let returnedFromFinish = false;
 
         // Generate unique ID
         function generateSurveyId() {
@@ -847,9 +850,14 @@
                 if (!validateStep(activeStep)) return;
             }
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
+            const targetStep = document.getElementById('step' + step);
+            targetStep.classList.add('active');
             const stepMap = {0:0, 1:12, 2:25, 3:37, 4:50, 5:62, 6:75, 7:87, 'Final':100};
             document.getElementById('progressBar').style.width = (stepMap[step] || 0) + '%';
+            hideReturnFinishBtn();
+            if (returnedFromFinish && step !== 'Final' && step !== 0 && step !== 7) {
+                showReturnFinishBtn(targetStep);
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -858,6 +866,7 @@
             // Text inputs, textareas, number inputs
             stepEl.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
                 if (el.offsetParent === null) return; // skip hidden
+                if (el.dataset.optional) return; // skip optional fields
                 if (!el.value.trim()) { el.classList.add('unanswered'); valid = false; }
             });
             // Selects
@@ -908,8 +917,8 @@
 
         // Chapter 1 conditional logic
         function syncLogic() {
-            const comm = parseInt(document.getElementById('1.3_comm').value);
-            const org = parseInt(document.getElementById('1.3_org').value);
+            const comm = parseInt(document.getElementById('1.2_comm').value);
+            const org = parseInt(document.getElementById('1.2_org').value);
             const status = document.querySelector('select[name="1.1_status"]').value;
             const logicBoxA = document.getElementById('logicBoxA');
             const logicBoxB = document.getElementById('logicBoxB');
@@ -923,7 +932,7 @@
                 logicBoxC.classList.remove('visible');
             }
 
-            const emotionalEvent = document.querySelector('input[name="1.3_emotional_event"]:checked');
+            const emotionalEvent = document.querySelector('input[name="1.2_emotional_event"]:checked');
             if (comm === 1 && org === 1 && emotionalEvent) {
                 if (emotionalEvent.value === 'כן') {
                     logicBoxB.classList.add('visible');
@@ -968,6 +977,23 @@
             document.getElementById('logicBox64no').classList.toggle('visible', val && val.value === 'לא');
         }
 
+        function showReturnFinishBtn(stepEl) {
+            hideReturnFinishBtn();
+            const nav = stepEl.querySelector('.pt-10.flex');
+            if (!nav) return;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.id = 'returnFinishBtn';
+            btn.className = 'bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all';
+            btn.textContent = 'סיום והצגת סיכום';
+            btn.onclick = finishSurvey;
+            nav.appendChild(btn);
+        }
+        function hideReturnFinishBtn() {
+            const btn = document.getElementById('returnFinishBtn');
+            if (btn) btn.remove();
+        }
+
         // Finish survey
         function finishSurvey() {
             if (VALIDATE_ONLY_AT_END) {
@@ -981,10 +1007,13 @@
                 });
                 if (firstInvalidStep) {
                     const stepNum = parseInt(firstInvalidStep.id.replace('step', ''));
+                    returnedFromFinish = true;
                     goToStep(stepNum, true);
                     return;
                 }
             }
+            returnedFromFinish = false;
+            hideReturnFinishBtn();
             const formData = new FormData(document.getElementById('masterForm'));
             const id = document.getElementById('surveyId').textContent;
             let output = `--- נתוני שאלון הורות משותפת ---\nמזהה שאלון: ${id}\n\n`;
@@ -1014,6 +1043,8 @@
                 document.querySelectorAll('input[type="range"]').forEach(r => r.classList.add('untouched'));
                 document.getElementById('summaryText').textContent = '';
                 document.querySelectorAll('.logic-box').forEach(box => box.classList.remove('visible'));
+                returnedFromFinish = false;
+                hideReturnFinishBtn();
                 const id = generateSurveyId();
                 document.getElementById('surveyId').textContent = id;
                 document.getElementById('surveyIdInput').value = id;
