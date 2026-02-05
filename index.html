@@ -79,16 +79,13 @@
                 <div class="space-y-8">
                     <!-- 1.1 -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">1.1</span>האם ההורה האחר מילא את השאלון גם כן (עד כמה שאת/ה יודע/ת)?</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_other_filled" value="כן"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_other_filled" value="לא"> לא</label>
-                        </div>
+                        <label class="block font-semibold"><span class="section-tag ml-2">1.1</span>מצב משפחתי</label>
 
                         <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
-                            <div class="grid grid-cols-2 gap-4">
-                                <input type="number" name="1.1_num_kids" placeholder="מספר ילדים" class="p-2 border rounded-lg">
-                                <input type="text" name="1.1_kids_ages" placeholder="גילאי ילדים" class="p-2 border rounded-lg">
+                            <div>
+                                <input type="number" name="1.1_num_kids" placeholder="מספר ילדים" class="w-full p-2 border rounded-lg" min="1" max="10" oninput="generateAgeFields(this.value)">
+                            </div>
+                            <div id="ageFieldsContainer" class="flex flex-wrap gap-2">
                             </div>
                             <div class="space-y-2">
                                 <label class="text-sm font-bold">סוג משמורת:</label>
@@ -102,24 +99,23 @@
                         </div>
 
                         <div class="space-y-2 pt-2">
-                            <label class="block font-semibold">האם אתם גרים קרוב מאד אחד לשניה?</label>
+                            <label class="block font-semibold">האם אתם גרים במרחק הליכה אחד מהשניה?</label>
                             <div class="flex gap-6">
                                 <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_proximity" value="כן"> כן</label>
                                 <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_proximity" value="לא"> לא</label>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 1.2 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">1.2</span>כמה זמן עבר מאז הגירושין?</label>
-                        <select name="1.2_status" class="w-full p-3 border rounded-xl outline-none" onchange="syncLogic()">
-                            <option value="">בחרו סטאטוס...</option>
-                            <option value="עדיין פרודים">עדיין פרודים</option>
-                            <option value="גרושים טריים">גרושים טריים (עד שנה)</option>
-                            <option value="1-3 שנים">1-3 שנים</option>
-                            <option value="3+ שנים">3 שנים ומעלה</option>
-                        </select>
+                        <div class="space-y-2 pt-2">
+                            <label class="block font-semibold">כמה זמן עבר מאז הגירושין?</label>
+                            <select name="1.1_status" class="w-full p-3 border rounded-xl outline-none" onchange="syncLogic()">
+                                <option value="">בחרו סטאטוס...</option>
+                                <option value="עדיין פרודים">עדיין פרודים</option>
+                                <option value="גרושים טריים">גרושים טריים (עד שנה)</option>
+                                <option value="1-3 שנים">1-3 שנים</option>
+                                <option value="3+ שנים">3 שנים ומעלה</option>
+                            </select>
+                        </div>
                     </div>
 
                     <!-- 1.3 -->
@@ -158,21 +154,35 @@
 
                     <!-- Tension type -->
                     <div class="space-y-3">
-                        <label class="block font-semibold">האם בנושאי ניהול הילדים והכספים קיים מתח רגשי, או קושי ארגוני:</label>
-                        <select name="1.3_tension_type" class="w-full p-3 border rounded-xl text-sm">
-                            <option value="">בחר/י...</option>
-                            <option value="רגשי קל">רגשי קל</option>
-                            <option value="רגשי חזק">רגשי חזק</option>
-                            <option value="ללא רגשי, קושי ארגוני">ללא אלמנט רגשי (אבל יש קושי בארגון)</option>
-                            <option value="שילוב רגש וארגון">שילוב של רגש וחוסר ארגון</option>
-                            <option value="אין קושי">אין לנו קושי רגשי וגם לא קושי ארגוני</option>
-                        </select>
+                        <label class="block font-semibold">בנושאי ניהול הילדים והכספים:</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <label class="block text-sm font-bold mb-2">מתח רגשי:</label>
+                                <select name="1.3_tension_emotional" class="w-full p-2 border rounded-lg text-sm">
+                                    <option value="">בחר/י...</option>
+                                    <option value="אין">אין</option>
+                                    <option value="קל">קל</option>
+                                    <option value="בינוני">בינוני</option>
+                                    <option value="חזק">חזק</option>
+                                </select>
+                            </div>
+                            <div class="p-4 bg-gray-50 rounded-xl">
+                                <label class="block text-sm font-bold mb-2">קושי ארגוני:</label>
+                                <select name="1.3_tension_organizational" class="w-full p-2 border rounded-lg text-sm">
+                                    <option value="">בחר/י...</option>
+                                    <option value="אין">אין</option>
+                                    <option value="קל">קל</option>
+                                    <option value="בינוני">בינוני</option>
+                                    <option value="חזק">חזק</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Communication frequency -->
                     <div class="space-y-2">
-                        <label class="block font-semibold">בערך כמה פעמים בשבוע/חודש אתם צריכים לתקשר?</label>
-                        <input type="text" name="1.3_comm_frequency" class="w-full p-3 border rounded-xl outline-none" placeholder="למשל: 3 פעמים בשבוע">
+                        <label class="block font-semibold">כמה פעמים בחודש אתם צריכים לתקשר בממוצע?</label>
+                        <input type="number" name="1.3_comm_frequency" class="w-full p-3 border rounded-xl outline-none" min="0" placeholder="מספר פעמים בחודש">
                     </div>
 
                     <!-- Platforms -->
@@ -224,7 +234,7 @@
                                 </select>
                             </div>
                             <div class="p-4 bg-gray-50 rounded-xl">
-                                <label class="block text-sm font-bold mb-2">זמן תגובה ממוצע של הצד השני?</label>
+                                <label class="block text-sm font-bold mb-2">זמן תגובה ממוצע של הצד שאינו מוביל?</label>
                                 <select name="2.1_response_speed" class="w-full p-2 border rounded-lg text-sm">
                                     <option value="">בחר/י...</option>
                                     <option value="מהיר">מהיר מאוד</option>
@@ -251,13 +261,8 @@
                                 <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
                             </div>
                             <div>
-                                <label class="text-sm block mb-1">החלטות חינוכיות (בית ספר, חוגים):</label>
-                                <input type="range" name="2.2_score_education" min="1" max="7" value="4" class="w-full">
-                                <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
-                            </div>
-                            <div>
-                                <label class="text-sm block mb-1">בריאות ורפואה:</label>
-                                <input type="range" name="2.2_score_health" min="1" max="7" value="4" class="w-full">
+                                <label class="text-sm block mb-1">החלטות חינוכיות ורפואיות (בית ספר, חוגים, תרופות):</label>
+                                <input type="range" name="2.2_score_education_health" min="1" max="7" value="4" class="w-full">
                                 <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
                             </div>
                             <div>
@@ -699,6 +704,14 @@
                 </div>
 
                 <div class="space-y-6">
+                    <div class="space-y-4">
+                        <label class="block font-semibold">האם ההורה האחר מילא את השאלון גם כן (עד כמה שאת/ה יודע/ת)?</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="7_other_filled" value="כן"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="7_other_filled" value="לא"> לא</label>
+                        </div>
+                    </div>
+
                     <div class="flex justify-between items-center">
                         <label class="block font-semibold">תודה רבה שחלקת איתי. יש עוד משהו חשוב שלא שאלתי עליו?</label>
                         <button type="button" onclick="startSTT('7_final_notes', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
@@ -759,6 +772,23 @@
             document.querySelectorAll('.mic-btn').forEach(btn => {
                 btn.style.display = enabled ? '' : 'none';
             });
+        }
+
+        // Generate age fields dynamically
+        function generateAgeFields(numKids) {
+            const container = document.getElementById('ageFieldsContainer');
+            const n = parseInt(numKids) || 0;
+            container.innerHTML = '';
+            for (let i = 1; i <= n; i++) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.name = '1.1_kid_age_' + i;
+                input.placeholder = 'גיל ילד ' + i;
+                input.className = 'p-2 border rounded-lg w-20';
+                input.min = '0';
+                input.max = '18';
+                container.appendChild(input);
+            }
         }
 
         // Speech to Text
@@ -850,7 +880,7 @@
         function syncLogic() {
             const comm = parseInt(document.getElementById('1.3_comm').value);
             const org = parseInt(document.getElementById('1.3_org').value);
-            const status = document.querySelector('select[name="1.2_status"]').value;
+            const status = document.querySelector('select[name="1.1_status"]').value;
             const logicBoxA = document.getElementById('logicBoxA');
             const logicBoxB = document.getElementById('logicBoxB');
             const logicBoxC = document.getElementById('logicBoxC');
