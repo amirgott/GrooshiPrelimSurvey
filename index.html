@@ -26,6 +26,15 @@
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
         }
+        /* Accordion styles */
+        .accordion-section { border: 1px solid #e5e7eb; border-radius: 0.75rem; overflow: hidden; margin-bottom: 1rem; }
+        .accordion-header { background-color: #f3f4f6; padding: 1rem 1.25rem; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background-color 0.2s; }
+        .accordion-header:hover { background-color: #e5e7eb; }
+        .accordion-header::after { content: '▼'; font-size: 0.75rem; transition: transform 0.2s; }
+        .accordion-section.open .accordion-header::after { transform: rotate(180deg); }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-section.open .accordion-content { max-height: 2000px; }
+        .accordion-content-inner { padding: 1.5rem; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-12">
@@ -328,15 +337,20 @@
                         </div>
                     </div>
 
-                    <!-- 3.2 -->
+                    <!-- 3.2 ניהול הוצאות שוטפות (merged from 3.2, 3.3, 3.4) -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.2</span>מה המנגנון דרכו אתם מטפלים בהוצאות השוטפות על הילדים (חוגים, בגדים, ספרי לימוד, רפואה)?</label>
-                        <select name="3.2_mechanism" class="w-full p-2 border rounded-lg text-sm" onchange="toggle32Mechanism()">
-                            <option value="">בחר/י...</option>
-                            <option value="חשבון בנק משותף">חשבון בנק משותף</option>
-                            <option value="העברות">העברות (ישירות לחשבון, באמצעי אחר כמו ביט)</option>
-                            <option value="אחר">אחר</option>
-                        </select>
+                        <label class="block font-semibold"><span class="section-tag ml-2">3.2</span>ניהול הוצאות שוטפות על הילדים</label>
+
+                        <!-- Mechanism dropdown -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold">מה המנגנון דרכו אתם מטפלים בהוצאות? (חוגים, בגדים, ספרי לימוד, רפואה)</label>
+                            <select name="3.2_mechanism" class="w-full p-2 border rounded-lg text-sm" onchange="toggle32Mechanism()">
+                                <option value="">בחר/י...</option>
+                                <option value="חשבון בנק משותף">חשבון בנק משותף</option>
+                                <option value="העברות">העברות (ישירות לחשבון, באמצעי אחר כמו ביט)</option>
+                                <option value="אחר">אחר</option>
+                            </select>
+                        </div>
 
                         <div id="logicBox32Other" class="logic-box">
                             <div class="flex justify-between items-center mb-2">
@@ -348,19 +362,40 @@
                             <input type="text" id="3.2_mechanism_desc" name="3.2_mechanism_desc" class="w-full border rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
 
-                        <div class="mt-4 space-y-3">
-                            <label class="text-sm font-bold block mb-1">מה התדירות שבה אתם מבצעים את התיאום?</label>
-                            <input type="range" name="3.2_coordination_freq" min="1" max="4" value="2" class="w-full">
-                            <div class="range-labels"><span>1 - כל כמה חודשים</span><span>4 - חד-פעמי לפי המקרה</span></div>
+                        <!-- Tracking method dropdown (converted from textarea) -->
+                        <div class="space-y-2">
+                            <label class="text-sm font-bold">איך את/ה עוקב/ת אחרי ההוצאות?</label>
+                            <select name="3.2_tracking_method" class="w-full p-2 border rounded-lg text-sm" onchange="toggle32TrackingOther()">
+                                <option value="">בחר/י...</option>
+                                <option value="אקסל">אקסל / גיליון אלקטרוני</option>
+                                <option value="וואטסאפ">וואטסאפ / הודעות</option>
+                                <option value="כלום">אין שיטה מסודרת</option>
+                                <option value="אחר">אחר</option>
+                            </select>
                         </div>
+                        <div id="logicBox32TrackingOther" class="logic-box">
+                            <input type="text" name="3.2_tracking_method_other" class="w-full border rounded-xl p-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="פרט/י...">
+                        </div>
+
+                        <!-- Reimbursement time -->
                         <div class="mt-4 space-y-3">
                             <label class="text-sm font-bold block mb-1">כמה זמן לוקח לקבל החזר?</label>
                             <input type="range" name="3.2_reimbursement_time" min="1" max="4" value="2" class="w-full">
                             <div class="range-labels"><span>1 - באותו יום</span><span>4 - כמה חודשים</span></div>
                         </div>
 
+                        <!-- Undocumented (moved from 3.3) -->
+                        <div class="mt-4">
+                            <label class="text-sm font-bold block mb-1">היו מקרים שנשארת בחסר כי לא הצלחת לתעד?</label>
+                            <div class="flex gap-4">
+                                <label class="flex items-center gap-1"><input type="radio" name="3.2_undocumented" value="כן"> כן</label>
+                                <label class="flex items-center gap-1"><input type="radio" name="3.2_undocumented" value="לא"> לא</label>
+                            </div>
+                        </div>
+
+                        <!-- Single friction scale (replaces multiple friction scales) -->
                         <div class="mt-4 space-y-3">
-                            <label class="text-sm font-bold block mb-1">עד כמה יש לכם חיכוכים סביב המנגנון הזה?</label>
+                            <label class="text-sm font-bold block mb-1">עד כמה נושאי הכספים יוצרים חיכוכים?</label>
                             <input type="range" name="3.2_friction" min="1" max="7" value="4" class="w-full" oninput="toggle32Freq()">
                             <div class="range-labels"><span>1 - אין חיכוכים</span><span>7 - חיכוכים קשים</span></div>
                         </div>
@@ -375,70 +410,21 @@
                             </select>
                         </div>
 
-                        <p class="text-sm font-bold block mb-1">עד כמה קשה להגיע להחלטות על הוצאות בשוטף?</p>
-                        <input type="range" name="3.2_decision_difficulty" min="1" max="7" value="4" class="w-full">
-                        <div class="range-labels"><span>1 - זורם בקלות</span><span>7 - סיוט מתמשך</span></div>
-                    </div>
-
-                    <!-- 3.3 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.3</span>תיעוד ורישום הוצאות שוטפות</label>
-                        <p class="text-sm mb-1">עד כמה מסורבל/מתסכל התהליך של תיעוד והחזר הוצאות?</p>
-                        <input type="range" name="3.3_expense_frustration" min="1" max="7" value="4" class="w-full">
-                        <div class="range-labels"><span>1 - זורם בקלות</span><span>7 - סיוט מתמשך</span></div>
-
-                        <div class="bg-gray-50 p-4 rounded-2xl space-y-3 mt-4">
-                            <div>
-                                <div class="flex justify-between items-center mb-1">
-                                    <label class="text-sm font-bold">איך את/ה עוקב/ת אחרי ההוצאות? יש לך שיטה?</label>
-                                    <button type="button" onclick="startSTT('3.3_tracking', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול" style="display:none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                    </button>
-                                </div>
-                                <textarea id="3.3_tracking" name="3.3_tracking" class="w-full border rounded-lg p-2 h-16 text-sm outline-none"></textarea>
+                        <!-- Emotional load checklist (moved from 3.4) -->
+                        <div class="mt-6 space-y-3">
+                            <label class="text-sm font-bold block">מה החלק שמעמיס רגשית בנושאים הכספיים?</label>
+                            <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="חוסר הוגנות"> תחושת חוסר הוגנות</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="רדיפה אחרי כסף"> צורך לרדוף אחרי כסף</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="ויכוחים על הוצאות"> ויכוחים על "מה נחשב הוצאה לגיטימית"</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="חוסר שקיפות"> חוסר שקיפות</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="אחר" onchange="document.getElementById('3.2_emotional_other').style.display=this.checked?'block':'none'"> אחר</label>
                             </div>
-                            <div>
-                                <label class="text-sm font-bold block mb-1">היו מקרים שנשארת בחסר כי לא הצלחת לתעד?</label>
-                                <div class="flex gap-4">
-                                    <label class="flex items-center gap-1"><input type="radio" name="3.3_undocumented" value="כן"> כן</label>
-                                    <label class="flex items-center gap-1"><input type="radio" name="3.3_undocumented" value="לא"> לא</label>
-                                </div>
-                            </div>
+                            <input type="text" id="3.2_emotional_other" name="3.2_emotional_load_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
                         </div>
                     </div>
 
-                    <!-- 3.4 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.4</span>מה החלק שמעמיס רגשית בנושאים הכספיים?</label>
-                        <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
-                        <div class="space-y-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" name="3.4_emotional_load" value="חוסר הוגנות"> תחושת חוסר הוגנות</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="3.4_emotional_load" value="רדיפה אחרי כסף"> צורך לרדוף אחרי כסף</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="3.4_emotional_load" value="ויכוחים על הוצאות"> ויכוחים על "מה נחשב הוצאה לגיטימית"</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="3.4_emotional_load" value="חוסר שקיפות"> חוסר שקיפות</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="3.4_emotional_load" value="אחר" onchange="document.getElementById('3.4_other').style.display=this.checked?'block':'none'"> אחר</label>
-                        </div>
-                        <input type="text" id="3.4_other" name="3.4_emotional_load_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
-                    </div>
-
-                    <!-- 3.5 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.5</span>האם היו מחלוקות שהסלימו למריבה גדולה בגלל משהו שבעצם היה נושא "טכני" יחסית?</label>
-                        <p class="text-sm text-gray-500">(למשל: שכחתי לשלוח קבלה, לא הבנו מי משלם מה)</p>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3.5_escalation" value="כן" onchange="toggle35Details()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3.5_escalation" value="לא" onchange="toggle35Details()"> לא</label>
-                        </div>
-                        <div id="logicBox35" class="logic-box">
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-sm font-bold">תוכל/י לתת דוגמה?</label>
-                                <button type="button" onclick="startSTT('3.5_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                </button>
-                            </div>
-                            <textarea id="3.5_example" name="3.5_example" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -454,58 +440,42 @@
                 </div>
 
                 <div class="space-y-10">
-                    <!-- 4.1 -->
+                    <!-- 4.1 - Combined single textarea -->
                     <div class="space-y-4">
                         <label class="block font-semibold"><span class="section-tag ml-2">4.1</span>מתוך הפלטפורמות שמשמשות אתכם לתקשורת שציינת בחלק 1:</label>
                         <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">מה עובד בהן טוב?</label>
-                            <button type="button" onclick="startSTT('4.1_works', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                            <label class="text-sm font-bold">מה ממש לא עובד בתקשורת ביניכם היום, ומה היית רוצה שיהיה אחרת?</label>
+                            <button type="button" onclick="startSTT('4.1_communication_issues', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                             </button>
                         </div>
-                        <textarea id="4.1_works" name="4.1_works" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-
-                        <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">מה ממש לא עובד או מעצבן?</label>
-                            <button type="button" onclick="startSTT('4.1_not_works', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="4.1_not_works" name="4.1_not_works" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-
-                        <div class="flex justify-between items-center pt-4">
-                            <label class="text-sm font-bold">אם היית יכול/ה לשנות דבר אחד באופן שבו אתם מתקשרים היום - מה זה היה?</label>
-                            <button type="button" onclick="startSTT('4.1_change', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="4.1_change" name="4.1_one_change" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        <textarea id="4.1_communication_issues" name="4.1_communication_issues" class="w-full border rounded-xl p-3 h-28 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                     </div>
 
-                    <!-- 4.3 -->
+                    <!-- 4.2 (was 4.3) -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">4.3</span>האם ניסיתם בעבר עבודה עם מגשר/ת, יועץ/ת הורים, או גורם מקצועי אחר?</label>
+                        <label class="block font-semibold"><span class="section-tag ml-2">4.2</span>האם ניסיתם בעבר עבודה עם מגשר/ת, יועץ/ת הורים, או גורם מקצועי אחר?</label>
                         <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.3_mediation" value="כן" onchange="toggle43Details()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.3_mediation" value="לא" onchange="toggle43Details()"> לא</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.2_mediation" value="כן" onchange="toggle42Details()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.2_mediation" value="לא" onchange="toggle42Details()"> לא</label>
                         </div>
-                        <div id="logicBox43yes" class="logic-box">
+                        <div id="logicBox42yes" class="logic-box">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-bold">איך הייתה החוויה? מה עזר ומה פחות?</label>
-                                <button type="button" onclick="startSTT('4.3_experience', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                                <button type="button" onclick="startSTT('4.2_experience', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                                 </button>
                             </div>
-                            <textarea id="4.3_experience" name="4.3_experience" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <textarea id="4.2_experience" name="4.2_experience" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                         </div>
-                        <div id="logicBox43no" class="logic-box">
+                        <div id="logicBox42no" class="logic-box">
                             <div class="flex justify-between items-center mb-2">
                                 <label class="text-sm font-bold">מה מנע ממך לנסות?</label>
-                                <button type="button" onclick="startSTT('4.3_barrier', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                                <button type="button" onclick="startSTT('4.2_barrier', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                                 </button>
                             </div>
-                            <textarea id="4.3_barrier" name="4.3_barrier" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            <textarea id="4.2_barrier" name="4.2_barrier" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                         </div>
                     </div>
                 </div>
@@ -576,125 +546,128 @@
                     <h1 class="text-2xl font-bold text-indigo-900">חלק 6: בדיקת הצורך</h1>
                 </div>
 
-                <div class="space-y-10">
-                    <!-- 6.1 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">6.1</span>גורם ניטרלי מתווך</label>
-                        <p class="text-sm text-gray-500">תדמיין/תדמייני שיש גורם ניטרלי - יכול להיות כלי דיגיטלי, יכול להיות אדם, לא משנה - שעוזר לכם לנהל החלטות ותקשורת בצורה יותר חלקה.</p>
-                        <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">מה היה הכי חשוב לך שגורם כזה יעשה?</label>
-                            <button type="button" onclick="startSTT('6.1_important', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="6.1_important" name="6.1_important" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
+                <!-- Accordion: חשוב (Important - default open) -->
+                <div class="accordion-section open" id="accordion-important">
+                    <div class="accordion-header" onclick="toggleAccordion('accordion-important')">חשוב</div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner space-y-8">
+                            <!-- 6.1 -->
+                            <div class="space-y-4">
+                                <label class="block font-semibold"><span class="section-tag ml-2">6.1</span>גורם ניטרלי מתווך</label>
+                                <p class="text-sm text-gray-500">תדמיין/תדמייני שיש גורם ניטרלי - יכול להיות כלי דיגיטלי, יכול להיות אדם, לא משנה - שעוזר לכם לנהל החלטות ותקשורת בצורה יותר חלקה.</p>
+                                <div class="flex justify-between items-center">
+                                    <label class="text-sm font-bold">מה היה הכי חשוב לך שגורם כזה יעשה?</label>
+                                    <button type="button" onclick="startSTT('6.1_important', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                    </button>
+                                </div>
+                                <textarea id="6.1_important" name="6.1_important" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
 
-                    <!-- 6.2 -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="block font-semibold"><span class="section-tag ml-2">6.2</span>באילו מצבים ספציפיים גורם כזה היה הכי מועיל עבורך?</label>
-                            <button type="button" onclick="startSTT('6.2_use_cases', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <p class="text-sm text-gray-500">(למשל מתוך הנושאים או המחלוקות שעלו קודם)</p>
-                        <textarea id="6.2_use_cases" name="6.2_use_cases" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
+                            <!-- 6.2 -->
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center">
+                                    <label class="block font-semibold"><span class="section-tag ml-2">6.2</span>באילו מצבים ספציפיים גורם כזה היה הכי מועיל עבורך?</label>
+                                    <button type="button" onclick="startSTT('6.2_use_cases', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                    </button>
+                                </div>
+                                <p class="text-sm text-gray-500">(למשל מתוך הנושאים או המחלוקות שעלו קודם)</p>
+                                <textarea id="6.2_use_cases" name="6.2_use_cases" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
 
-                    <!-- 6.3 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">6.3</span>מה היה גורם לך לא להשתמש בכלי כזה? מה היה מרתיע אותך?</label>
-                        <div class="space-y-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="מורכבות טכנית"> מורכבות טכנית</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="צד שני לא ישתף פעולה"> חשש שהצד השני לא ישתף פעולה</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="חשיפת מידע"> חשש מחשיפת מידע פרטי</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="עלות"> עלות</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="חוסר אמון"> חוסר אמון בגורם חיצוני</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="אחר" onchange="document.getElementById('6.3_other').style.display=this.checked?'block':'none'"> אחר</label>
-                        </div>
-                        <input type="text" id="6.3_other" name="6.3_barriers_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
-                    </div>
-
-                    <!-- 6.4 קריטריון הצלחה -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="block font-semibold"><span class="section-tag ml-2">6.4</span>איך תדע/י שהכלי עובד? מה ישתנה לטובה?</label>
-                            <button type="button" onclick="startSTT('6.4_success', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="6.4_success" name="6.4_success_criteria" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-
-                    <!-- 6.4 נכונות לשלם -->
-                    <div class="space-y-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                        <label class="block font-semibold">אם היה כלי כזה שבאמת עוזר - האם היית מוכנ/ה לשלם עליו?</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6.4_willing_to_pay" value="כן" onchange="toggle64Payment()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6.4_willing_to_pay" value="לא" onchange="toggle64Payment()"> לא</label>
-                        </div>
-
-                        <div id="logicBox64yes" class="logic-box space-y-2">
-                            <label class="text-sm font-bold">בערך כמה ליכולת התשלום שלך נראה סביר?</label>
-                            <div class="space-y-1">
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="עד 20"> עד ₪20/חודש</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="20-50"> ₪20-50/חודש</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="50-100"> ₪50-100/חודש</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="100+"> מעל ₪100/חודש</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="חד פעמי"> תשלום חד-פעמי, לא מנוי</label>
+                            <!-- 6.3 -->
+                            <div class="space-y-4">
+                                <label class="block font-semibold"><span class="section-tag ml-2">6.3</span>מה היה גורם לך לא להשתמש בכלי כזה? מה היה מרתיע אותך?</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="מורכבות טכנית"> מורכבות טכנית</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="צד שני לא ישתף פעולה"> חשש שהצד השני לא ישתף פעולה</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="חשיפת מידע"> חשש מחשיפת מידע פרטי</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="עלות"> עלות</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="חוסר אמון"> חוסר אמון בגורם חיצוני</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="6.3_barriers" value="אחר" onchange="document.getElementById('6.3_other').style.display=this.checked?'block':'none'"> אחר</label>
+                                </div>
+                                <input type="text" id="6.3_other" name="6.3_barriers_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
                             </div>
                         </div>
+                    </div>
+                </div>
 
-                        <div id="logicBox64no" class="logic-box">
-                            <label class="text-sm font-bold block mb-2">מדוע לא?</label>
-                            <textarea name="6.4_why_not_pay" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                        </div>
+                <!-- Accordion: אופציונלי (Optional - default collapsed) -->
+                <div class="accordion-section" id="accordion-optional">
+                    <div class="accordion-header" onclick="toggleAccordion('accordion-optional')">אופציונלי - פרטי תשלום</div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner space-y-8">
+                            <!-- 6.4 נכונות לשלם -->
+                            <div class="space-y-4">
+                                <label class="block font-semibold">אם היה כלי כזה שבאמת עוזר - האם היית מוכנ/ה לשלם עליו?</label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6.4_willing_to_pay" value="כן" onchange="toggle64Payment()"> כן</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6.4_willing_to_pay" value="לא" onchange="toggle64Payment()"> לא</label>
+                                </div>
 
-                        <div class="pt-4 space-y-4">
-                            <div>
-                                <label class="text-sm font-bold block mb-2">אם שניכם תשתמשו - מי ישלם?</label>
-                                <div class="flex flex-wrap gap-4">
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="רק אני"> רק את/ה</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="רק ההורה האחר"> רק ההורה האחר</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="שניכם"> שניכם</label>
+                                <div id="logicBox64yes" class="logic-box space-y-2">
+                                    <label class="text-sm font-bold">בערך כמה ליכולת התשלום שלך נראה סביר?</label>
+                                    <div class="space-y-1">
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="עד 20"> עד ₪20/חודש</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="20-50"> ₪20-50/חודש</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="50-100"> ₪50-100/חודש</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="100+"> מעל ₪100/חודש</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_price_range" value="חד פעמי"> תשלום חד-פעמי, לא מנוי</label>
+                                    </div>
+                                </div>
+
+                                <div id="logicBox64no" class="logic-box">
+                                    <label class="text-sm font-bold block mb-2">מדוע לא?</label>
+                                    <textarea name="6.4_why_not_pay" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                                </div>
+
+                                <div class="pt-4 space-y-4">
+                                    <div>
+                                        <label class="text-sm font-bold block mb-2">אם שניכם תשתמשו - מי ישלם?</label>
+                                        <div class="flex flex-wrap gap-4">
+                                            <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="רק אני"> רק את/ה</label>
+                                            <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="רק ההורה האחר"> רק ההורה האחר</label>
+                                            <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_who_pays" value="שניכם"> שניכם</label>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text-sm font-bold block mb-2">האם תהיי/תהיה מוכנ/ה רק אם שני ההורים משלמים? או גם אם רק את/ה משלם/משלמת?</label>
+                                        <div class="flex flex-wrap gap-4">
+                                            <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_both_pay" value="מוכנ/ה לבד"> מוכנ/ה, שווה לי השקט הנפשי</label>
+                                            <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_both_pay" value="רק שנינו"> רק אם שנינו נשלם</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <label class="text-sm font-bold block mb-2">האם תהיי/תהיה מוכנ/ה רק אם שני ההורים משלמים? או גם אם רק את/ה משלם/משלמת?</label>
-                                <div class="flex flex-wrap gap-4">
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_both_pay" value="מוכנ/ה לבד"> מוכנ/ה, שווה לי השקט הנפשי</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.4_both_pay" value="רק שנינו"> רק אם שנינו נשלם</label>
+
+                            <!-- 6.5 -->
+                            <div class="space-y-4">
+                                <label class="block font-semibold"><span class="section-tag ml-2">6.5</span>בן/בת הזוג הגרוש/ה והטכנולוגיה</label>
+                                <p class="text-sm">ההורה האחר - האם הוא/היא טיפוס שמאמץ טכנולוגיה בקלות?</p>
+                                <input type="range" name="6.5_tech_adoption" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - אדופטר מהיר</span><span>5 - טכנופוב</span></div>
+
+                                <div class="pt-4">
+                                    <label class="text-sm font-bold block mb-2">לדעתך, האם הוא/היא יהיה/תהיה מוכנ/ה להשתמש בכלי דיגיטלי כזה?</label>
+                                    <div class="space-y-1">
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כן בוודאות"> כן, בוודאות</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כנראה כן"> כנראה כן</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="לא בטוח"> לא בטוח</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כנראה לא"> כנראה לא</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="בטוח שלא"> בטוח שלא</label>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- 6.5 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">6.5</span>בן/בת הזוג הגרוש/ה והטכנולוגיה</label>
-                        <p class="text-sm">ההורה האחר - האם הוא/היא טיפוס שמאמץ טכנולוגיה בקלות?</p>
-                        <input type="range" name="6.5_tech_adoption" min="1" max="5" value="3" class="w-full">
-                        <div class="range-labels"><span>1 - אדופטר מהיר</span><span>5 - טכנופוב</span></div>
-
-                        <div class="pt-4">
-                            <label class="text-sm font-bold block mb-2">לדעתך, האם הוא/היא יהיה/תהיה מוכנ/ה להשתמש בכלי דיגיטלי כזה?</label>
-                            <div class="space-y-1">
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כן בוודאות"> כן, בוודאות</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כנראה כן"> כנראה כן</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="לא בטוח"> לא בטוח</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="כנראה לא"> כנראה לא</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_willing" value="בטוח שלא"> בטוח שלא</label>
-                            </div>
-                        </div>
-
-                        <div class="pt-4">
-                            <label class="text-sm font-bold block mb-2">האם לדעתך הוא/היא יהיה מוכן/ה לשלם עליו?</label>
-                            <div class="flex flex-wrap gap-4">
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="כן"> כן</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="אולי"> אולי</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="לא"> לא</label>
-                                <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="לא רלוונטי"> לא רלוונטי (אני אשלם)</label>
+                                <div class="pt-4">
+                                    <label class="text-sm font-bold block mb-2">האם לדעתך הוא/היא יהיה מוכן/ה לשלם עליו?</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="כן"> כן</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="אולי"> אולי</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="לא"> לא</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="6.5_other_pay" value="לא רלוונטי"> לא רלוונטי (אני אשלם)</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -964,16 +937,16 @@
             const isUntouched = friction && friction.classList.contains('untouched');
             document.getElementById('logicBox32Freq').classList.toggle('visible', !isUntouched && frictionVal > 1);
         }
-        function toggle35Details() {
-            const val = document.querySelector('input[name="3.5_escalation"]:checked');
-            document.getElementById('logicBox35').classList.toggle('visible', val && val.value === 'כן');
+        function toggle32TrackingOther() {
+            const val = document.querySelector('select[name="3.2_tracking_method"]').value;
+            document.getElementById('logicBox32TrackingOther').classList.toggle('visible', val === 'אחר');
         }
 
         // Chapter 4 conditional
-        function toggle43Details() {
-            const val = document.querySelector('input[name="4.3_mediation"]:checked');
-            document.getElementById('logicBox43yes').classList.toggle('visible', val && val.value === 'כן');
-            document.getElementById('logicBox43no').classList.toggle('visible', val && val.value === 'לא');
+        function toggle42Details() {
+            const val = document.querySelector('input[name="4.2_mediation"]:checked');
+            document.getElementById('logicBox42yes').classList.toggle('visible', val && val.value === 'כן');
+            document.getElementById('logicBox42no').classList.toggle('visible', val && val.value === 'לא');
         }
 
         // Chapter 7 other parent ID
@@ -987,6 +960,12 @@
             const val = document.querySelector('input[name="6.4_willing_to_pay"]:checked');
             document.getElementById('logicBox64yes').classList.toggle('visible', val && val.value === 'כן');
             document.getElementById('logicBox64no').classList.toggle('visible', val && val.value === 'לא');
+        }
+
+        // Accordion toggle
+        function toggleAccordion(id) {
+            const section = document.getElementById(id);
+            section.classList.toggle('open');
         }
 
         function showReturnFinishBtn(stepEl) {
