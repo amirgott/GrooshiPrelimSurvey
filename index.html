@@ -157,11 +157,6 @@
                         </div>
                     </div>
 
-                    <!-- Logic Box C: both=5, no difficulty, 3+ years -->
-                    <div id="logicBoxC" class="logic-box bg-orange-50 p-4 rounded-2xl border border-orange-200">
-                        <p class="text-orange-900 font-semibold">אנא חזור/חזרי אל השאלות וענה/י בהתייחס לשנים קודמות בהן היו לכם קונפליקטים</p>
-                    </div>
-
                     <!-- Tension type -->
                     <div class="space-y-3">
                         <label class="block font-semibold">בנושאי ניהול הילדים והכספים:</label>
@@ -198,92 +193,121 @@
                     </div>
                 </div>
 
+                <!-- 1.3 תחושות -->
+                <div class="space-y-4 mt-8">
+                    <label class="block font-semibold text-lg"><span class="section-tag ml-2">1.3</span>תחושות</label>
+                    <label class="block font-semibold">מה הכי מעייף אותך בהתנהלות מול ההורה האחר?</label>
+                    <p class="text-xs text-gray-400">(אפשר לסמן כמה)</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="לוגיסטיקה מסורבלת"> התנהלות לוגיסטית מסורבלת</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="שיחות מתוחות"> שיחות מתוחות/כעוסות</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="חוסר אמינות"> חוסר אמינות/התחמקות</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="לבד עם הנטל"> תחושה שאני לבד עם הנטל</label>
+                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="אחר" onchange="document.getElementById('1.3_other').style.display=this.checked?'block':'none'"> אחר</label>
+                    </div>
+                    <input type="text" id="1.3_other" name="1.3_fatigue_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
+                </div>
+
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(0)" class="text-indigo-600 font-bold px-8 py-3">חזרה</button>
                     <button type="button" onclick="goToStep(2)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 2</button>
                 </div>
             </div>
 
-            <!-- STEP 2: ניהול הילדים ביומיום -->
+            <!-- STEP 2: שגרת הילדים -->
             <div class="step" id="step2">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: ניהול הילדים ביומיום</h1>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: שגרת הילדים</h1>
                 </div>
 
                 <div class="space-y-10">
-                    <!-- 2.1 -->
-                    <div class="space-y-6">
-                        <label class="block font-semibold"><span class="section-tag ml-2">2.1</span>עד כמה קשה לכם להגיע להסכמות בנושאים הבאים?</label>
-                        <div class="space-y-6 bg-indigo-50 p-6 rounded-2xl">
-                            <div>
-                                <label class="text-sm block mb-1">שגרת הילדים (לוחות זמנים ותורנויות):</label>
-                                <input type="range" name="2.1_score_schedule" min="1" max="7" value="4" class="w-full">
-                                <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
+                    <!-- שגרת הילדים -->
+                    <div class="space-y-8">
+
+                        <!-- General routine -->
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">בכללי, עד כמה ניהול שגרת הילדים מול ההורה האחר מתנהלת בצורה טובה?</label>
+                            <input type="range" name="2.1_routine_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - טובה מאד</span><span>5 - גרועה מאד</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">האם אופן ההתנהלות בשגרה מעיק עליך?</label>
+                                <input type="range" name="2.1_routine_burden" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - בכלל לא</span><span>5 - מעיק ממש</span></div>
                             </div>
-                            <div>
-                                <label class="text-sm block mb-1">הוצאות והחזרים (ביגוד, חוגים):</label>
-                                <input type="range" name="2.1_score_expenses" min="1" max="7" value="4" class="w-full">
-                                <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
-                            </div>
-                            <div>
-                                <label class="text-sm block mb-1">החלטות חינוכיות ורפואיות (בית ספר, חוגים, תרופות):</label>
-                                <input type="range" name="2.1_score_education_health" min="1" max="7" value="4" class="w-full">
-                                <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
-                            </div>
-                            <div>
-                                <label class="text-sm block mb-1">שינוי לו"ז (החלפת ימים או שבתות):</label>
-                                <input type="range" name="2.1_score_changes" min="1" max="7" value="4" class="w-full">
-                                <div class="range-labels"><span>1 - קל מאוד</span><span>7 - כמעט בלתי אפשרי</span></div>
-                            </div>
-                        </div>
-                        <div class="pt-2">
-                            <label class="text-sm block mb-1">עד כמה הקושי גורם לחיכוכים?</label>
-                            <input type="range" name="2.1_friction_score" min="1" max="7" value="4" class="w-full">
-                            <div class="range-labels"><span>1 - לא נורא, מסתדרים</span><span>7 - תמיד מסתיים במריבה</span></div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                            <div class="p-4 bg-gray-50 rounded-xl">
-                                <label class="block text-sm font-bold mb-2">מי מוביל את התיאומים היומיומיים?</label>
-                                <select name="2.1_leader" class="w-full p-2 border rounded-lg text-sm">
+                            <div class="pt-3">
+                                <label class="text-sm">באיזו תדירות את/ה מרגיש/ה מועקה בגלל זה?</label>
+                                <select name="2.1_routine_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
                                     <option value="">בחר/י...</option>
-                                    <option value="אני">אני</option>
-                                    <option value="ההורה האחר">ההורה האחר</option>
-                                    <option value="שנינו ביחד">שנינו ביחד</option>
-                                    <option value="קשה לומר">קשה לומר</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="רק כשקורה אירוע">רק כשקורה אירוע</option>
                                 </select>
                             </div>
-                            <div class="p-4 bg-gray-50 rounded-xl">
-                                <label class="block text-sm font-bold mb-2">זמן תגובה ממוצע של הצד שאינו מוביל?</label>
-                                <input type="range" name="2.1_response_speed" min="1" max="4" value="2" class="w-full">
-                                <div class="range-labels"><span>1 - מהיר מאוד</span><span>4 - לרוב לא מגיב/ה</span></div>
+                        </div>
+
+                        <!-- Task division -->
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חלוקת מטלות: איך לדעתך מתנהלת חלוקת מטלות הילדים (הסעות ותורנויות אחרות) בינך לבין ההורה האחר?</label>
+                            <input type="range" name="2.1_tasks_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="2.1_tasks_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים בגלל זה:</label>
+                                <select name="2.1_tasks_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="2.1_tasks_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שהמטלה לא מתבצעת בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="2.1_tasks_not_done" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="2.1_tasks_not_done" value="לא"> לא</label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 2.2 -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="block font-semibold"><span class="section-tag ml-2">2.2</span>תוכל/י לתת דוגמה קונקרטית למקרה מהחודשים האחרונים שהיה ממש מתסכל?</label>
-                            <button type="button" onclick="startSTT('2.2_frustrating_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" title="הקלטת קול" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="2.2_frustrating_example" name="2.2_frustrating_example" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="מה קרה? מה היה הכי מתסכל? איך זה הסתיים?"></textarea>
-                        <div class="space-y-1">
-                            <span class="text-sm font-bold">תדירות מקרים כאלו:</span>
-                            <input type="range" name="2.2_frequency" min="1" max="4" value="2" class="w-full">
-                            <div class="range-labels"><span>1 - חד פעמי</span><span>4 - כמעט כל יום</span></div>
-                        </div>
-                    </div>
-
-                    <!-- 2.3 -->
-                    <div class="space-y-4 bg-gray-50 p-6 rounded-2xl border border-gray-100">
-                        <label class="block font-semibold"><span class="section-tag ml-2">2.3</span>תחושת איזון וקיפוח</label>
-                        <p class="text-sm">האם יש לך תחושה שאת/ה נושא ביותר מדי מהנטל? למשל: מטפל יותר, נושא ביותר מדי עלויות, גמיש יותר...</p>
-                        <div class="pt-2">
-                            <p class="text-xs font-bold text-gray-400 mb-2">עד כמה את/ה מרגיש/ה שהחלוקה הוגנת?</p>
-                            <input type="range" name="2.3_fairness_score" min="1" max="7" value="4" class="w-full">
-                            <div class="range-labels"><span>1 - הוגן לחלוטין</span><span>7 - מאוד לא הוגן</span></div>
+                        <!-- Schedule changes -->
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">שינוי לו"ז: איך לדעתך אתם מתנהלים כשאחד מכם רוצה שינוי בלו"ז (החלפת ימים או שבתות)?</label>
+                            <input type="range" name="2.1_schedule_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="2.1_schedule_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים בגלל זה:</label>
+                                <select name="2.1_schedule_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שהיה מתסכל (אופציונלי):</label>
+                                <textarea name="2.1_schedule_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">האם בסופו של דבר מגיעים להסכמה (או שהשינוי פשוט לא מתבצע)?</label>
+                                <input type="range" name="2.1_schedule_agreement" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - בסוף תמיד מסכימים</span><span>5 - השינוי לא מתבצע</span></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -294,135 +318,245 @@
                 </div>
             </div>
 
-            <!-- STEP 3: ניהול נכסים וכספים משותפים -->
+            <!-- STEP 3: קבלת החלטות -->
             <div class="step" id="step3">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 3: ניהול נכסים וכספים משותפים</h1>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 3: קבלת החלטות</h1>
+                    <p class="text-sm text-gray-500 mt-1">לגבי צרכים שמחוץ לשגרה</p>
                 </div>
 
                 <div class="space-y-10">
-                    <!-- 3.1 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.1</span>האם יש לכם עדיין נכסים או התחייבויות משותפות? (דירה, משכנתא, הלוואות)</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3.1_shared_assets" value="כן" onchange="toggle31Details()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3.1_shared_assets" value="לא" onchange="toggle31Details()"> לא</label>
-                        </div>
-                        <div id="logicBox31" class="logic-box">
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-sm font-bold">אנא פרט בקצרה:</label>
-                                <button type="button" onclick="startSTT('3.1_details', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                </button>
-                            </div>
-                            <input type="text" id="3.1_details" name="3.1_details" class="w-full border rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-500">
+                    <div class="space-y-6">
 
-                            <div class="mt-4 space-y-3">
-                                <label class="text-sm font-bold block mb-1">מהי עוצמת החיכוכים ביניכם סביבו/סביבם?</label>
-                                <input type="range" name="3.1_friction" min="1" max="7" value="4" class="w-full" oninput="toggle31Freq()">
-                                <div class="range-labels"><span>1 - אין חיכוכים</span><span>7 - חיכוכים קשים</span></div>
+                        <!-- Areas checkboxes -->
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold">באילו תחומים אתם מתקשרים כדי להחליט החלטות לגבי הילדים?</label>
+                            <p class="text-xs text-gray-400">בחר עד 3 נושאים</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="בריאות" onchange="toggle3Area('health')"> בריאות (שלא בחירום)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="חינוך" onchange="toggle3Area('education')"> חינוך והעשרה (למשל רישום לחוגים)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="חברתי" onchange="toggle3Area('social')"> אירועים חברתיים (למשל לינה אצל חברים)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="טכנולוגיה" onchange="toggle3Area('tech')"> טכנולוגיה ומדיה (למשל סמרטפונים)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="חופשות" onchange="toggle3Area('vacation')"> חופשות וטיולים (למשל יציאה לטיולי בית ספר)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="3_areas" value="תמיכה מקצועית" onchange="toggle3Area('professional')"> תמיכה מקצועית (למשל קלינאי תקשורת)</label>
                             </div>
-                            <div id="logicBox31Freq" class="logic-box mt-3">
-                                <label class="text-sm font-bold block mb-1">באיזו תדירות החיכוכים הללו?</label>
-                                <select name="3.1_friction_freq" class="w-full p-2 border rounded-lg text-sm">
+                        </div>
+
+                        <!-- General decision quality -->
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">בכללי, עד כמה קבלת החלטות לגבי הילדים מתנהלת בצורה טובה?</label>
+                            <input type="range" name="3_decisions_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - טובה מאד</span><span>5 - גרועה מאד</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">האם מקרים הדורשים קבלת החלטות מעיקים עליך?</label>
+                                <input type="range" name="3_decisions_burden" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - בכלל לא</span><span>5 - מעיק ממש</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">באיזו תדירות את/ה מרגיש/ה מועקה בגלל זה?</label>
+                                <select name="3_decisions_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
                                     <option value="">בחר/י...</option>
-                                    <option value="יומי">יומי</option>
-                                    <option value="שבועי">שבועי</option>
-                                    <option value="חודשי">חודשי</option>
-                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="רק כשקורה אירוע">רק כשקורה אירוע</option>
                                 </select>
                             </div>
                         </div>
+
+                        <!-- Dynamic area questions -->
+                        <div id="area_health" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">בריאות - איך לדעתך מתנהלות החלטות סביב טיפולים רפואיים לא דחופים?</label>
+                            <input type="range" name="3_health_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_health_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_health_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_health_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_health_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_health_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="area_education" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חינוך - איך לדעתך מתנהלות החלטות סביב רישום לחוגים ופעילויות העשרה?</label>
+                            <input type="range" name="3_education_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_education_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_education_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_education_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_education_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_education_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="area_social" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">אירועים חברתיים - איך לדעתך מתנהלות החלטות סביב השתתפות בארועים חברתיים ומסיבות?</label>
+                            <input type="range" name="3_social_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_social_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_social_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_social_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_social_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_social_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="area_tech" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">טכנולוגיה ומדיה - איך לדעתך מתנהלות החלטות סביב שימוש בטכנולוגיה ומכשירים?</label>
+                            <input type="range" name="3_tech_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_tech_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_tech_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_tech_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_tech_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_tech_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="area_vacation" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חופשות וטיולים - איך לדעתך מתנהלות החלטות סביב טיולים של הילדים ונסיעות עם הילדים?</label>
+                            <input type="range" name="3_vacation_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_vacation_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_vacation_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_vacation_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_vacation_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_vacation_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="area_professional" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">תמיכה מקצועית - איך לדעתך מתנהלות החלטות סביב פנייה לגורמי תמיכה מקצועיים?</label>
+                            <input type="range" name="3_professional_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="3_professional_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים:</label>
+                                <select name="3_professional_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <textarea name="3_professional_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
+                                <div class="flex gap-4 mt-1">
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_professional_no_decision" value="כן"> כן</label>
+                                    <label class="flex items-center gap-1"><input type="radio" name="3_professional_no_decision" value="לא"> לא</label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
-                    <!-- 3.2 ניהול הוצאות שוטפות (merged from 3.2, 3.3, 3.4) -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">3.2</span>ניהול הוצאות שוטפות על הילדים</label>
-
-                        <!-- Mechanism dropdown -->
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold">מה המנגנון דרכו אתם מטפלים בהוצאות? (חוגים, בגדים, ספרי לימוד, רפואה)</label>
-                            <select name="3.2_mechanism" class="w-full p-2 border rounded-lg text-sm" onchange="toggle32Mechanism()">
-                                <option value="">בחר/י...</option>
-                                <option value="חשבון בנק משותף">חשבון בנק משותף</option>
-                                <option value="העברות">העברות (ישירות לחשבון, באמצעי אחר כמו ביט)</option>
-                                <option value="אחר">אחר</option>
-                            </select>
-                        </div>
-
-                        <div id="logicBox32Other" class="logic-box">
-                            <div class="flex justify-between items-center mb-2">
-                                <label class="text-sm font-bold">פרט/י בקצרה:</label>
-                                <button type="button" onclick="startSTT('3.2_mechanism_desc', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                </button>
-                            </div>
-                            <input type="text" id="3.2_mechanism_desc" name="3.2_mechanism_desc" class="w-full border rounded-xl p-3 outline-none focus:ring-2 focus:ring-indigo-500">
-                        </div>
-
-                        <!-- Tracking method dropdown (converted from textarea) -->
-                        <div class="space-y-2">
-                            <label class="text-sm font-bold">איך את/ה עוקב/ת אחרי ההוצאות?</label>
-                            <select name="3.2_tracking_method" class="w-full p-2 border rounded-lg text-sm" onchange="toggle32TrackingOther()">
-                                <option value="">בחר/י...</option>
-                                <option value="אקסל">אקסל / גיליון אלקטרוני</option>
-                                <option value="וואטסאפ">וואטסאפ / הודעות</option>
-                                <option value="כלום">אין שיטה מסודרת</option>
-                                <option value="אחר">אחר</option>
-                            </select>
-                        </div>
-                        <div id="logicBox32TrackingOther" class="logic-box">
-                            <input type="text" name="3.2_tracking_method_other" class="w-full border rounded-xl p-2 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="פרט/י...">
-                        </div>
-
-                        <!-- Reimbursement time -->
-                        <div class="mt-4 space-y-3">
-                            <label class="text-sm font-bold block mb-1">כמה זמן לוקח לקבל החזר?</label>
-                            <input type="range" name="3.2_reimbursement_time" min="1" max="4" value="2" class="w-full">
-                            <div class="range-labels"><span>1 - באותו יום</span><span>4 - כמה חודשים</span></div>
-                        </div>
-
-                        <!-- Undocumented (moved from 3.3) -->
-                        <div class="mt-4">
-                            <label class="text-sm font-bold block mb-1">היו מקרים שנשארת בחסר כי לא הצלחת לתעד?</label>
-                            <div class="flex gap-4">
-                                <label class="flex items-center gap-1"><input type="radio" name="3.2_undocumented" value="כן"> כן</label>
-                                <label class="flex items-center gap-1"><input type="radio" name="3.2_undocumented" value="לא"> לא</label>
-                            </div>
-                        </div>
-
-                        <!-- Single friction scale (replaces multiple friction scales) -->
-                        <div class="mt-4 space-y-3">
-                            <label class="text-sm font-bold block mb-1">עד כמה נושאי הכספים יוצרים חיכוכים?</label>
-                            <input type="range" name="3.2_friction" min="1" max="7" value="4" class="w-full" oninput="toggle32Freq()">
-                            <div class="range-labels"><span>1 - אין חיכוכים</span><span>7 - חיכוכים קשים</span></div>
-                        </div>
-                        <div id="logicBox32Freq" class="logic-box mt-3">
-                            <label class="text-sm font-bold block mb-1">באיזו תדירות?</label>
-                            <select name="3.2_friction_freq" class="w-full p-2 border rounded-lg text-sm">
-                                <option value="">בחר/י...</option>
-                                <option value="יומי">יומי</option>
-                                <option value="שבועי">שבועי</option>
-                                <option value="חודשי">חודשי</option>
-                                <option value="כל כמה חודשים">כל כמה חודשים</option>
-                            </select>
-                        </div>
-
-                        <!-- Emotional load checklist (moved from 3.4) -->
-                        <div class="mt-6 space-y-3">
-                            <label class="text-sm font-bold block">מה החלק שמעמיס רגשית בנושאים הכספיים?</label>
-                            <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="חוסר הוגנות"> תחושת חוסר הוגנות</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="רדיפה אחרי כסף"> צורך לרדוף אחרי כסף</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="ויכוחים על הוצאות"> ויכוחים על "מה נחשב הוצאה לגיטימית"</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="חוסר שקיפות"> חוסר שקיפות</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_emotional_load" value="אחר" onchange="document.getElementById('3.2_emotional_other').style.display=this.checked?'block':'none'"> אחר</label>
-                            </div>
-                            <input type="text" id="3.2_emotional_other" name="3.2_emotional_load_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
-                        </div>
-                    </div>
-
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -431,52 +565,101 @@
                 </div>
             </div>
 
-            <!-- STEP 4: רגשות וחוויה אישית -->
+            <!-- STEP 4: ניהול כספים -->
             <div class="step" id="step4">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: רגשות וחוויה אישית</h1>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: ניהול כספים</h1>
                 </div>
 
                 <div class="space-y-10">
-                    <!-- 4.1 -->
+                    <!-- 4.1 ניהול הוצאות שוטפות -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">4.1</span>מה הכי מעייף אותך בהתנהלות מול ההורה האחר?</label>
-                        <p class="text-xs text-gray-400">(אפשר לסמן כמה)</p>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.1</span>ניהול הוצאות שוטפות</label>
+
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">איך לדעתך עובד ביניכם ניהול הוצאות שוטפות של הילדים?</label>
+                            <input type="range" name="4.1_expenses_quality" min="1" max="5" value="3" class="w-full">
+                            <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                            <div class="pt-3 space-y-3">
+                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                <input type="range" name="4.1_expenses_friction" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תדירות החיכוכים בגלל זה:</label>
+                                <select name="4.1_expenses_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                    <option value="">בחר/י...</option>
+                                    <option value="יומית">יומית</option>
+                                    <option value="שבועית">שבועית</option>
+                                    <option value="חודשית">חודשית</option>
+                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                </select>
+                            </div>
+                            <div class="pt-3">
+                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שהיה מתסכל (אופציונלי):</label>
+                                <textarea name="4.1_expenses_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.2 נכסים משותפים -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.2</span>נכסים משותפים</label>
+                        <label class="block font-semibold">האם יש לכם עדיין נכסים או התחייבויות משותפות? (דירה, משכנתא, הלוואות)</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.2_shared_assets" value="כן" onchange="toggle42Assets()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.2_shared_assets" value="לא" onchange="toggle42Assets()"> לא</label>
+                        </div>
+                        <div id="logicBox42Assets" class="logic-box space-y-4">
+                            <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                                <label class="block font-semibold text-sm">איך לדעתך עובד ביניכם ניהול הנכס?</label>
+                                <input type="range" name="4.2_assets_quality" min="1" max="5" value="3" class="w-full">
+                                <div class="range-labels"><span>1 - מצוין</span><span>5 - גרוע</span></div>
+                                <div class="pt-3 space-y-3">
+                                    <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                                    <input type="range" name="4.2_assets_friction" min="1" max="5" value="3" class="w-full">
+                                    <div class="range-labels"><span>1 - מסתדרים מצוין</span><span>5 - תמיד מסתיים במריבה</span></div>
+                                </div>
+                                <div class="pt-3">
+                                    <label class="text-sm">תדירות החיכוכים בגלל זה:</label>
+                                    <select name="4.2_assets_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
+                                        <option value="">בחר/י...</option>
+                                        <option value="יומית">יומית</option>
+                                        <option value="שבועית">שבועית</option>
+                                        <option value="חודשית">חודשית</option>
+                                        <option value="כל כמה חודשים">כל כמה חודשים</option>
+                                    </select>
+                                </div>
+                                <div class="pt-3">
+                                    <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שהיה מתסכל (אופציונלי):</label>
+                                    <textarea name="4.2_assets_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.3 אחר -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.3</span>אחר</label>
+                        <label class="block font-semibold">האם יש קשיים אחרים בניהול ההוצאות / הנכסים?</label>
+                        <textarea name="4.3_other_difficulties" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="אופציונלי..."></textarea>
+                    </div>
+
+                    <!-- 3.4 תחושות -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.4</span>תחושות</label>
+                        <label class="block font-semibold">מה החלק שמעמיס רגשית בנושאים הכספיים?</label>
+                        <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
                         <div class="space-y-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" name="4.1_fatigue" value="לוגיסטיקה מסורבלת"> התנהלות לוגיסטית מסורבלת</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="4.1_fatigue" value="שיחות מתוחות"> שיחות מתוחות/כעוסות</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="4.1_fatigue" value="חוסר אמינות"> חוסר אמינות/התחמקות</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="4.1_fatigue" value="לבד עם הנטל"> תחושה שאני לבד עם הנטל</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="4.1_fatigue" value="אחר" onchange="document.getElementById('4.1_other').style.display=this.checked?'block':'none'"> אחר</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="4.4_emotional_load" value="חוסר הוגנות"> תחושת חוסר הוגנות</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="4.4_emotional_load" value="רדיפה אחרי כסף"> צורך לרדוף אחרי כסף</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="4.4_emotional_load" value="ויכוחים על הוצאות"> ויכוחים על "מה נחשב הוצאה לגיטימית"</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="4.4_emotional_load" value="חוסר שקיפות"> חוסר שקיפות</label>
+                            <label class="flex items-center gap-2"><input type="checkbox" name="4.4_emotional_load" value="אחר" onchange="document.getElementById('3.4_emotional_other').style.display=this.checked?'block':'none'"> אחר</label>
                         </div>
-                        <input type="text" id="4.1_other" name="4.1_fatigue_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
+                        <input type="text" id="4.4_emotional_other" name="4.4_emotional_load_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
                     </div>
 
-                    <!-- 4.2 -->
-                    <div class="space-y-4">
-                        <div class="flex justify-between items-center">
-                            <label class="block font-semibold"><span class="section-tag ml-2">4.2</span>"להוציא אותך מהאמצע"</label>
-                            <button type="button" onclick="startSTT('4.2_remove_me', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <p class="text-sm text-gray-500">האם יש דברים שהיית רוצה שמישהו או משהו יטפל בהם במקומך, כדי להוציא אותך מהצורך להתעמת או להתווכח?</p>
-                        <p class="text-xs text-gray-400">דוגמאות: תיווך בהחלטות קטנות, שמירה על מסמכים/קבלות, תזכורות אוטומטיות, גורם שמציע פתרון הוגן במחלוקת</p>
-                        <textarea id="4.2_remove_me" name="4.2_remove_me" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-
-                    <!-- 4.3 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">4.3</span>השפעה על היומיום</label>
-                        <p class="text-sm">איך ההתנהלות הזו משפיעה עליך רגשית ביום-יום?</p>
-                        <p class="text-sm mb-1">עד כמה זה מעיק עליך?</p>
-                        <input type="range" name="4.3_daily_impact" min="1" max="7" value="4" class="w-full">
-                        <div class="range-labels"><span>1 - כמעט לא משפיע</span><span>7 - מעיק מאוד וקבוע</span></div>
-
-                        <p class="text-sm mt-4 mb-1">עד כמה את/ה סומכ/ת על ההורה האחר שישמור/תשמור על התחייבויות?</p>
-                        <input type="range" name="4.3_trust" min="1" max="7" value="4" class="w-full">
-                        <div class="range-labels"><span>1 - סומך/ת לחלוטין</span><span>7 - בכלל לא סומך/ת</span></div>
-                    </div>
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -485,54 +668,42 @@
                 </div>
             </div>
 
-            <!-- STEP 5: בדיקת הצורך (was STEP 6) -->
+            <!-- STEP 5: בדיקת הצורך -->
             <div class="step" id="step5">
                 <div class="mb-8 border-b pb-4">
                     <h1 class="text-2xl font-bold text-indigo-900">חלק 5: בדיקת הצורך</h1>
                 </div>
 
                 <div class="space-y-10">
-                    <!-- 5.1 - Communication tools limitations (moved from Part 4) -->
+                    <!-- 5.1 -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">5.1</span>מתוך הפלטפורמות שמשמשות אתכם לתקשורת שציינת בחלק 1:</label>
+                        <label class="block font-semibold"><span class="section-tag ml-2">5.1</span>גורם ניטרלי מתווך</label>
+                        <p class="text-sm text-gray-500">תדמיין/תדמייני שיש גורם, ניטרלי - יכול להיות כלי דיגיטלי, יכול להיות אדם, שעוזר לכם לתאם ולתקשר בצורה יותר חלקה.</p>
                         <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">הכלים הם בד"כ טקסטואליים. מתי זה לא מספיק לבצע את התיאום?</label>
-                            <button type="button" onclick="startSTT('5.1_tool_limitations', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
+                            <label class="text-sm font-bold">מה מתוך כל הבעיות שציינת בניהול הילדים וההוצאות הכי היית רוצה שהגורם הזה יעזור לך בהן?</label>
+                            <button type="button" onclick="startSTT('5.1_important', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                             </button>
                         </div>
-                        <textarea id="5.1_tool_limitations" name="5.1_tool_limitations" class="w-full border rounded-xl p-3 h-28 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        <textarea id="5.1_important" name="5.1_important" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                     </div>
 
                     <!-- 5.2 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">5.2</span>גורם ניטרלי מתווך</label>
-                        <p class="text-sm text-gray-500">תדמיין/תדמייני שבנוסף לכלים הללו יש גורם, ניטרלי - יכול להיות כלי דיגיטלי, יכול להיות אדם, שעוזר לכם לתאם ולתקשר בצורה יותר חלקה.</p>
-                        <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">מה היה הכי חשוב לך שגורם כזה יעשה, שהכלים הללו לא עושים?</label>
-                            <button type="button" onclick="startSTT('5.2_important', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition" style="display:none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="5.2_important" name="5.2_important" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-
-                    <!-- 5.3 -->
                     <div class="space-y-6">
-                        <label class="block font-semibold"><span class="section-tag ml-2">5.3</span>אם היה כלי דיגיטלי שנותן לך בדיוק את העזרה הזו:</label>
+                        <label class="block font-semibold"><span class="section-tag ml-2">5.2</span>אם היה כלי דיגיטלי שנותן לך בדיוק את העזרה הזו:</label>
 
                         <!-- Free tool barriers -->
                         <div class="space-y-3">
                             <p class="text-sm font-bold text-gray-700">נניח שהוא חינמי:</p>
                             <label class="block text-sm">מה היה גורם לך לא להשתמש בכלי כזה? מה היה מרתיע אותך?</label>
                             <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.3_barriers" value="מורכבות טכנית"> מורכבות טכנית</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.3_barriers" value="צד שני לא ישתף פעולה"> חשש שהצד השני לא ישתף פעולה</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.3_barriers" value="חשיפת מידע"> חשש מחשיפת מידע פרטי</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.3_barriers" value="חוסר אמון"> חוסר אמון בגורם חיצוני</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.3_barriers" value="אחר" onchange="document.getElementById('5.3_other').style.display=this.checked?'block':'none'"> אחר</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="מורכבות טכנית"> מורכבות טכנית</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="צד שני לא ישתף פעולה"> חשש שהצד השני לא ישתף פעולה</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="חשיפת מידע"> חשש מחשיפת מידע פרטי</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="חוסר אמון"> חוסר אמון בגורם חיצוני</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="אחר" onchange="document.getElementById('5.2_other').style.display=this.checked?'block':'none'"> אחר</label>
                             </div>
-                            <input type="text" id="5.3_other" name="5.3_barriers_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
+                            <input type="text" id="5.2_other" name="5.2_barriers_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
                         </div>
 
                         <!-- Paid tool -->
@@ -541,26 +712,26 @@
                             <div class="space-y-2">
                                 <label class="block text-sm">האם היית מוכנ/ה לשלם עליו?</label>
                                 <div class="flex gap-6">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.3_willing_to_pay" value="כן" onchange="toggle53Payment()"> כן</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.3_willing_to_pay" value="לא" onchange="toggle53Payment()"> לא</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.2_willing_to_pay" value="כן" onchange="toggle52Payment()"> כן</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.2_willing_to_pay" value="לא" onchange="toggle52Payment()"> לא</label>
                                 </div>
                             </div>
 
-                            <div id="logicBox53yes" class="logic-box space-y-2">
+                            <div id="logicBox52yes" class="logic-box space-y-2">
                                 <label class="text-sm font-bold">בערך כמה ליכולת התשלום שלך נראה סביר?</label>
                                 <div class="space-y-1">
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_price_range" value="עד 20"> עד ₪20/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_price_range" value="20-50"> ₪20-50/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_price_range" value="50-100"> ₪50-100/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_price_range" value="100+"> מעל ₪100/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_price_range" value="חד פעמי"> תשלום חד-פעמי, לא מנוי</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="עד 20"> עד ₪20/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="20-50"> ₪20-50/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="50-100"> ₪50-100/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="100+"> מעל ₪100/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="חד פעמי"> תשלום חד-פעמי, לא מנוי</label>
                                 </div>
                             </div>
 
                             <div class="pt-4 space-y-4">
                                 <div>
                                     <label class="text-sm font-bold block mb-2">מהיכרותך עם ההורה האחר, האם הוא/היא יהיה/תהיה מוכנ/ה להשתמש בכלי כזה ולשלם עליו?</label>
-                                    <select name="5.3_other_willing_pay" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <select name="5.2_other_willing_pay" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
                                         <option value="">בחר/י...</option>
                                         <option value="לא לשניהם">לא להשתמש ולא לשלם</option>
                                         <option value="להשתמש אבל לא לשלם">להשתמש אבל לא לשלם</option>
@@ -570,8 +741,8 @@
                                 <div>
                                     <label class="text-sm font-bold block mb-2">האם תהיה/תהיי מוכן/מוכנה לשלם אם ההורה האחר לא ישלם? (את אותו סכום שציינת למעלה)</label>
                                     <div class="flex flex-wrap gap-4">
-                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_pay_alone" value="כן"> כן</label>
-                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.3_pay_alone" value="לא"> לא</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_pay_alone" value="כן"> כן</label>
+                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_pay_alone" value="לא"> לא</label>
                                     </div>
                                 </div>
                             </div>
@@ -585,7 +756,7 @@
                 </div>
             </div>
 
-            <!-- STEP 6: סיום (was STEP 7) -->
+            <!-- STEP 6: סיום -->
             <div class="step" id="step6">
                 <div class="mb-8 border-b pb-4">
                     <h1 class="text-2xl font-bold text-indigo-900">חלק 6: סיום וסיכום</h1>
@@ -808,69 +979,68 @@
         function syncLogic() {
             const comm = parseInt(document.getElementById('1.2_comm').value);
             const org = parseInt(document.getElementById('1.2_org').value);
-            const status = document.querySelector('select[name="1.1_status"]').value;
             const logicBoxA = document.getElementById('logicBoxA');
             const logicBoxB = document.getElementById('logicBoxB');
-            const logicBoxC = document.getElementById('logicBoxC');
 
             if (comm >= 4 || org >= 4) {
                 logicBoxA.classList.add('visible');
             } else {
                 logicBoxA.classList.remove('visible');
                 logicBoxB.classList.remove('visible');
-                logicBoxC.classList.remove('visible');
             }
 
             const emotionalEvent = document.querySelector('input[name="1.2_emotional_event"]:checked');
             if ((comm >= 4 || org >= 4) && emotionalEvent) {
                 if (emotionalEvent.value === 'כן') {
                     logicBoxB.classList.add('visible');
-                    logicBoxC.classList.remove('visible');
-                } else if (emotionalEvent.value === 'לא' && status === '3+ שנים') {
-                    logicBoxB.classList.remove('visible');
-                    logicBoxC.classList.add('visible');
                 } else {
                     logicBoxB.classList.remove('visible');
-                    logicBoxC.classList.remove('visible');
                 }
             }
         }
 
-        // Chapter 3 conditionals
-        function toggle31Details() {
-            const val = document.querySelector('input[name="3.1_shared_assets"]:checked');
-            const isYes = val && val.value === 'כן';
-            document.getElementById('logicBox31').classList.toggle('visible', isYes);
-            if (isYes) {
-                toggle31Freq();
-            } else {
-                document.getElementById('logicBox31Freq').classList.remove('visible');
+        // Chapter 2 area toggles
+        function toggle3Area(area) {
+            const checkbox = document.querySelector(`input[name="3_areas"][value="${getAreaValue(area)}"]:checked`);
+            const areaDiv = document.getElementById('area_' + area);
+            if (areaDiv) {
+                areaDiv.classList.toggle('visible', !!checkbox);
             }
         }
-        function toggle31Freq() {
-            const friction = document.querySelector('input[name="3.1_friction"]');
-            const frictionVal = friction ? parseInt(friction.value) : 1;
-            const isUntouched = friction && friction.classList.contains('untouched');
-            document.getElementById('logicBox31Freq').classList.toggle('visible', !isUntouched && frictionVal > 1);
-        }
-        function toggle32Mechanism() {
-            const val = document.querySelector('select[name="3.2_mechanism"]').value;
-            document.getElementById('logicBox32Other').classList.toggle('visible', val === 'אחר');
-            toggle32Freq();
-        }
-        function toggle32Freq() {
-            const friction = document.querySelector('input[name="3.2_friction"]');
-            const frictionVal = friction ? parseInt(friction.value) : 1;
-            const isUntouched = friction && friction.classList.contains('untouched');
-            document.getElementById('logicBox32Freq').classList.toggle('visible', !isUntouched && frictionVal > 1);
-        }
-        function toggle32TrackingOther() {
-            const val = document.querySelector('select[name="3.2_tracking_method"]').value;
-            document.getElementById('logicBox32TrackingOther').classList.toggle('visible', val === 'אחר');
+        function getAreaValue(area) {
+            const mapping = {
+                'health': 'בריאות',
+                'education': 'חינוך',
+                'social': 'חברתי',
+                'tech': 'טכנולוגיה',
+                'vacation': 'חופשות',
+                'professional': 'תמיכה מקצועית'
+            };
+            return mapping[area] || area;
         }
 
-        // Chapter 1 mediation conditional (in logicBoxB)
-        // Chapter 6 other parent ID
+        // Chapter 3 conditionals
+        function toggle42Assets() {
+            const val = document.querySelector('input[name="4.2_shared_assets"]:checked');
+            document.getElementById('logicBox42Assets').classList.toggle('visible', val && val.value === 'כן');
+        }
+        function toggle42Mechanism() {
+            const val = document.querySelector('select[name="4.2_mechanism"]').value;
+            document.getElementById('logicBox42Other').classList.toggle('visible', val === 'אחר');
+            toggle42Freq();
+        }
+        function toggle42Freq() {
+            const friction = document.querySelector('input[name="4.2_friction"]');
+            const frictionVal = friction ? parseInt(friction.value) : 1;
+            const isUntouched = friction && friction.classList.contains('untouched');
+            document.getElementById('logicBox42Freq').classList.toggle('visible', !isUntouched && frictionVal > 1);
+        }
+        function toggle42TrackingOther() {
+            const val = document.querySelector('select[name="4.2_tracking_method"]').value;
+            document.getElementById('logicBox42TrackingOther').classList.toggle('visible', val === 'אחר');
+        }
+
+        // Chapter 6 other parent ID and contact
         function toggle6OtherId() {
             const val = document.querySelector('input[name="6_other_filled"]:checked');
             document.getElementById('logicBox6OtherId').classList.toggle('visible', val && val.value === 'כן');
@@ -882,9 +1052,9 @@
         }
 
         // Chapter 5 payment conditional
-        function toggle53Payment() {
-            const val = document.querySelector('input[name="5.3_willing_to_pay"]:checked');
-            document.getElementById('logicBox53yes').classList.toggle('visible', val && val.value === 'כן');
+        function toggle52Payment() {
+            const val = document.querySelector('input[name="5.2_willing_to_pay"]:checked');
+            document.getElementById('logicBox52yes').classList.toggle('visible', val && val.value === 'כן');
         }
 
         // Accordion toggle
