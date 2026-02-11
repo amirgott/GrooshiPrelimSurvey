@@ -17,7 +17,6 @@
         .section-tag { background-color: #e0e7ff; color: #4338ca; font-weight: 700; padding: 0.25rem 0.5rem; border-radius: 0.375rem; font-size: 0.875rem; }
         .mic-btn.recording { color: #ef4444; animation: pulse 1.5s infinite; }
         .range-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: #6b7280; margin-top: 0.25rem; }
-        .unanswered { box-shadow: 0 0 0 2px #ef4444; border-radius: 0.375rem; }
         input[type="range"].untouched { opacity: 0.4; }
         input[type="range"].untouched::-webkit-slider-thumb { visibility: hidden; }
         input[type="range"].untouched::-moz-range-thumb { visibility: hidden; }
@@ -807,27 +806,7 @@
 
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(5)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 5</button>
-                    <button type="button" onclick="finishSurvey()" class="bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all">סיום והצגת סיכום</button>
-                </div>
-            </div>
-
-            <!-- SUMMARY -->
-            <div class="step" id="stepFinal">
-                <div class="text-center space-y-6">
-                    <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 text-green-600 rounded-full">
-                        <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                    </div>
-                    <h2 id="summaryTitle" class="text-xl font-bold text-indigo-900"></h2>
-
-                    <div class="bg-gray-50 p-6 rounded-2xl border-2 border-dashed border-indigo-200 text-right">
-                        <pre id="summaryText" class="whitespace-pre-wrap text-xs text-gray-700 font-mono text-left" dir="ltr"></pre>
-                    </div>
-
-                    <div class="flex flex-wrap justify-center gap-3">
-                        <button type="button" onclick="copyResults()" id="copyBtn" class="bg-gray-500 text-white px-8 py-3 rounded-full font-bold hover:bg-gray-600 transition">העתקת הסיכום</button>
-                        <button type="button" onclick="submitSurvey()" id="sendBtn" class="bg-indigo-600 text-white px-8 py-3 rounded-full font-bold hover:bg-indigo-700 transition">שליחת השאלון</button>
-                        <button type="button" onclick="deleteSurvey()" class="bg-red-500 text-white px-8 py-3 rounded-full font-bold hover:bg-red-600 transition">מחיקת נתונים</button>
-                    </div>
+                    <button type="button" onclick="submitSurvey()" id="submitBtn" class="bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all">שליחה</button>
                 </div>
             </div>
 
@@ -835,10 +814,6 @@
     </div>
 
     <script>
-        // Validation mode: true = validate only when finishing, false = validate per step
-        const VALIDATE_ONLY_AT_END = true;
-        let returnedFromFinish = false;
-
         // Generate unique ID
         function generateSurveyId() {
             const d = '0123456789', l = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -903,77 +878,14 @@
         }
 
         // Navigation
-        function goToStep(step, skipValidation) {
-            const activeStep = document.querySelector('.step.active');
-            const currentStepNum = activeStep ? parseInt(activeStep.id.replace('step', '')) : -1;
-            if (!VALIDATE_ONLY_AT_END && !skipValidation && !isNaN(step) && step > currentStepNum && activeStep) {
-                if (!validateStep(activeStep)) return;
-            }
+        function goToStep(step) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
             const targetStep = document.getElementById('step' + step);
             targetStep.classList.add('active');
-            const stepMap = {0:0, 1:14, 2:28, 3:42, 4:56, 5:70, 6:85, 'Final':100};
+            const stepMap = {0:0, 1:14, 2:28, 3:42, 4:56, 5:70, 6:85};
             document.getElementById('progressBar').style.width = (stepMap[step] || 0) + '%';
-            hideReturnFinishBtn();
-            if (returnedFromFinish && step !== 'Final' && step !== 0 && step !== 6) {
-                showReturnFinishBtn(targetStep);
-            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
-        function validateStep(stepEl) {
-            let valid = true;
-            // Text inputs, textareas, number inputs
-            stepEl.querySelectorAll('input[type="text"], input[type="number"], textarea').forEach(el => {
-                if (el.offsetParent === null) return; // skip hidden
-                if (el.dataset.optional) return; // skip optional fields
-                if (!el.value.trim()) { el.classList.add('unanswered'); valid = false; }
-            });
-            // Selects
-            stepEl.querySelectorAll('select').forEach(el => {
-                if (el.offsetParent === null) return;
-                if (!el.value) { el.classList.add('unanswered'); valid = false; }
-            });
-            // Range sliders (untouched)
-            stepEl.querySelectorAll('input[type="range"]').forEach(el => {
-                if (el.offsetParent === null) return;
-                if (el.classList.contains('untouched')) { el.classList.add('unanswered'); valid = false; }
-            });
-            // Radio groups
-            const radioNames = new Set();
-            stepEl.querySelectorAll('input[type="radio"]').forEach(r => {
-                if (r.offsetParent !== null) radioNames.add(r.name);
-            });
-            radioNames.forEach(name => {
-                if (!stepEl.querySelector(`input[name="${name}"]:checked`)) {
-                    const firstInput = stepEl.querySelector(`input[name="${name}"]`);
-                    const container = firstInput.closest('label').parentElement;
-                    if (container) { container.classList.add('unanswered'); valid = false; }
-                }
-            });
-            // Checkbox groups
-            const checkNames = new Set();
-            stepEl.querySelectorAll('input[type="checkbox"]').forEach(c => {
-                if (c.offsetParent !== null && c.id !== 'enableRecording') checkNames.add(c.name);
-            });
-            checkNames.forEach(name => {
-                if (!stepEl.querySelector(`input[name="${name}"]:checked`)) {
-                    const firstInput = stepEl.querySelector(`input[name="${name}"]`);
-                    const container = firstInput.closest('label').parentElement;
-                    if (container) { container.classList.add('unanswered'); valid = false; }
-                }
-            });
-            return valid;
-        }
-
-        // Clear red frame on interaction
-        document.addEventListener('input', e => { e.target.classList.remove('unanswered'); e.target.classList.remove('untouched'); });
-        document.addEventListener('pointerdown', e => { if (e.target.type === 'range') { e.target.classList.remove('untouched'); e.target.classList.remove('unanswered'); } });
-        document.addEventListener('change', e => {
-            e.target.classList.remove('unanswered');
-            const container = e.target.closest('.unanswered');
-            if (container) container.classList.remove('unanswered');
-        });
 
         // Chapter 1 conditional logic
         function syncLogic() {
@@ -1057,82 +969,6 @@
             document.getElementById('logicBox52yes').classList.toggle('visible', val && val.value === 'כן');
         }
 
-        // Accordion toggle
-
-        function showReturnFinishBtn(stepEl) {
-            hideReturnFinishBtn();
-            const nav = stepEl.querySelector('.pt-10.flex');
-            if (!nav) return;
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.id = 'returnFinishBtn';
-            btn.className = 'bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all';
-            btn.textContent = 'סיום והצגת סיכום';
-            btn.onclick = finishSurvey;
-            nav.appendChild(btn);
-        }
-        function hideReturnFinishBtn() {
-            const btn = document.getElementById('returnFinishBtn');
-            if (btn) btn.remove();
-        }
-
-        // Finish survey
-        function finishSurvey() {
-            if (VALIDATE_ONLY_AT_END) {
-                let firstInvalidStep = null;
-                document.querySelectorAll('.step').forEach(stepEl => {
-                    if (stepEl.id === 'step0' || stepEl.id === 'stepFinal') return;
-                    stepEl.style.display = 'block';
-                    const isValid = validateStep(stepEl);
-                    stepEl.style.display = '';
-                    if (!isValid && !firstInvalidStep) firstInvalidStep = stepEl;
-                });
-                if (firstInvalidStep) {
-                    const stepNum = parseInt(firstInvalidStep.id.replace('step', ''));
-                    returnedFromFinish = true;
-                    goToStep(stepNum, true);
-                    return;
-                }
-            }
-            returnedFromFinish = false;
-            hideReturnFinishBtn();
-            const formData = new FormData(document.getElementById('masterForm'));
-            const id = document.getElementById('surveyId').textContent;
-            let output = `--- נתוני שאלון הורות משותפת ---\nמזהה שאלון: ${id}\n\n`;
-            formData.forEach((value, key) => {
-                if (value) output += `[${key}] ${value}\n`;
-            });
-            document.getElementById('summaryTitle').textContent = `נתוני השאלון שהוזנו לעיונך. שים לב למספר השאלון: ${id}`;
-            document.getElementById('summaryText').textContent = output;
-            goToStep('Final');
-        }
-
-        // Copy
-        function copyResults() {
-            const text = document.getElementById('summaryText').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = "הועתק!";
-                btn.classList.replace('bg-gray-500', 'bg-green-600');
-                setTimeout(() => { btn.textContent = "העתקת הסיכום"; btn.classList.replace('bg-green-600', 'bg-gray-500'); }, 2000);
-            });
-        }
-
-        // Delete
-        function deleteSurvey() {
-            if (confirm("האם אתה בטוח שברצונך למחוק את המידע שהקלדת בשאלון?")) {
-                document.getElementById('masterForm').reset();
-                document.querySelectorAll('input[type="range"]').forEach(r => r.classList.add('untouched'));
-                document.getElementById('summaryText').textContent = '';
-                document.querySelectorAll('.logic-box').forEach(box => box.classList.remove('visible'));
-                returnedFromFinish = false;
-                hideReturnFinishBtn();
-                const id = generateSurveyId();
-                document.getElementById('surveyId').textContent = id;
-                document.getElementById('surveyIdInput').value = id;
-                goToStep(0);
-            }
-        }
     </script>
 </body>
 </html>

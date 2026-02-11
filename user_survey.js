@@ -17,8 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    const submitBtn = document.querySelector("#stepFinal button");
-    const originalText = submitBtn.textContent;
+    const submitBtn = document.getElementById("submitBtn");
     submitBtn.textContent = "שולח...";
     submitBtn.disabled = true;
 
@@ -31,15 +30,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (response.ok) {
         submitBtn.textContent = "נשלח בהצלחה!";
-        submitBtn.classList.replace("bg-indigo-600", "bg-green-600");
+        submitBtn.classList.replace("bg-green-600", "bg-indigo-600");
       } else {
         submitBtn.textContent = "שגיאה - נסה שוב";
-        submitBtn.classList.replace("bg-indigo-600", "bg-red-600");
+        submitBtn.classList.replace("bg-green-600", "bg-red-600");
         submitBtn.disabled = false;
       }
     } catch (err) {
       submitBtn.textContent = "שגיאה - נסה שוב";
-      submitBtn.classList.replace("bg-indigo-600", "bg-red-600");
+      submitBtn.classList.replace("bg-green-600", "bg-red-600");
       submitBtn.disabled = false;
     }
   };
