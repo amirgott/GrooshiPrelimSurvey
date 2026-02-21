@@ -24,10 +24,13 @@ Conditional branches in `survey.md` are annotated with `[if X]` / `[אם X]` bra
 
 ## Change Workflow
 
-1. Edit `survey.md` (questions, options, scale endpoints, conditional rules)
-2. If HTML behavior changes, edit `html_generation_prompt.md`
-3. Regenerate `index.html` in full — do not patch it
-4. Push to `main` to publish
+1. Tag current commit as `survey-v{N}` (before any changes) — establishes the git anchor for this version
+2. Edit `survey.md` (questions, options, scale endpoints, conditional rules)
+3. If HTML behavior changes, edit `html_generation_prompt.md`
+4. Regenerate `index.html` in full — do not patch it
+5. Add new entry to `responses/schemas/versions.json` with today's date
+6. Create `responses/schemas/v{N+1}.json` — JSON Schema derived from updated `index.html` field names and valid options
+7. Push to `main` to publish
 
 ## Notes
 
