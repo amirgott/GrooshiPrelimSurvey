@@ -1,0 +1,173 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Survey v1 payload schema — derived from index.html at survey-v1 tag",
+  "type": "object",
+  "properties": {
+    "survey_id":                    { "type": "string" },
+    "1.1_num_kids":                 { "type": "string", "pattern": "^([1-9]|10)$" },
+    "1.1_custody":                  { "type": "string", "enum": ["חלקית שלי", "משותפת", "חלקית של ההורה האחר"] },
+    "1.1_proximity":                { "type": "string", "enum": ["כן", "לא"] },
+    "1.1_status":                   { "type": "string", "enum": ["עדיין פרודים", "גרושים טריים", "1-3 שנים", "3+ שנים"] },
+    "1.2_comm_quality":             { "type": "string", "enum": ["1","2","3","4","5"] },
+    "1.2_org_level":                { "type": "string", "enum": ["1","2","3","4","5"] },
+    "1.2_emotional_event":          { "type": "string", "enum": ["כן", "לא"] },
+    "1.2_mediation":                { "type": "string", "enum": ["כן", "לא"] },
+    "1.2_tension_emotional":        { "type": "string", "enum": ["1","2","3","4","5"] },
+    "1.2_tension_organizational":   { "type": "string", "enum": ["1","2","3","4","5"] },
+    "1.2_comm_frequency":           { "type": "string", "pattern": "^[0-9]+$" },
+    "1.2_platforms":                { "type": "string" },
+    "1.2_platforms_other":          { "type": "string" },
+    "1.3_fatigue":                  { "type": "string" },
+    "1.3_fatigue_other":            { "type": "string" },
+    "2.1_routine_quality":          { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.1_routine_burden":           { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.2_tasks_quality":            { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.2_tasks_friction":           { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.2_tasks_example":            { "type": "string" },
+    "2.2_tasks_not_done":           { "type": "string", "enum": ["כן", "לא"] },
+    "2.3_schedule_quality":         { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.3_schedule_friction":        { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.3_schedule_example":         { "type": "string" },
+    "2.3_schedule_agreement":       { "type": "string", "enum": ["1","2","3","4","5"] },
+    "2.4_comm_freq":                { "type": "string", "enum": ["יומית", "שבועית", "חודשית", "רק כשקורה אירוע"] },
+    "2.4_friction_rate":            { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3.1_decisions_quality":        { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3.1_decisions_burden":         { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3.2_areas":                    { "type": "string" },
+    "3_health_quality":             { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_health_friction":            { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_health_example":             { "type": "string" },
+    "3_education_quality":          { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_education_friction":         { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_education_example":          { "type": "string" },
+    "3_social_quality":             { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_social_friction":            { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_social_example":             { "type": "string" },
+    "3_tech_quality":               { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_tech_friction":              { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_tech_example":               { "type": "string" },
+    "3_vacation_quality":           { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_vacation_friction":          { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_vacation_example":           { "type": "string" },
+    "3_professional_quality":       { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_professional_friction":      { "type": "string", "enum": ["1","2","3","4","5"] },
+    "3_professional_example":       { "type": "string" },
+    "3.3_friction_freq":            { "type": "string", "enum": ["יומית", "שבועית", "חודשית", "כל כמה חודשים"] },
+    "3.3_no_decision":              { "type": "string", "enum": ["כן", "לא"] },
+    "4.1_expenses_quality":         { "type": "string", "enum": ["1","2","3","4","5"] },
+    "4.1_expenses_friction":        { "type": "string", "enum": ["1","2","3","4","5"] },
+    "4.1_expenses_friction_freq":   { "type": "string", "enum": ["יומית", "שבועית", "חודשית", "כל כמה חודשים"] },
+    "4.1_expenses_example":         { "type": "string" },
+    "4.1_no_refund":                { "type": "string", "enum": ["כן", "לא"] },
+    "4.2_other_difficulties":       { "type": "string" },
+    "4.3_expense_tools":            { "type": "string" },
+    "4.3_tools_quality":            { "type": "string", "enum": ["1","2","3","4","5"] },
+    "4.3_expense_tools_detail":     { "type": "string" },
+    "4.4_emotional_load":           { "type": "string" },
+    "4.4_emotional_load_other":     { "type": "string" },
+    "5.1_important":                { "type": "string" },
+    "5.2_barriers":                 { "type": "string" },
+    "5.2_barriers_other":           { "type": "string" },
+    "5.2_willing_to_pay":           { "type": "string", "enum": ["כן", "לא"] },
+    "5.2_price_range":              { "type": "string", "enum": ["עד 20", "20-50", "50-100", "100+", "חד פעמי"] },
+    "5.2_other_willing_pay":        { "type": "string", "enum": ["לא לשניהם", "להשתמש אבל לא לשלם", "להשתמש ולשלם"] },
+    "5.2_pay_alone":                { "type": "string", "enum": ["כן", "לא"] },
+    "6_other_filled":               { "type": "string", "enum": ["כן", "לא"] },
+    "6_other_survey_id":            { "type": "string" },
+    "6_contact_ok":                 { "type": "string", "enum": ["כן", "לא"] },
+    "6_contact_phone":              { "type": "string" },
+    "6_contact_email":              { "type": "string" },
+    "6_final_notes":                { "type": "string" }
+  },
+  "patternProperties": {
+    "^1\\.1_kid_age_[0-9]+$": { "type": "string", "pattern": "^[0-9]+$" }
+  },
+  "additionalProperties": false,
+  "x-conditional-fields": {
+    "1.2_emotional_event": {
+      "shown_when": {
+        "any": [
+          {"field": "1.2_comm_quality", "op": ">=", "value": 4},
+          {"field": "1.2_org_level",    "op": ">=", "value": 4}
+        ]
+      }
+    },
+    "1.3_fatigue": {
+      "shown_when": {
+        "any": [
+          {"field": "1.2_tension_emotional",      "op": ">", "value": 1},
+          {"field": "1.2_tension_organizational", "op": ">", "value": 1}
+        ]
+      }
+    },
+    "1.2_mediation": {
+      "shown_when": {
+        "all": [
+          {"any": [
+            {"field": "1.2_comm_quality", "op": ">=", "value": 4},
+            {"field": "1.2_org_level",    "op": ">=", "value": 4}
+          ]},
+          {"field": "1.2_emotional_event", "op": "==", "value": "כן"}
+        ]
+      }
+    },
+    "5.2_price_range": {
+      "shown_when": {"field": "5.2_willing_to_pay", "op": "==", "value": "כן"}
+    },
+    "4.3_expense_tools_detail": {
+      "shown_when": {
+        "any": [
+          {"field": "4.3_expense_tools", "op": "contains", "value": "כלי אחר"},
+          {"field": "4.3_expense_tools", "op": "contains", "value": "יש לנו שיטה משלנו"}
+        ]
+      }
+    },
+    "6_other_survey_id": {
+      "shown_when": {"field": "6_other_filled", "op": "==", "value": "כן"}
+    },
+    "6_contact_phone": {
+      "shown_when": {"field": "6_contact_ok", "op": "==", "value": "כן"}
+    },
+    "6_contact_email": {
+      "shown_when": {"field": "6_contact_ok", "op": "==", "value": "כן"}
+    }
+  },
+  "required": [
+    "survey_id",
+    "1.1_num_kids",
+    "1.1_custody",
+    "1.1_proximity",
+    "1.1_status",
+    "1.2_comm_quality",
+    "1.2_org_level",
+    "1.2_emotional_event",
+    "1.2_comm_frequency",
+    "1.2_platforms",
+    "1.3_fatigue",
+    "2.1_routine_quality",
+    "2.1_routine_burden",
+    "2.2_tasks_quality",
+    "2.2_tasks_friction",
+    "2.2_tasks_not_done",
+    "2.3_schedule_quality",
+    "2.3_schedule_friction",
+    "2.3_schedule_agreement",
+    "2.4_comm_freq",
+    "2.4_friction_rate",
+    "3.1_decisions_quality",
+    "3.1_decisions_burden",
+    "3.2_areas",
+    "3.3_friction_freq",
+    "3.3_no_decision",
+    "4.1_expenses_quality",
+    "4.1_expenses_friction",
+    "4.1_expenses_friction_freq",
+    "4.1_no_refund",
+    "4.4_emotional_load",
+    "5.1_important",
+    "5.2_barriers",
+    "5.2_willing_to_pay",
+    "6_other_filled",
+    "6_contact_ok"
+  ]
+}

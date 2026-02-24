@@ -7,7 +7,7 @@ Status: Partial
 ```
 responses/
   raw/          # {issue_number}.json — parsed payload as received from GitHub Issue
-  analyzed/     # {issue_number}.json — validation result, inconsistencies, conclusion
+  processed/     # {issue_number}.json — validation result, inconsistencies, conclusion
   schemas/      # v1.json, v2.json … — JSON schema per survey version
 analysis/
   aggregate.json  # accumulated conclusions across all processed issues
@@ -37,6 +37,34 @@ Schema version for a response is inferred from its submission timestamp against 
 2. Add new entry to `versions.json` with today's date
 3. Create `v{N+1}.json` schema — derived from updated `index.html`
 
+## Conditional Fields and Validation
+
+Some fields in `required` are conditionally shown in the HTML (inside `logic-box` divs). When a user's answers don't meet the display condition, the field is never shown and its absence is not a violation.
+
+**Schema extension:** `x-conditional-fields` top-level key in each schema JSON (e.g. `v1.json`). Maps field name → `shown_when` condition tree:
+```json
+"x-conditional-fields": {
+  "1.2_emotional_event": { "shown_when": { "any": [
+    {"field": "1.2_comm_quality", "op": ">=", "value": 4},
+    {"field": "1.2_org_level",    "op": ">=", "value": 4}
+  ]}},
+  "1.3_fatigue": { "shown_when": { "any": [
+    {"field": "1.2_tension_emotional",      "op": ">", "value": 1},
+    {"field": "1.2_tension_organizational", "op": ">", "value": 1}
+  ]}}
+}
+```
+
+**Condition tree nodes:** `{"any": [...]}` (OR), `{"all": [...]}` (AND), leaf `{"field", "op", "value"}`. `op` ∈ `{>=, >, <=, <, ==, !=, contains}`. Int `value` → int comparison (missing field → 0); string `value` → string comparison (missing field → `""`). `contains` checks if `value` is a member of the comma-separated multi-select string.
+
+**Dual use of `x-conditional-fields`:**
+- *Violation filtering* (`validate_payload`): missing required field + condition not met → drop violation silently
+- *Phantom detection* (`detect_inconsistencies`): field present in payload + condition not met → flag as inconsistency
+
+When adding a new survey version: enumerate all `logic-box` divs in the new `index.html` and update `x-conditional-fields` accordingly.
+
+When adding a new survey version: update `x-conditional-fields` in the new schema file to match the HTML conditional logic.
+
 ## Single-Issue Processing Pipeline
 
 Script: `scripts/process_issue.py <issue_number>`
@@ -44,24 +72,81 @@ Script: `scripts/process_issue.py <issue_number>`
 **Filename convention:** `{issue_number}_{survey_id}` (e.g. `15_78F`). Issue number is the GitHub canonical ID (unique, used as script input); survey_id is the respondent-visible code (used for couple linkage). Combined to eliminate collision risk.
 
 **Steps:**
-1. Check if `responses/analyzed/{issue_number}_{survey_id}.json` already exists — skip if so (idempotent)
+1. Check if `responses/processed/{issue_number}_{survey_id}.json` already exists — skip if so (idempotent)
 2. `gh issue view <issue_number> --repo amirgott/GrooshiSurveyData --json body` → parse JSON payload from issue body
 3. Save to `responses/raw/{issue_number}_{survey_id}.json` (payload + `issue_number` field for traceability)
 4. Determine schema version from `versions.json` + submission timestamp
-5. Validate against `responses/schemas/v{N}.json` — check required fields, scale ranges, radio/checkbox option sets
-6. Save validation result (pass/fail + violations list) to `responses/analyzed/{issue_number}_{survey_id}.json`
-7. Generate `responses/analyzed/{issue_number}_{survey_id}.html` — `index.html` pre-filled with response values, all inputs disabled (survey-shaped read-only view); researcher must have correct `survey-v{N}` checked out
+5. Load schema from `responses/schemas/v{N}.json`
+6. Validate: check required fields (with conditional filtering), scale ranges, radio/checkbox option sets → `validation` key
+7. Detect mechanical inconsistencies: phantom conditional values (field present in payload but display condition not met) → `inconsistencies` key (empty list if none)
+8. Save both to `responses/processed/{issue_number}_{survey_id}.json`
+9. Generate `responses/processed/{issue_number}_{survey_id}.html` — `index.html` pre-filled with response values, all inputs disabled. Step 0 (welcome page) is replaced by the analysis card (key-value table, `dir="ltr"`, monospace) when `analysis` is present, or hidden otherwise. Regenerated after analysis via `--update-html <number>`.
 
-## Single-Issue Analysis (Interactive)
+**Analyzed JSON structure:**
+```json
+{
+  "schema_version": "v1",
+  "validation": { "valid": bool, "violations": [...] },
+  "inconsistencies": [
+    { "field": "5.2_price_range", "message": "Field present in payload but display condition not met" }
+  ]
+}
+```
 
-Performed inside a Claude Code session — no standalone script. Researcher asks Claude Code to analyze a specific response.
+## Validation Handling Rules (applied by the skill, not by process_issue.py)
 
-Claude Code:
-1. Reads `responses/raw/{id}.json`
-2. Reads `index.html` (at the correct `survey-v{N}` checkout) — parses `name` attributes and surrounding label text to build key→question-label mapping at runtime
-3. Flags inconsistencies (e.g. scale scores contradicting free-text tone, logically incompatible answers across parts)
-4. Generates a conclusion paragraph characterizing the respondent's pain profile
-5. Writes output to `responses/analyzed/{id}.json` under `analysis` key: `{ "schema_version": "v1", "inconsistencies": [...], "conclusion": "..." }`
+### Kid age validation
+Schema `patternProperties` for `1.1_kid_age_*` enforces `^[0-9]+$` — any non-negative integer, including adult ages. No upper bound.
+
+### Missing Parts 2–5 (low-conflict skip pattern)
+When ALL violations are "missing required property" for fields whose names start with `2.`, `3.`, `4.`, or `5.`, check Part 1 tension scores:
+
+| Condition | Action |
+|-----------|--------|
+| `1.2_tension_emotional == "1"` AND `1.2_tension_organizational == "1"` | Do not surface violations. Assign category `low-conflict`. Note in conclusion that respondent reported no conflicts and skipped Parts 2–5. |
+| Either tension score > `"1"` | Surface a single consolidated violation: _"All fields from Parts 2–5 are missing despite reported conflict."_ Ask researcher how to proceed. |
+
+## Qualitative Analysis — `/process-issues` skill
+
+Skill: `.claude/commands/process-issues.md`. Invoked via `/process-issues` in a Claude Code session.
+
+**Discovery:** queries `gh issue list`, cross-references `responses/processed/` to find issues that are not processed or are missing a complete `analysis` key. Presents researcher with a table and prompts: process all or select one.
+
+**Per-issue steps:**
+1. Run `process_issue.py` if mechanical processing not yet done
+2. Build key→question-label map from `index.html` at runtime
+3. Analyze: conflict profile, pain hotspots, need signal, cross-section coherence
+4. Assign category (see below) + write conclusion paragraph + one-liner
+5. Merge `analysis` key into `responses/processed/{id}.json` without overwriting other keys
+
+**`analysis` key structure:**
+```json
+{
+  "conclusion": "...",
+  "category": "...",
+  "conclusion_one_liner": "...",
+  "potential_user": true,
+  "potential_payer": false
+}
+```
+
+`potential_user` (bool): true if **both** — (a) friction present: any Part 1–4 scale > 1 or binary friction flag set; **AND** (b) no need denial: no explicit denial (`5.2_barriers_other` no-need language, `5.2_other_willing_pay` == "לא לשניהם") and no implicit dismissal (Part 5 uniformly negative). false for low-conflict skips and explicit/implicit no-need cases.
+
+`potential_payer` (bool): true only if `potential_user` is true AND `5.2_willing_to_pay` == "כן".
+
+**Coherence check** (step 3b.9): no human confirmation — always proceed to 3c. Triggered patterns recorded in `coherence_warnings` (array of strings; omitted if empty).
+
+| Pattern | Trigger | Effect |
+|---------|---------|--------|
+| Friction-denial (explicit) | friction found AND `5.2_other_willing_pay` == "לא לשניהם" | `potential_user: false`, `potential_payer: false` (no change) |
+| Friction-denial (implicit) | friction found but need implicitly dismissed | `potential_user: "uncertain"`, `potential_payer: "uncertain"` |
+| Tension-friction gap | Part 1 tension ≥ 3 but all Part 2–4 = 1, or inverse | warning only |
+| WTP-without-friction | willing to pay but `potential_user: false` | warning only |
+| Category-score mismatch | `high-conflict` median ≤ 2, or `low-conflict` any score ≥ 4 | warning only |
+
+**HTML analysis card**: static Python-generated HTML (not JS); criteria comment row above data rows (`white-space:pre-wrap`).
+
+**Categories:** `high-conflict`, `low-conflict`, `financially-stressed`, `logistically-overwhelmed`, `emotionally-exhausted`, `disengaged-partner`, `early-stage` (combinable)
 
 ## Fetching Submissions
 
@@ -90,7 +175,7 @@ Empty/skipped fields are omitted from the payload (filtered in `user_survey.js`)
 
 ## Aggregation
 
-`scripts/aggregate.py` reads all `responses/analyzed/{id}.json` files and updates `analysis/aggregate.json`.
+`scripts/aggregate.py` reads all `responses/processed/{id}.json` files and updates `analysis/aggregate.json`.
 
 **`analysis/aggregate.json` structure:**
 - `meta` — total responses, schema versions covered, last updated
