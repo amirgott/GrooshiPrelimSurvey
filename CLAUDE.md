@@ -14,9 +14,9 @@ Hebrew-language user-research survey for a co-parenting management app (working 
 
 | File | Role |
 |------|------|
-| `survey.md` | Source of truth for all survey questions, flow, and conditional logic |
+| `survey.md` | Authoring input for HTML generation — may lag behind `index.html`; not a reference for survey structure |
 | `html_generation_prompt.md` | Instructions for translating `survey.md` into `index.html` |
-| `index.html` | Live survey artifact served by GitHub Pages |
+| `index.html` | **Source of truth for survey structure, field names, question labels, and conditional logic** — what is actually deployed |
 | `user_survey.js` | Client-side submission bridge: collects FormData → POSTs JSON to Cloudflare Worker |
 | `changes.md` | Developer scratchpad (not part of any automated workflow) |
 

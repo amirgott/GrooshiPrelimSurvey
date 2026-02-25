@@ -4,7 +4,9 @@ Status: Implemented
 
 ## Source of Truth
 
-`survey.md` is the sole source of truth for all survey questions, flow, and conditional logic. It must be updated before any change is reflected in the live survey.
+`index.html` is the source of truth for deployed survey structure — field names, question labels, part layout, and conditional logic. It is what respondents see and what the analysis pipeline reads.
+
+`survey.md` is an authoring artifact: the intended input to HTML generation. It may lag behind `index.html` if edits were made directly to the HTML. Do not use `survey.md` as a reference for survey structure; always read `index.html`.
 
 ## Rendering Rules (html_generation_prompt.md)
 
