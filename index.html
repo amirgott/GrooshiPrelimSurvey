@@ -291,21 +291,66 @@
                         </div>
                     </div>
 
-                    <!-- 2.2 חלוקת מטלות -->
+                                        <!-- 2.2 חלוקת מטלות -->
                     <div class="space-y-4">
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.2</span>חלוקת מטלות</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">איך לדעתך מתנהלת חלוקת מטלות הילדים (הסעות ותורנויות אחרות) בינך לבין ההורה האחר?</label>
-                            <input type="hidden" id="2.2_tasks_quality" name="2.2_tasks_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_quality')">גרוע</button>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold">באילו מטלות יש לכם חיכוכים?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="הסעות" onchange="toggle2Task('transport')"> הסעות (בית ספר, חוגים, פלייסטייטס)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="ביקורים רפואיים" onchange="toggle2Task('medical')"> ביקורים רפואיים (רופאים, מומחים, ימי מחלה)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="אספות בית ספר" onchange="toggle2Task('school')"> אספות הורים ואירועי בית ספר</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="חוגים ופעילויות" onchange="toggle2Task('activities')"> חוגים ופעילויות (רישום, תשלום, הסעה)</label>
                             </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                        </div>
+                        <div id="task_transport" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">הסעות — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.2_tasks_transport_quality" name="2.2_tasks_transport_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_transport_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_transport_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_transport_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_transport_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_transport_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="task_medical" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">ביקורים רפואיים — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.2_tasks_medical_quality" name="2.2_tasks_medical_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_medical_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_medical_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_medical_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_medical_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_medical_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="task_school" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">אספות בית ספר — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.2_tasks_school_quality" name="2.2_tasks_school_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_school_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_school_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_school_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_school_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_school_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="task_activities" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חוגים ופעילויות — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.2_tasks_activities_quality" name="2.2_tasks_activities_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_activities_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_activities_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_activities_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_activities_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_activities_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <div class="space-y-3">
+                                <label class="text-sm">בנושא שגורם לכם לחיכוך הכי הרבה — עד כמה זה מתסכל?</label>
                                 <input type="hidden" id="2.2_tasks_friction" name="2.2_tasks_friction" value="">
                                 <div class="scale-btns">
                                     <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_friction')">מסתדרים מצוין</button>
@@ -316,11 +361,11 @@
                                 </div>
                             </div>
                             <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
+                                <label class="text-sm">תן דוגמה ממה שהכי מתסכל אותך בחלוקת המטלות (אופציונלי):</label>
                                 <textarea name="2.2_tasks_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
                             <div class="pt-3">
-                                <label class="text-sm">האם קורה שהמטלה לא מתבצעת בגלל חיכוך?</label>
+                                <label class="text-sm">האם קורה שמטלה לא מתבצעת בגלל חיכוך?</label>
                                 <div class="flex gap-4 mt-1">
                                     <label class="flex items-center gap-1"><input type="radio" name="2.2_tasks_not_done" value="כן"> כן</label>
                                     <label class="flex items-center gap-1"><input type="radio" name="2.2_tasks_not_done" value="לא"> לא</label>
@@ -328,22 +373,66 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- 2.3 שינויי לו"ז -->
                     <div class="space-y-4">
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.3</span>שינויי לו"ז</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">איך לדעתך אתם מתנהלים כשאחד מכם רוצה שינוי בלו"ז (החלפת ימים או שבתות)?</label>
-                            <input type="hidden" id="2.3_schedule_quality" name="2.3_schedule_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_quality')">גרוע</button>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold">אילו סוגי שינויי לו"ז יוצרים אצלכם חיכוכים?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="חגים ומועדים" onchange="toggle2Schedule('holidays')"> חגים ומועדים (פסח, ראש השנה...)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="אירועים משפחתיים" onchange="toggle2Schedule('family')"> אירועים משפחתיים (בר/בת מצוה, ימי הולדת)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="נסיעות עבודה" onchange="toggle2Schedule('work')"> נסיעות עבודה (בקשת החלפה דחופה)</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="חופשות" onchange="toggle2Schedule('vacations')"> חופשות וימי כיף (שחורגים מהסידור הקיים)</label>
                             </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
+                        </div>
+                        <div id="schedule_holidays" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חגים ומועדים — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.3_schedule_holidays_quality" name="2.3_schedule_holidays_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_holidays_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_holidays_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_holidays_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_holidays_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_holidays_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="schedule_family" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">אירועים משפחתיים — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.3_schedule_family_quality" name="2.3_schedule_family_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_family_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_family_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_family_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_family_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_family_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="schedule_work" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">נסיעות עבודה — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.3_schedule_work_quality" name="2.3_schedule_work_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_work_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_work_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_work_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_work_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_work_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div id="schedule_vacations" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
+                            <label class="block font-semibold text-sm">חופשות וימי כיף — איך זה מתנהל?</label>
+                            <input type="hidden" id="2.3_schedule_vacations_quality" name="2.3_schedule_vacations_quality" value="">
+                            <div class="scale-btns">
+                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_vacations_quality')">מצוין</button>
+                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_vacations_quality')">טוב</button>
+                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_vacations_quality')">בינוני</button>
+                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_vacations_quality')">לא טוב</button>
+                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_vacations_quality')">גרוע</button>
+                            </div>
+                        </div>
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <div class="space-y-3">
+                                <label class="text-sm">בנושא שגורם לכם לחיכוך הכי הרבה — עד כמה זה מתסכל?</label>
                                 <input type="hidden" id="2.3_schedule_friction" name="2.3_schedule_friction" value="">
                                 <div class="scale-btns">
                                     <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_friction')">מסתדרים מצוין</button>
@@ -354,11 +443,11 @@
                                 </div>
                             </div>
                             <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שהיה מתסכל (אופציונלי):</label>
+                                <label class="text-sm">תן דוגמה ממה שהכי מתסכל אותך בשינויי הלו"ז (אופציונלי):</label>
                                 <textarea name="2.3_schedule_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
                             <div class="pt-3 space-y-3">
-                                <label class="text-sm">האם בסופו של דבר מגיעים להסכמה (או שהשינוי פשוט לא מתבצע)?</label>
+                                <label class="text-sm">באותו נושא — האם בסופו של דבר מגיעים להסכמה?</label>
                                 <input type="hidden" id="2.3_schedule_agreement" name="2.3_schedule_agreement" value="">
                                 <div class="scale-btns">
                                     <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_agreement')">תמיד מסכימים</button>
@@ -370,7 +459,6 @@
                             </div>
                         </div>
                     </div>
-
                     <!-- 2.4 סיכום -->
                     <div class="space-y-4">
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.4</span>סיכום</label>
@@ -1018,6 +1106,18 @@
             }
         }
 
+        function toggle2Task(key) {
+            const valueMap = { transport: 'הסעות', medical: 'ביקורים רפואיים', school: 'אספות בית ספר', activities: 'חוגים ופעילויות' };
+            const checked = document.querySelector(`input[name="2.2_tasks"][value="${valueMap[key]}"]:checked`);
+            const div = document.getElementById('task_' + key);
+            if (div) div.classList.toggle('visible', !!checked);
+        }
+        function toggle2Schedule(key) {
+            const valueMap = { holidays: 'חגים ומועדים', family: 'אירועים משפחתיים', work: 'נסיעות עבודה', vacations: 'חופשות' };
+            const checked = document.querySelector(`input[name="2.3_schedule"][value="${valueMap[key]}"]:checked`);
+            const div = document.getElementById('schedule_' + key);
+            if (div) div.classList.toggle('visible', !!checked);
+        }
         // Chapter 2 area toggles
         function toggle3Area(area) {
             const checkbox = document.querySelector(`input[name="3.2_areas"][value="${getAreaValue(area)}"]:checked`);
