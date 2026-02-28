@@ -175,7 +175,7 @@ Empty/skipped fields are omitted from the payload (filtered in `user_survey.js`)
 
 ## Aggregation
 
-`scripts/aggregate.py` reads all `responses/processed/{id}.json` files and updates `analysis/aggregate.json`.
+`scripts/aggregate.py` reads all `responses/processed/{id}.json` files and updates `analysis/aggregate.json`. Files with `"test": true` must be excluded — they are test submissions and must not affect statistics.
 
 **`analysis/aggregate.json` structure:**
 - `meta` — total responses, schema versions covered, last updated

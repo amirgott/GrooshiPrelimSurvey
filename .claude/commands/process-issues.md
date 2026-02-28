@@ -6,6 +6,7 @@
    - **Not processed** — no processed JSON exists
    - **Needs analysis** — processed JSON exists but is missing the `analysis` key (or `analysis` is missing any of `conclusion`, `category`, `conclusion_one_liner`)
    - **Complete** — processed JSON has a complete `analysis` key (including `potential_user` and `potential_payer`) → skip silently
+   - **Test** — processed JSON has `"test": true` → exclude from aggregation; process normally but show in a separate "Test issues" section in the table
 4. If no unfinished issues exist, tell the researcher and stop.
 
 ---

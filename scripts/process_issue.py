@@ -318,13 +318,16 @@ def main():
     # Load schema once; used for validation and inconsistency detection
     schema = load_schema(schema_version)
 
+    # Strip internal metadata fields before validation
+    survey_payload = {k: v for k, v in payload.items() if not k.startswith('_')}
+
     # Validate
-    validation = validate_payload(payload, schema)
+    validation = validate_payload(survey_payload, schema)
     status = "PASS" if validation["valid"] else f"FAIL ({len(validation['violations'])} violations)"
     print(f"Validation: {status}")
 
     # Mechanical inconsistency detection
-    inconsistencies = detect_inconsistencies(payload, schema)
+    inconsistencies = detect_inconsistencies(survey_payload, schema)
     if inconsistencies:
         print(f"Inconsistencies: {len(inconsistencies)}")
 
@@ -334,6 +337,7 @@ def main():
         "schema_version": schema_version,
         "validation": validation,
         "inconsistencies": inconsistencies,
+        **({"test": True} if payload.get("_test") else {}),
     }
     analyzed_json.write_text(json.dumps(analyzed_data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"Saved analyzed: {analyzed_json.name}")
