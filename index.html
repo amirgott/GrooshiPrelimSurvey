@@ -25,6 +25,9 @@
         .toggle-btn.selected { border-color: #4f46e5; background: #4f46e5; color: white; }
         .desktop-only { display: block; }
         @media (max-width: 768px) { .desktop-only { display: none; } }
+        .accordion-header { cursor: pointer; user-select: none; }
+        .accordion-body { display: none; }
+        .accordion-body.open { display: block; }
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -49,6 +52,7 @@
 
         <form id="masterForm" class="p-6 md:p-10 space-y-10">
             <input type="hidden" name="survey_id" id="surveyIdInput">
+            <input type="hidden" name="safety_flag" id="safetyFlagInput" value="">
 
             <!-- STEP 0: Welcome -->
             <div class="step active" id="step0">
@@ -64,7 +68,7 @@
                     <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200 text-right max-w-lg mx-auto space-y-3">
                         <p><span class="font-bold text-amber-900">מטרת השאלון:</span> <span class="text-amber-800">לברר אם יש צורך באפליקציה שתעזור לזוגות גרושים בהתנהלותם</span></p>
                         <p><span class="font-bold text-amber-900">הנחיות:</span> <span class="text-amber-800">השאלות הן בנושאים מגוונים שבלב הקשר בין הגרושים.</span></p>
-                        <p><span class="font-bold text-amber-900">דגשים:</span> <span class="text-amber-800">אנא התמקד בשאלות שמדגישות את הנקודות שהכי מפריעות לך בקשר עם הגרוש/ה</span></p>
+                        <p><span class="font-bold text-amber-900">דגשים:</span> <span class="text-amber-800">אנא התמקד/י בשאלות שמדגישות את הנקודות שהכי מפריעות לך בקשר עם הגרוש/ה</span></p>
                         <p class="text-amber-900 font-semibold pt-2">תודה מראש על ההיענות!</p>
                     </div>
 
@@ -74,415 +78,206 @@
                     </div>
 
                     <div class="pt-4">
-                        <button type="button" onclick="goToStep(1)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">התחלת השאלון</button>
+                        <button type="button" onclick="goToStep(1)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">התחל</button>
                     </div>
                 </div>
             </div>
 
-            <!-- STEP 1: יצירת תמונה כללית -->
+            <!-- STEP 1: פרופיל -->
             <div class="step" id="step1">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 1: יצירת תמונה כללית</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחלק זה נבקש ממך כמה פרטים בסיסיים על מצב המשפחה שלך ועל אופי הקשר עם ההורה האחר.</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 1: פרופיל</h1>
+                    <p class="text-sm text-gray-500 mt-1">כמה פרטים בסיסיים לפני שנתחיל</p>
                 </div>
 
                 <div class="space-y-8">
-                    <!-- 1.1 -->
+                    <!-- 1.1 Separation basics -->
                     <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">1.1</span>מצב משפחתי</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">1.1</span>פרטי הפרידה</label>
 
-                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4">
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-5">
+                            <!-- Time since separation -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold">כמה זמן עבר מאז הפרידה?</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_time_since_sep" value="עדיין פרודים"> עדיין פרודים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_time_since_sep" value="עד שנה"> עד שנה</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_time_since_sep" value="1–3 שנים"> 1–3 שנים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_time_since_sep" value="3–7 שנים"> 3–7 שנים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_time_since_sep" value="7+ שנים"> 7+ שנים</label>
+                                </div>
+                            </div>
+
+                            <!-- Number of kids -->
                             <div>
+                                <label class="block text-sm font-bold mb-1">מספר ילדים משותפים:</label>
                                 <input type="number" name="1.1_num_kids" placeholder="מספר ילדים" class="w-full p-2 border rounded-lg" min="1" max="10" oninput="generateAgeFields(this.value)">
                             </div>
-                            <div id="ageFieldsContainer" class="flex flex-wrap gap-2">
-                            </div>
+                            <div id="ageFieldsContainer" class="flex flex-wrap gap-2"></div>
+
+                            <!-- Custody -->
                             <div class="space-y-2">
-                                <label class="text-sm font-bold">סוג משמורת:</label>
-                                <select name="1.1_custody" class="w-full p-2 border rounded-lg text-sm">
-                                    <option value="">בחר/י...</option>
-                                    <option value="חלקית שלי">חלקית שלי</option>
-                                    <option value="משותפת">משותפת</option>
-                                    <option value="חלקית של ההורה">חלקית של ההורה האחר</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="space-y-2 pt-2">
-                            <label class="block font-semibold">האם אתם גרים במרחק הליכה אחד מהשניה?</label>
-                            <div class="flex gap-6">
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_proximity" value="כן"> כן</label>
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_proximity" value="לא"> לא</label>
-                            </div>
-                        </div>
-
-                        <div class="space-y-2 pt-2">
-                            <label class="block font-semibold">כמה זמן עבר מאז הגירושין?</label>
-                            <select name="1.1_status" class="w-full p-3 border rounded-xl outline-none" onchange="syncLogic()">
-                                <option value="">בחרו סטאטוס...</option>
-                                <option value="עדיין פרודים">עדיין פרודים</option>
-                                <option value="גרושים טריים">גרושים טריים (עד שנה)</option>
-                                <option value="1-3 שנים">1-3 שנים</option>
-                                <option value="3+ שנים">3 שנים ומעלה</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- 1.2 -->
-                    <div class="space-y-6">
-                        <label class="block font-semibold"><span class="section-tag ml-2">1.2</span>אפיון התקשורת הכללי</label>
-                        <div>
-                            <p class="text-sm mb-2">איך היית מתאר/ת את טיב התקשורת בינך לבין ההורה האחר כיום?</p>
-                            <input type="hidden" id="1.2_comm" name="1.2_comm_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'1.2_comm')">שיתופית ומכבדת</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'1.2_comm')">טובה</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'1.2_comm')">נייטרלית</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'1.2_comm')">מתוחה</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'1.2_comm')">קונפליקטואלית מאוד</button>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="text-sm mb-2">עד כמה ניהול הילדים והכספים ביניכם מאורגן ומוסדר?</p>
-                            <input type="hidden" id="1.2_org" name="1.2_org_level" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'1.2_org')">מאורגן ומסודר</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'1.2_org')">מסודר</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'1.2_org')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'1.2_org')">לא מסודר</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'1.2_org')">בלאגן וכאוס</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Logic Box A: when comm>=4 or org>=4 -->
-                    <div id="logicBoxA" class="logic-box p-6 rounded-2xl">
-                        <label class="block font-bold mb-3">האם יש או היה ביניכם קושי רגשי או אירוע מתסכל מאד?</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_emotional_event" value="כן" onchange="syncLogic()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_emotional_event" value="לא" onchange="syncLogic()"> לא</label>
-                        </div>
-                    </div>
-
-                    <!-- Logic Box B: emotional_event=כן -->
-                    <div id="logicBoxB" class="logic-box p-4 rounded-2xl space-y-4">
-                        <!-- Mediation question (moved from Part 4) -->
-                        <div class="space-y-3 pt-2">
-                            <label class="block font-semibold">האם ניסיתם בעבר עבודה עם מגשר/ת, יועץ/ת הורים, או גורם מקצועי אחר?</label>
-                            <div class="flex gap-6">
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_mediation" value="כן"> כן</label>
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_mediation" value="לא"> לא</label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Tension type -->
-                    <div class="space-y-3">
-                        <label class="block font-semibold">בנושאי ניהול הילדים והכספים:</label>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div class="p-4 bg-gray-50 rounded-xl">
-                                <label class="block text-sm font-bold mb-2">מתח רגשי:</label>
-                                <input type="hidden" id="1.2_tension_emotional" name="1.2_tension_emotional" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'1.2_tension_emotional')">אין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'1.2_tension_emotional')">קל</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'1.2_tension_emotional')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'1.2_tension_emotional')">חזק</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'1.2_tension_emotional')">חזק מאד</button>
+                                <label class="block text-sm font-bold">סוג משמורת:</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה שלי"> משמורת מלאה שלי</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת משותפת"> משמורת משותפת</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה של ההורה האחר"> משמורת מלאה של ההורה האחר</label>
                                 </div>
                             </div>
-                            <div class="p-4 bg-gray-50 rounded-xl">
-                                <label class="block text-sm font-bold mb-2">קושי ארגוני:</label>
-                                <input type="hidden" id="1.2_tension_organizational" name="1.2_tension_organizational" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'1.2_tension_organizational')">אין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'1.2_tension_organizational')">קל</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'1.2_tension_organizational')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'1.2_tension_organizational')">חזק</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'1.2_tension_organizational')">חזק מאד</button>
+
+                            <!-- Distance -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold">מרחק מגורים מההורה האחר:</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="אותה עיר"> אותה עיר</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="עיר אחרת"> עיר אחרת</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="חו&quot;ל"> חו"ל</label>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Communication frequency -->
-                    <div class="space-y-2">
-                        <label class="block font-semibold">כמה פעמים בחודש אתם צריכים לתקשר בממוצע?</label>
-                        <input type="number" name="1.2_comm_frequency" class="w-full p-3 border rounded-xl outline-none" min="0" placeholder="מספר פעמים בחודש">
-                    </div>
+                    <!-- 1.2 Personal context -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">1.2</span>הקשר אישי</label>
 
-                    <!-- Platforms -->
-                    <div>
-                        <label class="block font-semibold mb-3">מהן הפלטפורמות שמשמשות אתכם לתקשורת (אפשר לסמן כמה):</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="וואטסאפ"> וואטסאפ (או אפליקצית הודעות אחרת)</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="אימייל"> אימייל</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="טלפון"> טלפון</label>
-                            <label class="flex items-center gap-2"><input type="checkbox" name="1.2_platforms" value="אחר" onchange="document.getElementById('1.2_platforms_other').style.display=this.checked?'block':'none'"> אחר</label>
+                        <div class="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-5">
+                            <!-- Gender -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold">מגדר:</label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_gender" value="זכר"> זכר</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_gender" value="נקבה"> נקבה</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_gender" value="אחר"> אחר</label>
+                                </div>
+                            </div>
+
+                            <!-- Religious divorce status -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold">סטטוס גירושין דתיים:
+                                    <span class="text-xs font-normal text-gray-500 mr-1">(רלוונטי להליך הגט)</span>
+                                </label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_religious_divorce" value="גרוש/ה דתית"> גרוש/ה דתית</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_religious_divorce" value="בתהליך"> בתהליך</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_religious_divorce" value="עיגון"> עיגון</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_religious_divorce" value="לא רלוונטי"> לא רלוונטי</label>
+                                </div>
+                            </div>
+
+                            <!-- New partner -->
+                            <div class="space-y-2">
+                                <label class="block text-sm font-bold">האם יש לך או לשותפ/ת ההורות שלך בן/בת זוג חדש/ה?</label>
+                                <div class="space-y-2">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_new_partner" value="לאף אחד"> לאף אחד</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_new_partner" value="לי בלבד"> לי בלבד</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_new_partner" value="לשותפ/ת ההורות בלבד"> לשותפ/ת ההורות בלבד</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.2_new_partner" value="לשנינו"> לשנינו</label>
+                                </div>
+                            </div>
                         </div>
-                        <input type="text" id="1.2_platforms_other" name="1.2_platforms_other" class="w-full p-2 border rounded-lg mt-2 text-sm" placeholder="פרט/י..." style="display:none">
                     </div>
-                </div>
-
-                <!-- 1.3 תחושות - conditional -->
-                <div id="section13" class="logic-box space-y-4 mt-8">
-                    <label class="block font-semibold text-lg"><span class="section-tag ml-2">1.3</span>תחושות</label>
-                    <label class="block font-semibold">מה הכי מעייף אותך בהתנהלות מול ההורה האחר?</label>
-                    <p class="text-xs text-gray-400">(אפשר לסמן כמה)</p>
-                    <div class="space-y-2">
-                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="לוגיסטיקה מסורבלת"> התנהלות לוגיסטית מסורבלת</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="שיחות מתוחות"> שיחות מתוחות/כעוסות</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="חוסר אמינות"> חוסר אמינות/התחמקות</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="לבד עם הנטל"> תחושה שאני לבד עם הנטל</label>
-                        <label class="flex items-center gap-2"><input type="checkbox" name="1.3_fatigue" value="אחר" onchange="document.getElementById('1.3_other').style.display=this.checked?'block':'none'"> אחר</label>
-                    </div>
-                    <input type="text" id="1.3_other" name="1.3_fatigue_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
                 </div>
 
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(0)" class="text-indigo-600 font-bold px-8 py-3">חזרה</button>
-                    <button type="button" onclick="handleStep1Continue()" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 2</button>
-                </div>
-
-                <!-- No tension popup -->
-                <div id="noTensionPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display:none">
-                    <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center space-y-6">
-                        <p class="text-lg font-semibold text-gray-800">נראה שאין לך מתח רגשי או קושי ארגוני בהתנהלות מול ההורה האחר</p>
-                        <div class="space-y-3">
-                            <button type="button" onclick="closePopupAndContinue()" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-full font-bold hover:bg-indigo-700 transition">אני מעוניין להמשיך בשאלון בכ"ז</button>
-                            <button type="button" onclick="closePopupAndEdit()" class="w-full border-2 border-indigo-600 text-indigo-600 px-6 py-3 rounded-full font-bold hover:bg-indigo-50 transition">אני רוצה לשנות את תשובתי</button>
-                        </div>
-                    </div>
+                    <button type="button" onclick="goToStep(2)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 2</button>
                 </div>
             </div>
 
-            <!-- STEP 2: שגרת הילדים -->
+            <!-- STEP 2: בטיחות ורמת קונפליקט -->
             <div class="step" id="step2">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: שגרת הילדים</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחלק זה נבין כיצד מתנהלת שגרת הילדים ביניכם — חלוקת מטלות, שינויי לו"ז, ואיפה מתעוררים חיכוכים.</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: בטיחות ורמת קונפליקט</h1>
+                    <p class="text-sm text-gray-500 mt-1">כמה שאלות על אופי הקשר</p>
                 </div>
 
-                <div class="space-y-10">
-                    <!-- 2.1 כללי -->
+                <div class="space-y-8">
+                    <!-- 2.1 Safety signal -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.1</span>כללי</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">בכללי, עד כמה ניהול שגרת הילדים מול ההורה האחר מתנהלת בצורה טובה?</label>
-                            <input type="hidden" id="2.1_routine_quality" name="2.1_routine_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.1_routine_quality')">טובה מאד</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.1_routine_quality')">טובה</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.1_routine_quality')">בינונית</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.1_routine_quality')">לא טובה</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.1_routine_quality')">גרועה מאד</button>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.1</span>תחושת בטיחות</label>
+                        <div class="space-y-3">
+                            <label class="block font-semibold">האם אתה/את מרגיש/ה בטוח/ה בתקשורת מול ההורה האחר?</label>
+                            <div class="toggle-btns">
+                                <button type="button" class="toggle-btn" onclick="selectSafety(this, 'כן')">כן</button>
+                                <button type="button" class="toggle-btn" onclick="selectSafety(this, 'ברוב המקרים')">ברוב המקרים</button>
+                                <button type="button" class="toggle-btn" onclick="selectSafety(this, 'לא')">לא</button>
                             </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">האם אופן ההתנהלות בשגרה מעיק עליך?</label>
-                                <input type="hidden" id="2.1_routine_burden" name="2.1_routine_burden" value="">
+                            <input type="hidden" name="2.1_safety" id="2.1_safety" value="">
+                        </div>
+
+                        <div id="logicSafetyNo" class="logic-box bg-red-50 p-5 rounded-2xl border border-red-200 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-bold text-red-800">תוכל/י לספר בקצרה? (אופציונלי)</label>
+                                <button type="button" onclick="startSTT('2.1_safety_detail', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                </button>
+                            </div>
+                            <textarea id="2.1_safety_detail" name="2.1_safety_detail" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-red-400"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 2.2 Communication quality -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.2</span>איכות התקשורת</label>
+
+                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <div>
+                                <label class="block text-sm font-bold mb-2">איך היית מתאר/ת את אופי התקשורת ביניכם כיום?</label>
+                                <input type="hidden" id="2.2_comm_quality" name="2.2_comm_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.1_routine_burden')">בכלל לא</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.1_routine_burden')">קצת</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.1_routine_burden')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.1_routine_burden')">מעיק</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.1_routine_burden')">מעיק ממש</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_comm_quality')">שיתופית ומכבדת</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_comm_quality')">טובה</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_comm_quality')">נייטרלית</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_comm_quality')">מתוחה</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_comm_quality')">קונפליקטואלית מאוד</button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3">
+                                <div class="p-4 bg-white rounded-xl border border-gray-200">
+                                    <label class="block text-sm font-bold mb-2">מתח רגשי בנושאי הילדים:</label>
+                                    <input type="hidden" id="2.2_emotional_tension" name="2.2_emotional_tension" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_emotional_tension')">אין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_emotional_tension')">קל</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_emotional_tension')">בינוני</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_emotional_tension')">חזק</button>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-white rounded-xl border border-gray-200">
+                                    <label class="block text-sm font-bold mb-2">קושי ארגוני בניהול הילדים:</label>
+                                    <input type="hidden" id="2.2_org_difficulty" name="2.2_org_difficulty" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_org_difficulty')">אין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_org_difficulty')">קל</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_org_difficulty')">בינוני</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_org_difficulty')">חזק</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                                        <!-- 2.2 חלוקת מטלות -->
+                    <!-- 2.3 Legal -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.2</span>חלוקת מטלות</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.3</span>הליכים משפטיים</label>
                         <div class="space-y-3">
-                            <label class="block text-sm font-bold">באילו מטלות יש לכם חיכוכים?</label>
-                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <label class="block font-semibold">האם יש הליכים משפטיים פעילים (בית משפט לענייני משפחה או בית דין רבני)?</label>
+                            <div class="flex gap-6">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="כן" onchange="toggleLegalBox()"> כן</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="לא" onchange="toggleLegalBox()"> לא</label>
+                            </div>
+                        </div>
+
+                        <div id="logicLegal" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-3">
+                            <label class="block text-sm font-bold">איזה סוג הליך?</label>
                             <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="הסעות" onchange="toggle2Task('transport')"> הסעות (בית ספר, חוגים, פלייסטייטס)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="ביקורים רפואיים" onchange="toggle2Task('medical')"> ביקורים רפואיים (רופאים, מומחים, ימי מחלה)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="אספות בית ספר" onchange="toggle2Task('school')"> אספות הורים ואירועי בית ספר</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.2_tasks" value="חוגים ופעילויות" onchange="toggle2Task('activities')"> חוגים ופעילויות (רישום, תשלום, הסעה)</label>
-                            </div>
-                        </div>
-                        <div id="task_transport" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">הסעות — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.2_tasks_transport_quality" name="2.2_tasks_transport_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_transport_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_transport_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_transport_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_transport_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_transport_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="task_medical" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">ביקורים רפואיים — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.2_tasks_medical_quality" name="2.2_tasks_medical_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_medical_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_medical_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_medical_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_medical_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_medical_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="task_school" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">אספות בית ספר — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.2_tasks_school_quality" name="2.2_tasks_school_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_school_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_school_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_school_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_school_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_school_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="task_activities" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">חוגים ופעילויות — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.2_tasks_activities_quality" name="2.2_tasks_activities_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_activities_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_activities_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_activities_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_activities_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_activities_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <div class="space-y-3">
-                                <label class="text-sm">בנושא שגורם לכם לחיכוך הכי הרבה — עד כמה זה מתסכל?</label>
-                                <input type="hidden" id="2.2_tasks_friction" name="2.2_tasks_friction" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_tasks_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_tasks_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_tasks_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_tasks_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_tasks_friction')">תמיד מריבה</button>
-                                </div>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה ממה שהכי מתסכל אותך בחלוקת המטלות (אופציונלי):</label>
-                                <textarea name="2.2_tasks_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm">האם קורה שמטלה לא מתבצעת בגלל חיכוך?</label>
-                                <div class="flex gap-4 mt-1">
-                                    <label class="flex items-center gap-1"><input type="radio" name="2.2_tasks_not_done" value="כן"> כן</label>
-                                    <label class="flex items-center gap-1"><input type="radio" name="2.2_tasks_not_done" value="לא"> לא</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 2.3 שינויי לו"ז -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.3</span>שינויי לו"ז</label>
-                        <div class="space-y-3">
-                            <label class="block text-sm font-bold">אילו סוגי שינויי לו"ז יוצרים אצלכם חיכוכים?</label>
-                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="חגים ומועדים" onchange="toggle2Schedule('holidays')"> חגים ומועדים (פסח, ראש השנה...)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="אירועים משפחתיים" onchange="toggle2Schedule('family')"> אירועים משפחתיים (בר/בת מצוה, ימי הולדת)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="נסיעות עבודה" onchange="toggle2Schedule('work')"> נסיעות עבודה (בקשת החלפה דחופה)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_schedule" value="חופשות" onchange="toggle2Schedule('vacations')"> חופשות וימי כיף (שחורגים מהסידור הקיים)</label>
-                            </div>
-                        </div>
-                        <div id="schedule_holidays" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">חגים ומועדים — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.3_schedule_holidays_quality" name="2.3_schedule_holidays_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_holidays_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_holidays_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_holidays_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_holidays_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_holidays_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="schedule_family" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">אירועים משפחתיים — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.3_schedule_family_quality" name="2.3_schedule_family_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_family_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_family_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_family_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_family_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_family_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="schedule_work" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">נסיעות עבודה — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.3_schedule_work_quality" name="2.3_schedule_work_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_work_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_work_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_work_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_work_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_work_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="schedule_vacations" class="logic-box space-y-3 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">חופשות וימי כיף — איך זה מתנהל?</label>
-                            <input type="hidden" id="2.3_schedule_vacations_quality" name="2.3_schedule_vacations_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_vacations_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_vacations_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_vacations_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_vacations_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_vacations_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <div class="space-y-3">
-                                <label class="text-sm">בנושא שגורם לכם לחיכוך הכי הרבה — עד כמה זה מתסכל?</label>
-                                <input type="hidden" id="2.3_schedule_friction" name="2.3_schedule_friction" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_friction')">תמיד מריבה</button>
-                                </div>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה ממה שהכי מתסכל אותך בשינויי הלו"ז (אופציונלי):</label>
-                                <textarea name="2.3_schedule_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">באותו נושא — האם בסופו של דבר מגיעים להסכמה?</label>
-                                <input type="hidden" id="2.3_schedule_agreement" name="2.3_schedule_agreement" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.3_schedule_agreement')">תמיד מסכימים</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.3_schedule_agreement')">בד"כ מסכימים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.3_schedule_agreement')">חצי חצי</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.3_schedule_agreement')">בד"כ לא</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.3_schedule_agreement')">לא מתבצע</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 2.4 סיכום -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.4</span>סיכום</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <div>
-                                <label class="text-sm font-semibold">באיזו תדירות אתם מתקשרים סביב חלוקת המטלות או שינויי הלו"ז?</label>
-                                <select name="2.4_comm_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
-                                    <option value="">בחר/י...</option>
-                                    <option value="יומית">יומית</option>
-                                    <option value="שבועית">שבועית</option>
-                                    <option value="חודשית">חודשית</option>
-                                    <option value="רק כשקורה אירוע">רק כשקורה אירוע</option>
-                                </select>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm font-semibold">כמה מהן מתדרדרות ומייצרות חיכוך?</label>
-                                <input type="hidden" id="2.4_friction_rate" name="2.4_friction_rate" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.4_friction_rate')">אף אחת כמעט</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.4_friction_rate')">מעטות</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.4_friction_rate')">חלק</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.4_friction_rate')">רוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.4_friction_rate')">כמעט כולן</button>
-                                </div>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_legal_type" value="משמורת"> משמורת</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_legal_type" value="מזונות"> מזונות</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_legal_type" value="רכוש"> רכוש</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_legal_type" value="גט"> גט</label>
+                                <label class="flex items-center gap-2"><input type="checkbox" name="2.3_legal_type" value="אחר"> אחר</label>
                             </div>
                         </div>
                     </div>
@@ -490,244 +285,173 @@
 
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(1)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 1</button>
-                    <button type="button" onclick="goToStep(3)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 3</button>
+                    <button type="button" onclick="handleStep2Continue()" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 3</button>
                 </div>
             </div>
 
-            <!-- STEP 3: קבלת החלטות -->
+            <!-- STEP 3: תחומי חיכוך -->
             <div class="step" id="step3">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 3: קבלת החלטות</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחלק זה נבחן אילו תחומי קבלת החלטות על הילדים מאתגרים אתכם ועד כמה.</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 3: תחומי חיכוך</h1>
+                    <p class="text-sm text-gray-500 mt-1">בחר/י את התחומים שגורמים לחיכוכים</p>
+                    <p class="text-xs text-gray-400 mt-1">דלג/י על תחומים שאינם רלוונטיים</p>
                 </div>
 
-                <div class="space-y-10">
-                    <!-- 3.1 כללי -->
+                <div class="space-y-8">
+                    <!-- 3.1 Area multi-select -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.1</span>כללי</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">בכללי, עד כמה קבלת החלטות לגבי הילדים מתנהלת בצורה טובה?</label>
-                            <input type="hidden" id="3.1_decisions_quality" name="3.1_decisions_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3.1_decisions_quality')">טובה מאד</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3.1_decisions_quality')">טובה</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3.1_decisions_quality')">בינונית</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3.1_decisions_quality')">לא טובה</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3.1_decisions_quality')">גרועה מאד</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">האם מקרים הדורשים קבלת החלטות מעיקים עליך?</label>
-                                <input type="hidden" id="3.1_decisions_burden" name="3.1_decisions_burden" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3.1_decisions_burden')">בכלל לא</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3.1_decisions_burden')">קצת</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3.1_decisions_burden')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3.1_decisions_burden')">מעיק</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3.1_decisions_burden')">מעיק ממש</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 3.2 קבלת החלטות לפי תחומים -->
-                    <div class="space-y-6">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.2</span>קבלת החלטות לפי תחומים</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.1</span>תחומי חיכוך</label>
                         <div class="space-y-3">
-                            <label class="block text-sm font-bold">באילו תחומים יוצא לכם הכי הרבה לתקשר כדי להחליט החלטות לגבי הילדים?</label>
-                            <p class="text-xs text-gray-400">בחר עד 3 נושאים</p>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="בריאות" onchange="toggle3Area('health')"> בריאות (שלא בחירום)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="חינוך" onchange="toggle3Area('education')"> חינוך והעשרה (למשל רישום לחוגים)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="חברתי" onchange="toggle3Area('social')"> אירועים חברתיים (למשל לינה אצל חברים)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="טכנולוגיה" onchange="toggle3Area('tech')"> טכנולוגיה ומדיה (למשל סמרטפונים)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="חופשות" onchange="toggle3Area('vacation')"> חופשות וטיולים (למשל יציאה לטיולי בית ספר)</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="3.2_areas" value="תמיכה מקצועית" onchange="toggle3Area('professional')"> תמיכה מקצועית (למשל קלינאי תקשורת)</label>
-                            </div>
-                        </div>
-
-                        <!-- Dynamic area questions -->
-                        <div id="area_health" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">בריאות - איך לדעתך מתנהלות החלטות סביב טיפולים רפואיים לא דחופים?</label>
-                            <input type="hidden" id="3_health_quality" name="3_health_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_health_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_health_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_health_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_health_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_health_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_health_friction" name="3_health_friction" value="">
+                            <label class="block text-sm font-bold">באילו תחומים יש לכם חיכוכים?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שגרה ומטלות" onchange="toggleFrictionArea('routine')"> שגרה ומטלות (הסעות, לו"ז יומי)</label>
+                            <div id="friction_routine" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                <label class="block font-semibold text-sm">שגרה ומטלות — עד כמה זה מתנהל בצורה טובה?</label>
+                                <input type="hidden" id="3_routine_quality" name="3_routine_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_health_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_health_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_health_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_health_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_health_friction')">תמיד מריבה</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_routine_quality')">מצוין</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_routine_quality')">טוב</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_routine_quality')">בינוני</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_routine_quality')">לא טוב</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_routine_quality')">גרוע</button>
+                                </div>
+                                <div class="pt-2 space-y-2">
+                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
+                                    <input type="hidden" id="3_routine_friction" name="3_routine_friction" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_routine_friction')">מסתדרים מצוין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_routine_friction')">מסתדרים</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_routine_friction')">לפעמים חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_routine_friction')">הרבה חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_routine_friction')">תמיד מריבה</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_health_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="area_education" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">חינוך - איך לדעתך מתנהלות החלטות סביב רישום לחוגים ופעילויות העשרה?</label>
-                            <input type="hidden" id="3_education_quality" name="3_education_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_education_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_education_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_education_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_education_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_education_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_education_friction" name="3_education_friction" value="">
+                                </div>
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שינויי לו&quot;ז" onchange="toggleFrictionArea('schedule')"> שינויי לו"ז (חגים, אירועים, נסיעות)</label>
+                            <div id="friction_schedule" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                <label class="block font-semibold text-sm">שינויי לו"ז — עד כמה זה מתנהל בצורה טובה?</label>
+                                <input type="hidden" id="3_schedule_quality" name="3_schedule_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_education_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_education_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_education_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_education_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_education_friction')">תמיד מריבה</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_schedule_quality')">מצוין</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_schedule_quality')">טוב</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_schedule_quality')">בינוני</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_schedule_quality')">לא טוב</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_schedule_quality')">גרוע</button>
+                                </div>
+                                <div class="pt-2 space-y-2">
+                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
+                                    <input type="hidden" id="3_schedule_friction" name="3_schedule_friction" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_schedule_friction')">מסתדרים מצוין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_schedule_friction')">מסתדרים</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_schedule_friction')">לפעמים חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_schedule_friction')">הרבה חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_schedule_friction')">תמיד מריבה</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_education_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="area_social" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">אירועים חברתיים - איך לדעתך מתנהלות החלטות סביב השתתפות בארועים חברתיים ומסיבות?</label>
-                            <input type="hidden" id="3_social_quality" name="3_social_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_social_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_social_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_social_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_social_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_social_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_social_friction" name="3_social_friction" value="">
+                                </div>
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="קבלת החלטות" onchange="toggleFrictionArea('decisions')"> קבלת החלטות (בריאות, חינוך, חברתי)</label>
+                            <div id="friction_decisions" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                <label class="block font-semibold text-sm">קבלת החלטות — עד כמה זה מתנהל בצורה טובה?</label>
+                                <input type="hidden" id="3_decisions_quality" name="3_decisions_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_social_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_social_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_social_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_social_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_social_friction')">תמיד מריבה</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_decisions_quality')">מצוין</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_decisions_quality')">טוב</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_decisions_quality')">בינוני</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_decisions_quality')">לא טוב</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_decisions_quality')">גרוע</button>
+                                </div>
+                                <div class="pt-2 space-y-2">
+                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
+                                    <input type="hidden" id="3_decisions_friction" name="3_decisions_friction" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_decisions_friction')">מסתדרים מצוין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_decisions_friction')">מסתדרים</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_decisions_friction')">לפעמים חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_decisions_friction')">הרבה חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_decisions_friction')">תמיד מריבה</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_social_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="area_tech" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">טכנולוגיה ומדיה - איך לדעתך מתנהלות החלטות סביב שימוש בטכנולוגיה ומכשירים?</label>
-                            <input type="hidden" id="3_tech_quality" name="3_tech_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_tech_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_tech_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_tech_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_tech_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_tech_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_tech_friction" name="3_tech_friction" value="">
+                                </div>
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="ניהול כספים והוצאות" onchange="toggleFrictionArea('finances')"> ניהול כספים והוצאות</label>
+                            <div id="friction_finances" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                <label class="block font-semibold text-sm">ניהול כספים והוצאות — עד כמה זה מתנהל בצורה טובה?</label>
+                                <input type="hidden" id="3_finances_quality" name="3_finances_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_tech_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_tech_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_tech_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_tech_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_tech_friction')">תמיד מריבה</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_finances_quality')">מצוין</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_finances_quality')">טוב</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_finances_quality')">בינוני</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_finances_quality')">לא טוב</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_finances_quality')">גרוע</button>
+                                </div>
+                                <div class="pt-2 space-y-2">
+                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
+                                    <input type="hidden" id="3_finances_friction" name="3_finances_friction" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_finances_friction')">מסתדרים מצוין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_finances_friction')">מסתדרים</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_finances_friction')">לפעמים חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_finances_friction')">הרבה חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_finances_friction')">תמיד מריבה</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_tech_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="area_vacation" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">חופשות וטיולים - איך לדעתך מתנהלות החלטות סביב טיולים של הילדים ונסיעות עם הילדים?</label>
-                            <input type="hidden" id="3_vacation_quality" name="3_vacation_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_vacation_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_vacation_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_vacation_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_vacation_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_vacation_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_vacation_friction" name="3_vacation_friction" value="">
+                                </div>
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="בריאות וצרכים מיוחדים" onchange="toggleFrictionArea('special')"> בריאות וצרכים מיוחדים</label>
+                            <div id="friction_special" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                <label class="block font-semibold text-sm">בריאות וצרכים מיוחדים — עד כמה זה מתנהל בצורה טובה?</label>
+                                <input type="hidden" id="3_special_quality" name="3_special_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_vacation_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_vacation_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_vacation_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_vacation_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_vacation_friction')">תמיד מריבה</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_special_quality')">מצוין</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_special_quality')">טוב</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_special_quality')">בינוני</button>
+                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_special_quality')">לא טוב</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_special_quality')">גרוע</button>
+                                </div>
+                                <div class="pt-2 space-y-2">
+                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
+                                    <input type="hidden" id="3_special_friction" name="3_special_friction" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_special_friction')">מסתדרים מצוין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_special_friction')">מסתדרים</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_special_friction')">לפעמים חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_special_friction')">הרבה חיכוכים</button>
+                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_special_friction')">תמיד מריבה</button>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_vacation_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                        </div>
-
-                        <div id="area_professional" class="logic-box space-y-4 bg-indigo-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">תמיכה מקצועית - איך לדעתך מתנהלות החלטות סביב פנייה לגורמי תמיכה מקצועיים?</label>
-                            <input type="hidden" id="3_professional_quality" name="3_professional_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_professional_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_professional_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_professional_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_professional_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_professional_quality')">גרוע</button>
-                            </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="3_professional_friction" name="3_professional_friction" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_professional_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_professional_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_professional_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_professional_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_professional_friction')">תמיד מריבה</button>
                                 </div>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שגרם לחיכוך (אופציונלי):</label>
-                                <textarea name="3_professional_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 3.3 סיכום -->
+                    <!-- 3.2 Worst area follow-up -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.3</span>סיכום</label>
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.2</span>המקרה המתסכל ביותר</label>
+                        <div class="bg-gray-50 p-5 rounded-2xl space-y-4">
                             <div>
-                                <label class="text-sm font-semibold">מהי תדירות החיכוכים בקבלת החלטות בכל התחומים ביחד:</label>
-                                <select name="3.3_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
-                                    <option value="">בחר/י...</option>
-                                    <option value="יומית">יומית</option>
-                                    <option value="שבועית">שבועית</option>
-                                    <option value="חודשית">חודשית</option>
-                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
-                                </select>
+                                <div class="flex justify-between items-center mb-1">
+                                    <label class="text-sm font-semibold">תן דוגמה מהתחום שהכי מתסכל אותך (אופציונלי):</label>
+                                    <button type="button" onclick="startSTT('3_worst_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                    </button>
+                                </div>
+                                <textarea id="3_worst_example" name="3_worst_example" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm font-semibold">האם קורה שלא מתקבלת החלטה בגלל חיכוך?</label>
-                                <div class="flex gap-4 mt-2">
-                                    <label class="flex items-center gap-1"><input type="radio" name="3.3_no_decision" value="כן"> כן</label>
-                                    <label class="flex items-center gap-1"><input type="radio" name="3.3_no_decision" value="לא"> לא</label>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold">האם קורה שדברים לא מתבצעים בגלל חיכוך?</label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="כן"> כן</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="לא"> לא</label>
                                 </div>
                             </div>
                         </div>
@@ -740,265 +464,171 @@
                 </div>
             </div>
 
-            <!-- STEP 4: ניהול כספים -->
+            <!-- STEP 4: בדיקת הצורך -->
             <div class="step" id="step4">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: ניהול כספים</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחלק זה נשאל על ניהול ההוצאות המשותפות — המנגנון, הכלים, והעומס הרגשי הנלווה.</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: בדיקת הצורך</h1>
+                    <p class="text-sm text-gray-500 mt-1">ללא קשר לכלי ספציפי — נבין מה היה עוזר</p>
                 </div>
 
-                <div class="space-y-10">
-                    <!-- 4.1 ניהול הוצאות שוטפות -->
+                <div class="space-y-8">
+                    <!-- 4.1 Tool limitations -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.1</span>ניהול הוצאות שוטפות</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.1</span>כלים קיימים</label>
 
-                        <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
-                            <label class="block font-semibold text-sm">איך לדעתך עובד ביניכם ניהול הוצאות שוטפות של הילדים?</label>
-                            <input type="hidden" id="4.1_expenses_quality" name="4.1_expenses_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'4.1_expenses_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'4.1_expenses_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'4.1_expenses_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'4.1_expenses_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'4.1_expenses_quality')">גרוע</button>
+                        <div class="space-y-3">
+                            <label class="block font-semibold">מהם הכלים שאתם משתמשים בהם לתקשורת?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="toggle-btns">
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','וואטסאפ')">וואטסאפ</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','אימייל')">אימייל</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','טלפון')">טלפון</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','לוח שנה משותף')">לוח שנה משותף</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','אחר')">אחר</button>
                             </div>
-                            <div class="pt-3 space-y-3">
-                                <label class="text-sm">עד כמה זה גורם לכם לחיכוכים?</label>
-                                <input type="hidden" id="4.1_expenses_friction" name="4.1_expenses_friction" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'4.1_expenses_friction')">מסתדרים מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'4.1_expenses_friction')">מסתדרים</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'4.1_expenses_friction')">לפעמים חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'4.1_expenses_friction')">הרבה חיכוכים</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'4.1_expenses_friction')">תמיד מריבה</button>
+                            <input type="hidden" name="4_tools" value="">
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center">
+                                <label class="block font-semibold">מה הכי חסר לך בכלים הקיימים? (אופציונלי)</label>
+                                <button type="button" onclick="startSTT('4_tools_missing', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                </button>
+                            </div>
+                            <textarea id="4_tools_missing" name="4_tools_missing" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- 4.2 Neutral helper -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.2</span>גורם ניטרלי</label>
+                        <div class="flex justify-between items-center">
+                            <label class="block font-semibold">אילו בעיות היית הכי רוצה שגורם ניטרלי יפתור עבורך? (אופציונלי)</label>
+                            <button type="button" onclick="startSTT('4_neutral_helper', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                            </button>
+                        </div>
+                        <textarea id="4_neutral_helper" name="4_neutral_helper" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+
+                    <!-- 4.3 Barriers -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.3</span>חסמים</label>
+                        <div class="space-y-3">
+                            <label class="block font-semibold">מה היה מונע ממך להשתמש בכלי דיגיטלי לניהול ההורות?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="toggle-btns">
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','מורכבות טכנית')">מורכבות טכנית</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','חשש שהצד השני לא ישתף פעולה')">חשש שהצד השני לא ישתף פעולה</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','חשיפת מידע פרטי')">חשיפת מידע פרטי</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','עלות')">עלות</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','חוסר אמון בגורם חיצוני')">חוסר אמון בגורם חיצוני</button>
+                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_barriers','אחר')">אחר</button>
+                            </div>
+                            <input type="hidden" name="4_barriers" value="">
+                        </div>
+                    </div>
+
+                    <!-- 4.4 WTP accordion -->
+                    <div class="border border-gray-200 rounded-2xl overflow-hidden">
+                        <div class="accordion-header bg-gray-50 p-4 flex justify-between items-center" onclick="toggleAccordionWTP()">
+                            <span class="font-semibold text-gray-700">נכונות לשלם (אופציונלי)</span>
+                            <svg id="accordionWTPIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                        <div id="accordionWTPBody" class="accordion-body p-5 space-y-4 border-t border-gray-200">
+                            <div class="space-y-2">
+                                <label class="block font-semibold">אם היה כלי שבאמת עוזר — האם היית מוכנ/ה לשלם?</label>
+                                <div class="flex gap-6">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4_wtp" value="כן" onchange="toggleWTPRange()"> כן</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4_wtp" value="לא" onchange="toggleWTPRange()"> לא</label>
                                 </div>
                             </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תדירות החיכוכים בגלל זה:</label>
-                                <select name="4.1_expenses_friction_freq" class="w-full p-2 border rounded-lg text-sm mt-1">
-                                    <option value="">בחר/י...</option>
-                                    <option value="יומית">יומית</option>
-                                    <option value="שבועית">שבועית</option>
-                                    <option value="חודשית">חודשית</option>
-                                    <option value="כל כמה חודשים">כל כמה חודשים</option>
-                                </select>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm">תן דוגמה למקרה מהחודשים האחרונים שהיה מתסכל (אופציונלי):</label>
-                                <textarea name="4.1_expenses_example" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                            </div>
-                            <div class="pt-3">
-                                <label class="text-sm font-semibold">האם קרה שלא קיבלת החזר בגלל חיכוך כזה?</label>
-                                <div class="flex gap-6 mt-2">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.1_no_refund" value="כן"> כן</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="4.1_no_refund" value="לא"> לא</label>
+                            <div id="logicWTPRange" class="logic-box space-y-2">
+                                <label class="block text-sm font-bold">כמה היית מוכנ/ה לשלם?</label>
+                                <div class="space-y-1">
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="4_wtp_range" value="עד ₪20/חודש"> עד ₪20/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="4_wtp_range" value="₪20–50/חודש"> ₪20–50/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="4_wtp_range" value="₪50–100/חודש"> ₪50–100/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="4_wtp_range" value="מעל ₪100/חודש"> מעל ₪100/חודש</label>
+                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="4_wtp_range" value="תשלום חד-פעמי"> תשלום חד-פעמי</label>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- 4.2 אחר -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.2</span>אחר</label>
-                        <label class="block font-semibold">האם יש קשיים אחרים בניהול הכספים ביניכם?</label>
-                        <textarea name="4.2_other_difficulties" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="אופציונלי..."></textarea>
-                    </div>
-
-                    <!-- 4.3 כלי תקשורת -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.3</span>כלי תקשורת להוצאות</label>
-                        <label class="block font-semibold">באיזה כלי או כלים אתם משתמשים כדי לתקשר את ההוצאות וההחזרים?</label>
-                        <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
-                        <div class="toggle-btns">
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','אקסל משותף')">אקסל משותף</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','לי יש אקסל שלי')">לי יש אקסל שלי</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','חשבון בנק משותף')">חשבון בנק משותף</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','וואטסאפ')">וואטסאפ</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','כלי אחר');toggle43ToolDetail()">כלי אחר</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.3_expense_tools','יש לנו שיטה משלנו');toggle43ToolDetail()">יש לנו שיטה משלנו</button>
-                        </div>
-                        <input type="hidden" name="4.3_expense_tools" value="">
-                        <div class="pt-3 space-y-3">
-                            <label class="text-sm font-semibold">עד כמה הכלי/ים עובדים טוב עבורך?</label>
-                            <input type="hidden" id="4.3_tools_quality" name="4.3_tools_quality" value="">
-                            <div class="scale-btns">
-                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'4.3_tools_quality')">מצוין</button>
-                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'4.3_tools_quality')">טוב</button>
-                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'4.3_tools_quality')">בינוני</button>
-                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'4.3_tools_quality')">לא טוב</button>
-                                <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'4.3_tools_quality')">גרוע</button>
-                            </div>
-                        </div>
-                        <div id="logicBox43ToolDetail" class="logic-box">
-                            <label class="text-sm">פרט/י:</label>
-                            <textarea name="4.3_expense_tools_detail" data-optional="true" class="w-full border rounded-xl p-3 h-20 mt-1 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- 4.4 תחושות -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.4</span>תחושות</label>
-                        <label class="block font-semibold">מה החלק שמעמיס רגשית בנושאים הכספיים?</label>
-                        <p class="text-xs text-gray-400">(ניתן לבחור יותר מאחת)</p>
-                        <div class="toggle-btns">
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.4_emotional_load','חוסר הוגנות')">תחושת חוסר הוגנות</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.4_emotional_load','רדיפה אחרי כסף')">צורך לרדוף אחרי כסף</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.4_emotional_load','ויכוחים על הוצאות')">ויכוחים על "מה נחשב הוצאה לגיטימית"</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.4_emotional_load','חוסר שקיפות')">חוסר שקיפות</button>
-                            <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4.4_emotional_load','אחר');toggle44Other()">אחר</button>
-                        </div>
-                        <input type="hidden" name="4.4_emotional_load" value="">
-                        <input type="text" id="4.4_emotional_other" name="4.4_emotional_load_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
-                    </div>
-
                 </div>
 
                 <div class="pt-10 flex justify-between">
-                    <button type="button" onclick="goToStep(3)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 3</button>
+                    <button type="button" onclick="handleStep4Back()" class="text-indigo-600 font-bold px-8 py-3">חזרה</button>
                     <button type="button" onclick="goToStep(5)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 5</button>
                 </div>
             </div>
 
-            <!-- STEP 5: בדיקת הצורך -->
+            <!-- STEP 5: סיום -->
             <div class="step" id="step5">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 5: בדיקת הצורך</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחלק זה נחקור אם קיים צורך בפתרון שיסייע לכם לנהל את ההורות המשותפת — ללא קשר לכלי ספציפי.</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 5: סיום</h1>
+                    <p class="text-sm text-gray-500 mt-1">כמעט סיימנו</p>
                 </div>
 
-                <div class="space-y-10">
-                    <!-- 5.1 -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold"><span class="section-tag ml-2">5.1</span>גורם ניטרלי מתווך</label>
-                        <p class="text-sm text-gray-500">תדמיין/תדמייני שיש גורם, ניטרלי - יכול להיות כלי דיגיטלי, יכול להיות אדם, שעוזר לכם לתאם ולתקשר בצורה יותר חלקה.</p>
-                        <div class="flex justify-between items-center">
-                            <label class="text-sm font-bold">מה מתוך כל הבעיות שציינת בניהול הילדים וההוצאות הכי היית רוצה שהגורם הזה יעזור לך בהן?</label>
-                            <button type="button" onclick="startSTT('5.1_important', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
+                <div class="space-y-6">
+                    <!-- Other parent filled -->
+                    <div class="space-y-3">
+                        <label class="block font-semibold">האם ההורה האחר מילא את השאלון גם כן?</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5_other_filled" value="כן" onchange="toggle5OtherId()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5_other_filled" value="לא" onchange="toggle5OtherId()"> לא</label>
                         </div>
-                        <textarea id="5.1_important" name="5.1_important" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                        <div id="logicBox5OtherId" class="logic-box">
+                            <label class="text-sm font-bold block mb-1">מה מספר השאלון שלו/שלה?</label>
+                            <input type="text" name="5_other_survey_id" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="לדוגמה: 42B">
+                        </div>
                     </div>
 
-                    <!-- 5.2 -->
-                    <div class="space-y-6">
-                        <label class="block font-semibold"><span class="section-tag ml-2">5.2</span>אם היה כלי דיגיטלי שנותן לך בדיוק את העזרה הזו:</label>
-
-                        <!-- Free tool barriers -->
-                        <div class="space-y-3">
-                            <p class="text-sm font-bold text-gray-700">נניח שהוא חינמי:</p>
-                            <label class="block text-sm">מה היה גורם לך לא להשתמש בכלי כזה? מה היה מרתיע אותך?</label>
-                            <div class="space-y-2">
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="מורכבות טכנית"> מורכבות טכנית</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="צד שני לא ישתף פעולה"> חשש שהצד השני לא ישתף פעולה</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="חשיפת מידע"> חשש מחשיפת מידע פרטי</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="חוסר אמון"> חוסר אמון בגורם חיצוני</label>
-                                <label class="flex items-center gap-2"><input type="checkbox" name="5.2_barriers" value="אחר" onchange="document.getElementById('5.2_other').style.display=this.checked?'block':'none'"> אחר</label>
-                            </div>
-                            <input type="text" id="5.2_other" name="5.2_barriers_other" class="w-full p-2 border rounded-lg text-sm" placeholder="פרט/י..." style="display:none">
+                    <!-- Contact consent -->
+                    <div class="space-y-3">
+                        <label class="block font-semibold">האם תהיה/תהיי מוכנ/ה שניצור איתך קשר לשאלות נוספות?</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5_contact_ok" value="כן" onchange="toggle5Contact()"> כן</label>
+                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5_contact_ok" value="לא" onchange="toggle5Contact()"> לא</label>
                         </div>
-
-                        <!-- Paid tool -->
-                        <div class="space-y-4 pt-4 border-t border-gray-200">
-                            <p class="text-sm font-bold text-gray-700">ואם הוא לא חינמי:</p>
-                            <div class="space-y-2">
-                                <label class="block text-sm">האם היית מוכנ/ה לשלם עליו?</label>
-                                <div class="flex gap-6">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.2_willing_to_pay" value="כן" onchange="toggle52Payment()"> כן</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="5.2_willing_to_pay" value="לא" onchange="toggle52Payment()"> לא</label>
-                                </div>
-                            </div>
-
-                            <div id="logicBox52yes" class="logic-box space-y-2">
-                                <label class="text-sm font-bold">בערך כמה ליכולת התשלום שלך נראה סביר?</label>
-                                <div class="space-y-1">
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="עד 20"> עד ₪20/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="20-50"> ₪20-50/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="50-100"> ₪50-100/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="100+"> מעל ₪100/חודש</label>
-                                    <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_price_range" value="חד פעמי"> תשלום חד-פעמי, לא מנוי</label>
-                                </div>
-                            </div>
-
-                            <div class="pt-4 space-y-4">
+                        <div id="logicBox5Contact" class="logic-box space-y-4">
+                            <label class="block text-sm font-bold">איך נוכל ליצור איתך קשר?</label>
+                            <div class="space-y-3">
                                 <div>
-                                    <label class="text-sm font-bold block mb-2">מהיכרותך עם ההורה האחר, האם הוא/היא יהיה/תהיה מוכנ/ה להשתמש בכלי כזה ולשלם עליו?</label>
-                                    <select name="5.2_other_willing_pay" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500">
-                                        <option value="">בחר/י...</option>
-                                        <option value="לא לשניהם">לא להשתמש ולא לשלם</option>
-                                        <option value="להשתמש אבל לא לשלם">להשתמש אבל לא לשלם</option>
-                                        <option value="להשתמש ולשלם">להשתמש וגם לשלם</option>
-                                    </select>
+                                    <label class="flex items-center gap-2 mb-1">
+                                        <input type="checkbox" id="contact_phone_cb" onchange="toggle5ContactField('phone')"> טלפון
+                                    </label>
+                                    <div id="contact_phone_field" class="logic-box">
+                                        <input type="tel" name="5_contact_phone" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="050-1234567">
+                                    </div>
                                 </div>
                                 <div>
-                                    <label class="text-sm font-bold block mb-2">האם תהיה/תהיי מוכן/מוכנה לשלם אם ההורה האחר לא ישלם? (את אותו סכום שציינת למעלה)</label>
-                                    <div class="flex flex-wrap gap-4">
-                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_pay_alone" value="כן"> כן</label>
-                                        <label class="flex items-center gap-2 text-sm"><input type="radio" name="5.2_pay_alone" value="לא"> לא</label>
+                                    <label class="flex items-center gap-2 mb-1">
+                                        <input type="checkbox" id="contact_email_cb" onchange="toggle5ContactField('email')"> אימייל
+                                    </label>
+                                    <div id="contact_email_field" class="logic-box">
+                                        <input type="email" name="5_contact_email" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="email@example.com">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Free notes -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <label class="block font-semibold">הערות חופשיות (אופציונלי):</label>
+                            <button type="button" onclick="startSTT('5_free_notes', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                            </button>
+                        </div>
+                        <textarea id="5_free_notes" name="5_free_notes" data-optional="true" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="הערות חופשיות..."></textarea>
+                    </div>
                 </div>
 
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(4)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 4</button>
-                    <button type="button" onclick="goToStep(6)" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 6</button>
-                </div>
-            </div>
-
-            <!-- STEP 6: סיום -->
-            <div class="step" id="step6">
-                <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 6: סיום וסיכום</h1>
-                </div>
-
-                <div class="space-y-6">
-                    <div class="space-y-4">
-                        <label class="block font-semibold">האם ההורה האחר מילא את השאלון גם כן (עד כמה שאת/ה יודע/ת)?</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6_other_filled" value="כן" onchange="toggle6OtherId()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6_other_filled" value="לא" onchange="toggle6OtherId()"> לא</label>
-                        </div>
-                        <div id="logicBox6OtherId" class="logic-box">
-                            <label class="text-sm font-bold block mb-1">מה מספר השאלון שלו/שלה?</label>
-                            <input type="text" name="6_other_survey_id" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="לדוגמה: 42B — השאר/י ריק אם לא ידוע">
-                        </div>
-                    </div>
-
-                    <div class="space-y-4">
-                        <label class="block font-semibold">האם יהיה בסדר אם ניצור איתך קשר לשאלות הבהרה או כדי שתוכל/י לנסות את המוצר שנפתח על בסיס השאלון הזה?</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6_contact_ok" value="כן" onchange="toggle6Contact()"> כן</label>
-                            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="6_contact_ok" value="לא" onchange="toggle6Contact()"> לא</label>
-                        </div>
-                        <div id="logicBox6Contact" class="logic-box space-y-3">
-                            <label class="text-sm font-bold block">איך נוכל ליצור איתך קשר?</label>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="text-sm text-gray-600 block mb-1">טלפון</label>
-                                    <input type="tel" name="6_contact_phone" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="050-1234567">
-                                </div>
-                                <div>
-                                    <label class="text-sm text-gray-600 block mb-1">אימייל</label>
-                                    <input type="email" name="6_contact_email" data-optional="true" class="w-full p-2 border rounded-lg text-sm" placeholder="email@example.com">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center">
-                        <label class="block font-semibold">תודה רבה שחלקת איתי. יש עוד משהו חשוב שלא שאלתי עליו?</label>
-                        <button type="button" onclick="startSTT('6_final_notes', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                        </button>
-                    </div>
-                    <textarea id="6_final_notes" name="6_final_notes" data-optional="true" class="w-full border rounded-xl p-3 h-32 outline-none focus:ring-2 focus:ring-indigo-500" placeholder="הערות חופשיות..."></textarea>
-                </div>
-
-                <div class="pt-10 flex justify-between">
-                    <button type="button" onclick="goToStep(5)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 5</button>
                     <button type="button" onclick="submitSurvey()" id="submitBtn" class="bg-green-600 text-white px-10 py-3 rounded-full font-bold hover:bg-green-700 shadow-xl transition-all">שליחה</button>
                 </div>
             </div>
@@ -1027,7 +657,6 @@
                 btn.style.display = isDesktop ? '' : 'none';
             });
         }
-        // Run on load and resize
         showMicButtonsOnDesktop();
         window.addEventListener('resize', showMicButtonsOnDesktop);
 
@@ -1075,130 +704,10 @@
         // Navigation
         function goToStep(step) {
             document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            const targetStep = document.getElementById('step' + step);
-            targetStep.classList.add('active');
-            const stepMap = {0:0, 1:14, 2:28, 3:42, 4:56, 5:70, 6:85};
+            document.getElementById('step' + step).classList.add('active');
+            const stepMap = {0: 0, 1: 16, 2: 32, 3: 48, 4: 64, 5: 85};
             document.getElementById('progressBar').style.width = (stepMap[step] || 0) + '%';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // Chapter 1 conditional logic
-        function syncLogic() {
-            const comm = parseInt(document.getElementById('1.2_comm').value);
-            const org = parseInt(document.getElementById('1.2_org').value);
-            const logicBoxA = document.getElementById('logicBoxA');
-            const logicBoxB = document.getElementById('logicBoxB');
-
-            if (comm >= 4 || org >= 4) {
-                logicBoxA.classList.add('visible');
-            } else {
-                logicBoxA.classList.remove('visible');
-                logicBoxB.classList.remove('visible');
-            }
-
-            const emotionalEvent = document.querySelector('input[name="1.2_emotional_event"]:checked');
-            if ((comm >= 4 || org >= 4) && emotionalEvent) {
-                if (emotionalEvent.value === 'כן') {
-                    logicBoxB.classList.add('visible');
-                } else {
-                    logicBoxB.classList.remove('visible');
-                }
-            }
-        }
-
-        function toggle2Task(key) {
-            const valueMap = { transport: 'הסעות', medical: 'ביקורים רפואיים', school: 'אספות בית ספר', activities: 'חוגים ופעילויות' };
-            const checked = document.querySelector(`input[name="2.2_tasks"][value="${valueMap[key]}"]:checked`);
-            const div = document.getElementById('task_' + key);
-            if (div) div.classList.toggle('visible', !!checked);
-        }
-        function toggle2Schedule(key) {
-            const valueMap = { holidays: 'חגים ומועדים', family: 'אירועים משפחתיים', work: 'נסיעות עבודה', vacations: 'חופשות' };
-            const checked = document.querySelector(`input[name="2.3_schedule"][value="${valueMap[key]}"]:checked`);
-            const div = document.getElementById('schedule_' + key);
-            if (div) div.classList.toggle('visible', !!checked);
-        }
-        // Chapter 2 area toggles
-        function toggle3Area(area) {
-            const checkbox = document.querySelector(`input[name="3.2_areas"][value="${getAreaValue(area)}"]:checked`);
-            const areaDiv = document.getElementById('area_' + area);
-            if (areaDiv) {
-                areaDiv.classList.toggle('visible', !!checkbox);
-            }
-        }
-        function getAreaValue(area) {
-            const mapping = {
-                'health': 'בריאות',
-                'education': 'חינוך',
-                'social': 'חברתי',
-                'tech': 'טכנולוגיה',
-                'vacation': 'חופשות',
-                'professional': 'תמיכה מקצועית'
-            };
-            return mapping[area] || area;
-        }
-
-        // Toggle button multi-select
-        function toggleMulti(btn, fieldName, value) {
-            btn.classList.toggle('selected');
-            // Collect all selected values
-            const container = btn.parentElement;
-            const selectedValues = [];
-            container.querySelectorAll('.toggle-btn.selected').forEach(b => {
-                // Extract value from onclick attribute or data
-                const onclickAttr = b.getAttribute('onclick');
-                const match = onclickAttr.match(/toggleMulti\(this,'[^']+','([^']+)'\)/);
-                if (match) selectedValues.push(match[1]);
-            });
-            // Update hidden input
-            const hiddenInput = document.querySelector(`input[type="hidden"][name="${fieldName}"]`);
-            if (hiddenInput) {
-                hiddenInput.value = selectedValues.join(', ');
-            }
-        }
-
-        // Chapter 4 conditionals
-        function toggle43ToolDetail() {
-            const container = document.querySelector('.toggle-btns');
-            const btns = container ? container.querySelectorAll('.toggle-btn') : [];
-            let showDetail = false;
-            btns.forEach(btn => {
-                const onclick = btn.getAttribute('onclick');
-                if ((onclick.includes("'כלי אחר'") || onclick.includes("'יש לנו שיטה משלנו'")) && btn.classList.contains('selected')) {
-                    showDetail = true;
-                }
-            });
-            document.getElementById('logicBox43ToolDetail').classList.toggle('visible', showDetail);
-        }
-
-        function toggle44Other() {
-            const container = document.querySelectorAll('.toggle-btns')[1]; // Second toggle-btns is 4.4
-            let showOther = false;
-            if (container) {
-                container.querySelectorAll('.toggle-btn').forEach(btn => {
-                    if (btn.getAttribute('onclick').includes("'אחר'") && btn.classList.contains('selected')) {
-                        showOther = true;
-                    }
-                });
-            }
-            document.getElementById('4.4_emotional_other').style.display = showOther ? 'block' : 'none';
-        }
-
-        // Chapter 6 other parent ID and contact
-        function toggle6OtherId() {
-            const val = document.querySelector('input[name="6_other_filled"]:checked');
-            document.getElementById('logicBox6OtherId').classList.toggle('visible', val && val.value === 'כן');
-        }
-
-        function toggle6Contact() {
-            const val = document.querySelector('input[name="6_contact_ok"]:checked');
-            document.getElementById('logicBox6Contact').classList.toggle('visible', val && val.value === 'כן');
-        }
-
-        // Chapter 5 payment conditional
-        function toggle52Payment() {
-            const val = document.querySelector('input[name="5.2_willing_to_pay"]:checked');
-            document.getElementById('logicBox52yes').classList.toggle('visible', val && val.value === 'כן');
         }
 
         // Scale button selection
@@ -1207,56 +716,109 @@
             container.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
             document.getElementById(inputId).value = btn.dataset.value;
-            // Trigger syncLogic if this is a 1.2 field
-            if (inputId === '1.2_comm' || inputId === '1.2_org') {
-                syncLogic();
-            }
-            // Toggle section 1.3 visibility based on tension values
-            if (inputId === '1.2_tension_emotional' || inputId === '1.2_tension_organizational') {
-                toggle13Visibility();
+        }
+
+        // Toggle button multi-select
+        function toggleMulti(btn, fieldName, value) {
+            btn.classList.toggle('selected');
+            const container = btn.parentElement;
+            const selectedValues = [];
+            container.querySelectorAll('.toggle-btn.selected').forEach(b => {
+                const onclickAttr = b.getAttribute('onclick');
+                const match = onclickAttr.match(/toggleMulti\(this,'[^']+','([^']+)'\)/);
+                if (match) selectedValues.push(match[1]);
+            });
+            const hiddenInput = document.querySelector(`input[type="hidden"][name="${fieldName}"]`);
+            if (hiddenInput) {
+                hiddenInput.value = selectedValues.join(', ');
             }
         }
 
-        // Show/hide section 1.3 based on tension values
-        function toggle13Visibility() {
-            const emotional = document.getElementById('1.2_tension_emotional').value;
-            const organizational = document.getElementById('1.2_tension_organizational').value;
-            const hasTension = (parseInt(emotional) > 1) || (parseInt(organizational) > 1);
-            document.getElementById('section13').classList.toggle('visible', hasTension);
+        // Safety signal: single-select toggle buttons
+        function selectSafety(btn, value) {
+            btn.closest('.toggle-btns').querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('2.1_safety').value = value;
+            const isNo = value === 'לא';
+            document.getElementById('logicSafetyNo').classList.toggle('visible', isNo);
+            document.getElementById('safetyFlagInput').value = isNo ? 'כן' : '';
         }
 
-        // Check if there's tension before proceeding to step 2
-        function handleStep1Continue() {
-            const emotional = document.getElementById('1.2_tension_emotional').value;
-            const organizational = document.getElementById('1.2_tension_organizational').value;
-            const hasTension = (parseInt(emotional) > 1) || (parseInt(organizational) > 1);
+        // Step 2 continue — route based on safety flag
+        function handleStep2Continue() {
+            const flag = document.getElementById('safetyFlagInput').value;
+            if (flag === 'כן') {
+                goToStep(4);
+            } else {
+                goToStep(3);
+            }
+        }
 
-            if (hasTension) {
+        // Step 4 back — go to 3 normally, but if safety-flagged came from 2
+        function handleStep4Back() {
+            const flag = document.getElementById('safetyFlagInput').value;
+            if (flag === 'כן') {
                 goToStep(2);
             } else {
-                document.getElementById('noTensionPopup').style.display = 'flex';
+                goToStep(3);
             }
         }
 
-        // Exit survey - go to last part (6)
-        function exitSurvey() {
-            document.getElementById('noTensionPopup').style.display = 'none';
-            goToStep(6);
+        // Legal box toggle
+        function toggleLegalBox() {
+            const val = document.querySelector('input[name="2.3_legal"]:checked');
+            document.getElementById('logicLegal').classList.toggle('visible', val && val.value === 'כן');
         }
 
-        // Close popup and continue to step 2
-        function closePopupAndContinue() {
-            document.getElementById('noTensionPopup').style.display = 'none';
-            goToStep(2);
+        // Friction area toggles (step 3)
+        function toggleFrictionArea(key) {
+            const keyValueMap = {
+                routine: 'שגרה ומטלות',
+                schedule: 'שינויי לו"ז',
+                decisions: 'קבלת החלטות',
+                finances: 'ניהול כספים והוצאות',
+                special: 'בריאות וצרכים מיוחדים'
+            };
+            const val = keyValueMap[key];
+            let checked = false;
+            document.querySelectorAll('input[name="3.1_areas"]').forEach(cb => {
+                if (cb.value === val && cb.checked) checked = true;
+            });
+            const div = document.getElementById('friction_' + key);
+            if (div) div.classList.toggle('visible', checked);
         }
 
-        // Close popup and let user edit
-        function closePopupAndEdit() {
-            document.getElementById('noTensionPopup').style.display = 'none';
-            // Scroll to the tension questions
-            document.querySelector('[id="1.2_tension_emotional"]').closest('.grid').scrollIntoView({ behavior: 'smooth' });
+        // WTP accordion
+        function toggleAccordionWTP() {
+            const body = document.getElementById('accordionWTPBody');
+            const icon = document.getElementById('accordionWTPIcon');
+            body.classList.toggle('open');
+            icon.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : '';
         }
 
+        // WTP range show/hide
+        function toggleWTPRange() {
+            const val = document.querySelector('input[name="4_wtp"]:checked');
+            document.getElementById('logicWTPRange').classList.toggle('visible', val && val.value === 'כן');
+        }
+
+        // Step 5: other parent survey ID
+        function toggle5OtherId() {
+            const val = document.querySelector('input[name="5_other_filled"]:checked');
+            document.getElementById('logicBox5OtherId').classList.toggle('visible', val && val.value === 'כן');
+        }
+
+        // Step 5: contact consent
+        function toggle5Contact() {
+            const val = document.querySelector('input[name="5_contact_ok"]:checked');
+            document.getElementById('logicBox5Contact').classList.toggle('visible', val && val.value === 'כן');
+        }
+
+        // Step 5: individual contact fields
+        function toggle5ContactField(type) {
+            const cb = document.getElementById('contact_' + type + '_cb');
+            document.getElementById('contact_' + type + '_field').classList.toggle('visible', cb.checked);
+        }
     </script>
 </body>
 </html>
