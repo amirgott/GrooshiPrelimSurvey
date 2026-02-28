@@ -33,6 +33,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 
 ### Safety-critical / Coercive Control `[exclusive]`
 
+Respondent does not feel safe communicating with the other parent — threats, aggression, or coercive control patterns present. Step 3 is skipped; read need signal only. Assign no other segment.
+
 | | |
 |-|-|
 | **Decisive** | `2.1_safety` == `"לא"` (respondent does not feel safe) |
@@ -42,6 +44,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 ---
 
 ### High-conflict / Court-adjacent
+
+Active legal proceedings combined with very poor communication and high tension. The dynamic is adversarial, not merely difficult — conflict has entered institutional channels.
 
 | | |
 |-|-|
@@ -53,6 +57,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 
 ### Angry Associates
 
+Moderate-to-high conflict without active litigation. Communication is poor and tension elevated, but the situation has not escalated to court.
+
 | | |
 |-|-|
 | **Decisive** | `2.2_comm_quality` ≤ 2 AND `tension_max` in 2–3 AND `2.3_legal` != `"כן"` |
@@ -62,6 +68,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 ---
 
 ### Cooperative Colleagues
+
+Good communication and low tension despite real operational friction. Logistics are hard because of coordination volume with young kids, not because of interpersonal conflict.
 
 | | |
 |-|-|
@@ -73,6 +81,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 
 ### Boundary-first / Parallel Parents
 
+Low conflict achieved by minimizing contact surfaces. Few friction areas because they have structurally reduced interaction — not because co-parenting is inherently smooth.
+
 | | |
 |-|-|
 | **Decisive** | `2.2_comm_quality` in 2–3 AND `tension_max` ≤ 2 AND `friction_area_count` ≤ 1 |
@@ -82,6 +92,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 ---
 
 ### Financially-stressed `[combinable]`
+
+Financial management and expense transparency are the dominant friction source. Frequently overlaps with other conflict segments as a secondary dimension.
 
 | | |
 |-|-|
@@ -93,6 +105,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 
 ### Complex-care Coordinators `[combinable]`
 
+Medical, therapeutic, or special-needs coordination adds a layer of complexity beyond ordinary logistics. Often present alongside another primary segment.
+
 | | |
 |-|-|
 | **Decisive** | `3.1_areas` includes `"בריאות וצרכים מיוחדים"` AND `3_special_quality` ≤ 2 |
@@ -103,6 +117,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 
 ### Distance / Relocation `[combinable]`
 
+Geographic separation structurally amplifies logistics and scheduling friction regardless of conflict level. Lowers thresholds for other segment criteria.
+
 | | |
 |-|-|
 | **Decisive** | `1.1_distance` == `"עיר אחרת"` or `"חו"ל"` |
@@ -112,6 +128,8 @@ Segments marked **[exclusive]** block all others if assigned. Segments marked **
 ---
 
 ### Blended-family / New Partners `[combinable]`
+
+New romantic partners on either side introduce schedule complexity and decision-making friction beyond the original co-parenting dynamic. Almost always secondary.
 
 | | |
 |-|-|
