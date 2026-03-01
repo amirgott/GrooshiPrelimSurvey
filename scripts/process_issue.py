@@ -237,6 +237,12 @@ document.addEventListener('DOMContentLoaded', function() {{
             if (m && vals.includes(m[1])) btn.classList.add('selected');
           }}
         }});
+        // selectSafety single-select buttons: matched by value in onclick
+        document.querySelectorAll('.toggle-btn').forEach(btn => {{
+          const oc = btn.getAttribute('onclick') || '';
+          const m = oc.match(/selectSafety\(this,\s*'([^']+)'\)/);
+          if (m && m[1] === value) btn.classList.add('selected');
+        }});
       }}
     }}
   }}
