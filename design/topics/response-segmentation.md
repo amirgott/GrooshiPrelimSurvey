@@ -25,6 +25,8 @@ If step 3 was skipped (safety routing): treat `friction_area_count` as 0 and all
 
 ## Step 2 — Evaluate segments
 
+> **Scale note:** `2.2_comm_quality` raw values run 1 (cooperative/respectful) → 5 (very conflictual). Thresholds below use this same direction: higher raw value = worse communication.
+
 Evaluate each segment independently. Assign the best-fit **primary** segment; assign a **second** only when evidence is clearly split. Maximum two segments in output.
 
 Segments marked **[exclusive]** block all others if assigned. Segments marked **[combinable]** are typically secondary.
@@ -49,7 +51,7 @@ Active legal proceedings combined with very poor communication and high tension.
 
 | | |
 |-|-|
-| **Decisive** | `2.3_legal` == `"כן"` AND `2.2_comm_quality` ≤ 2 AND `tension_max` ≥ 3 |
+| **Decisive** | `2.3_legal` == `"כן"` AND `2.2_comm_quality` ≥ 4 AND `tension_max` ≥ 3 |
 | **Supporting** | `friction_quality_min` == 1 · `2.3_legal_type` includes `"משמורת"` · `tension_type` == `"emotional"` · `3_tasks_not_done` == `"כן"` |
 | **Notes** | `2.3_legal_type` == `"מזונות"` alone (no custody/property dispute) does not trigger this segment — route to Financially-stressed instead. `age_oldest` ≥ 15 + `"משמורת"` strengthens read. |
 
@@ -61,7 +63,7 @@ Moderate-to-high conflict without active litigation. Communication is poor and t
 
 | | |
 |-|-|
-| **Decisive** | `2.2_comm_quality` ≤ 2 AND `tension_max` in 2–3 AND `2.3_legal` != `"כן"` |
+| **Decisive** | `2.2_comm_quality` ≥ 4 AND `tension_max` in 2–3 AND `2.3_legal` != `"כן"` |
 | **Supporting** | `friction_area_count` ≥ 2 · `3_decisions_friction` or `3_schedule_friction` elevated · `tension_type` == `"emotional"` · `3_tasks_not_done` == `"כן"` |
 | **Notes** | If `2.3_legal` == `"כן"` but `tension_max` < 3, still consider this segment over High-conflict. |
 
@@ -73,7 +75,7 @@ Good communication and low tension despite real operational friction. Logistics 
 
 | | |
 |-|-|
-| **Decisive** | `2.2_comm_quality` ≥ 3 AND `tension_max` ≤ 2 AND `friction_area_count` ≥ 1 AND `kids_under_10` ≥ 1 |
+| **Decisive** | `2.2_comm_quality` ≤ 3 AND `tension_max` ≤ 2 AND `friction_area_count` ≥ 1 AND `kids_under_10` ≥ 1 |
 | **Supporting** | Friction in `"שגרה ומטלות"` or `"שינויי לו"ז"` · `tension_type` == `"organizational"` · `3_tasks_not_done` == `"כן"` despite decent comm |
 | **Notes** | Defining pattern: logistics friction despite cooperation — friction is structural, not conflictual. `kids_under_10` ≥ 1 required; absence of young kids shifts to Boundary-first. |
 
@@ -85,7 +87,7 @@ Low conflict achieved by minimizing contact surfaces. Few friction areas because
 
 | | |
 |-|-|
-| **Decisive** | `2.2_comm_quality` in 2–3 AND `tension_max` ≤ 2 AND `friction_area_count` ≤ 1 |
+| **Decisive** | `2.2_comm_quality` in 3–4 AND `tension_max` ≤ 2 AND `friction_area_count` ≤ 1 |
 | **Supporting** | `1.1_custody` == `"משמורת מלאה שלי"` · few areas selected despite moderate tension |
 | **Notes** | Distinguish from Cooperative Colleagues by low `friction_area_count` — they've minimized contact surfaces by design. Non-custodial respondent (`1.1_custody` == `"משמורת מלאה של ההורה האחר"`): expect financial friction without logistics friction; weight Financially-stressed or High-conflict accordingly. |
 

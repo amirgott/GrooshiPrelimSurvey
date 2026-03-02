@@ -258,6 +258,10 @@ document.addEventListener('DOMContentLoaded', function() {{
   // Second pass: fill any fields that were dynamically generated above
   fillFields();
 
+  // Fix status-bar survey ID display (original DOMContentLoaded generates a fresh random ID)
+  const surveyIdEl = document.getElementById('surveyId');
+  if (surveyIdEl && data['survey_id']) surveyIdEl.textContent = data['survey_id'];
+
   // Trigger change events to reveal conditional sections
   document.querySelectorAll('input[type="checkbox"], input[type="radio"], select').forEach(el => {{
     el.dispatchEvent(new Event('change', {{bubbles: true}}));
