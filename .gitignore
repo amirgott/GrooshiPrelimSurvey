@@ -316,6 +316,6 @@ fabric.properties
 
 
 # Survey respondent data — excluded from git (schemas/ tracked separately)
-responses/raw/
-responses/processed/
+responses/test/
+responses/survey/
 analysis/

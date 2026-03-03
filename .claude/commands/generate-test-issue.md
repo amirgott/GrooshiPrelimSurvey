@@ -76,7 +76,13 @@ For the safety-critical segment: omit all step 3 fields (`3.1_areas` and all `3_
 
 For area string values in `3.1_areas`: read the exact strings from the `x-conditional-fields` section of `responses/schemas/v2.json`. Some values contain special characters — do not retype them; copy directly from the schema.
 
-Override or extend the base profile fields as needed. Fields not mentioned in the decisive or supporting criteria can keep their base values.
+Override or extend the base profile fields as needed.
+
+**Profile consistency**: Beyond the decisive criteria, always set `2.2_comm_quality`, `2.2_emotional_tension`, and `2.2_org_difficulty` to values that clearly reflect the segment's described typical profile — do not leave these fields absent or at a default. Use the segment description and the scale direction note in `response-segmentation.md` (higher raw `comm_quality` = worse communication) to infer appropriate values. For example: safety-critical → `comm_quality=5`, `emotional_tension=5`; cooperative-colleagues → `comm_quality=1`, `emotional_tension=1`. Also set relevant free-text fields (e.g. `2.1_safety_detail`) with language consistent with the segment's tone. A test issue that only satisfies decisive criteria but misrepresents the broader profile will produce spurious coherence warnings during analysis.
+
+**Step 3 subscale consistency**: For every area selected in `3.1_areas`, also set its quality and friction scores to values that match the segment's conflict level. Scale directions (from the HTML): quality runs 1 (מצוין — excellent) → 5 (גרוע — terrible); friction runs 1 (manage excellently) → 5 (always fighting). Both scales go in the same direction — higher = worse. Examples: high-conflict → quality 4–5, friction 4–5; cooperative-colleagues → quality 2–3, friction 2–3; angry-associates → quality 3–4, friction 3–4. Do not leave quality at 1 (excellent) for a high-conflict profile.
+
+**Step 3 subscale consistency**: For every area selected in `3.1_areas`, also set its quality and friction scores to values that match the segment’s conflict level. Scale directions (from the HTML): quality runs 1 (מצוין — excellent) → 5 (גרוע — terrible); friction runs 1 (manage excellently) → 5 (always fighting). Both scales go in the same direction — higher = worse. Examples: high-conflict → quality 4–5, friction 4–5; cooperative-colleagues → quality 2–3, friction 2–3; angry-associates → quality 3–4, friction 3–4. Do not set quality to 1 (excellent) for a high-conflict or angry-associates profile.
 
 ### Survey ID
 

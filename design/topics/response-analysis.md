@@ -6,16 +6,22 @@ Status: Partial
 
 ```
 responses/
-  raw/          # {issue_number}.json — parsed payload as received from GitHub Issue
-  processed/     # {issue_number}.json — validation result, inconsistencies, conclusion
-  schemas/      # v1.json, v2.json … — JSON schema per survey version
+  test/
+    raw/       # {issue_number}_{survey_id}.json — test submissions
+    processed/ # {issue_number}_{survey_id}.json/.html — validation + analysis
+  survey/
+    raw/       # {issue_number}_{survey_id}.json — real submissions
+    processed/ # {issue_number}_{survey_id}.json/.html — validation + analysis
+  schemas/     # v1.json, v2.json … — JSON schema per survey version (committed)
 analysis/
   aggregate.json  # accumulated conclusions across all processed issues
 ```
 
-`responses/` and `analysis/` are excluded from git (respondent data). Add to `.gitignore`:
+Routing: `_test: true` in payload → `responses/test/`; otherwise → `responses/survey/`.
+`responses/test/` and `responses/survey/` are excluded from git; `responses/schemas/` is committed. `.gitignore`:
 ```
-responses/
+responses/test/
+responses/survey/
 analysis/
 ```
 
@@ -72,15 +78,16 @@ Script: `scripts/process_issue.py <issue_number>`
 **Filename convention:** `{issue_number}_{survey_id}` (e.g. `15_78F`). Issue number is the GitHub canonical ID (unique, used as script input); survey_id is the respondent-visible code (used for couple linkage). Combined to eliminate collision risk.
 
 **Steps:**
-1. Check if `responses/processed/{issue_number}_{survey_id}.json` already exists — skip if so (idempotent)
+0. `fetch_issues.py`: fetch issue body + `createdAt` from GitHub; save `responses/{test|survey}/raw/{stem}.json` with `_issue_number`, `_created_at`, and full payload. Idempotent.
+1. `process_issue.py`: locate raw file by glob; check if `responses/{test|survey}/processed/{issue_number}_{survey_id}.json` already exists — skip if so. Routing: `_test` flag in payload → `test/`, else `survey/`.
 2. `gh issue view <issue_number> --repo amirgott/GrooshiSurveyData --json body` → parse JSON payload from issue body
-3. Save to `responses/raw/{issue_number}_{survey_id}.json` (payload + `issue_number` field for traceability)
+3. `fetch_issues.py` saves `responses/{test|survey}/raw/{issue_number}_{survey_id}.json` with `_issue_number`, `_created_at`, and full payload
 4. Determine schema version from `versions.json` + submission timestamp
 5. Load schema from `responses/schemas/v{N}.json`
 6. Validate: check required fields (with conditional filtering), scale ranges, radio/checkbox option sets → `validation` key
 7. Detect mechanical inconsistencies: phantom conditional values (field present in payload but display condition not met) → `inconsistencies` key (empty list if none)
-8. Save both to `responses/processed/{issue_number}_{survey_id}.json`
-9. Generate `responses/processed/{issue_number}_{survey_id}.html` — `index.html` pre-filled with response values, all inputs disabled. Step 0 (welcome page) is replaced by the analysis card (key-value table, `dir="ltr"`, monospace) when `analysis` is present, or hidden otherwise. Regenerated after analysis via `--update-html <number>`.
+8. Save both to `responses/{test|survey}/processed/{issue_number}_{survey_id}.json`
+9. Generate `responses/{test|survey}/processed/{issue_number}_{survey_id}.html` — `index.html` pre-filled with response values, all inputs disabled. Step 0 (welcome page) is replaced by the analysis card (key-value table, `dir="ltr"`, monospace) when `analysis` is present, or hidden otherwise. Regenerated after analysis via `--update-html <number>`.
 
 **Analyzed JSON structure:**
 ```json
@@ -110,14 +117,14 @@ When ALL violations are "missing required property" for fields whose names start
 
 Skill: `.claude/commands/process-issues.md`. Invoked via `/process-issues` in a Claude Code session.
 
-**Discovery:** queries `gh issue list`, cross-references `responses/processed/` to find issues that are not processed or are missing a complete `analysis` key. Presents researcher with a table and prompts: process all or select one.
+**Discovery:** queries `gh issue list`, cross-references `responses/survey/processed/` and `responses/test/processed/` to find issues that are not processed or are missing a complete `analysis` key. Presents researcher with a table and prompts: process all or select one.
 
 **Per-issue steps:**
 1. Run `process_issue.py` if mechanical processing not yet done
 2. Build key→question-label map from `index.html` at runtime
 3. Analyze: conflict profile, pain hotspots, need signal, cross-section coherence
 4. Assign category (see below) + write conclusion paragraph + one-liner
-5. Merge `analysis` key into `responses/processed/{id}.json` without overwriting other keys
+5. Merge `analysis` key into `responses/{test|survey}/processed/{id}.json` without overwriting other keys
 
 **`analysis` key structure:**
 ```json
@@ -175,7 +182,7 @@ Empty/skipped fields are omitted from the payload (filtered in `user_survey.js`)
 
 ## Aggregation
 
-`scripts/aggregate.py` reads all `responses/processed/{id}.json` files and updates `analysis/aggregate.json`. Files with `"test": true` must be excluded — they are test submissions and must not affect statistics.
+`scripts/aggregate.py` reads all `responses/survey/processed/{id}.json` files and updates `analysis/aggregate.json`. `responses/test/` is excluded entirely — they are test submissions and must not affect statistics.
 
 **`analysis/aggregate.json` structure:**
 - `meta` — total responses, schema versions covered, last updated

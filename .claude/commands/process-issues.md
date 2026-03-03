@@ -1,12 +1,12 @@
 ## Step 1 — Discover unfinished issues
 
 1. Run `gh issue list --repo amirgott/GrooshiSurveyData --state open --limit 200 --json number,createdAt` to get all submitted issues. **Always execute this as a live query — never use a cached or previously known issue list.**
-2. For each issue number, look for a file matching `responses/processed/{number}_*.json`.
+2. For each issue number, look for a file matching `responses/survey/processed/{number}_*.json` or `responses/test/processed/{number}_*.json` (check both).
 3. Classify each issue:
    - **Not processed** — no processed JSON exists
    - **Needs analysis** — processed JSON exists but is missing the `analysis` key (or `analysis` is missing any of `conclusion`, `category`, `conclusion_one_liner`)
    - **Complete** — processed JSON has a complete `analysis` key (including `potential_user` and `potential_payer`) → skip silently
-   - **Test** — processed JSON has `"test": true` → exclude from aggregation; process normally but show in a separate "Test issues" section in the table
+   - **Test** — processed JSON has `"test": true` (file is in `responses/test/`) → exclude from aggregation; process normally but show in a separate "Test issues" section in the table
 4. If no unfinished issues exist, tell the researcher and stop.
 
 ---
@@ -29,11 +29,15 @@ Repeat the following for each selected issue (one at a time, in issue-number ord
 
 ### 3a — Mechanical processing (if not yet done)
 
-If no processed JSON exists for this issue, run:
+If no processed JSON exists for this issue, first check whether a raw file exists at `responses/{test|survey}/raw/{number}_*.json`. If not, fetch it (requires network):
+```
+PYTHONUTF8=1 python scripts/fetch_issues.py {number}
+```
+Then process it (runs offline):
 ```
 PYTHONUTF8=1 python scripts/process_issue.py {number}
 ```
-Wait for it to complete, then read the resulting `responses/processed/{id}.json` and `responses/raw/{id}.json` to check for violations and inconsistencies, applying the rules below before surfacing anything to the researcher.
+Wait for it to complete, then read the resulting processed JSON and raw JSON to check for violations and inconsistencies. Path lookup rule: if the processed JSON has `"test": true`, files are under `responses/test/`; otherwise `responses/survey/`. So: `responses/{test|survey}/processed/{id}.json` and `responses/{test|survey}/raw/{id}.json`. Apply the rules below before surfacing anything to the researcher.
 
 **Violation handling rules (no human confirmation required — always proceed to 3b):**
 
@@ -48,7 +52,7 @@ Wait for it to complete, then read the resulting `responses/processed/{id}.json`
 
 ### 3b — Qualitative analysis
 
-1. Read `responses/raw/{id}.json`.
+1. Read `responses/{test|survey}/raw/{id}.json` (use `test/` if `"test": true` in processed JSON, else `survey/`).
 2. Read `index.html` — for each form field (`input`, `select`, `textarea`) with a `name` attribute, find the nearest preceding label text to build a `{field_key → question_label}` map. Use this map to present field values in human-readable form during analysis.
 3. Analyze the response holistically:
    - **Conflict profile**: interpret `2.2_comm_quality`, `2.2_emotional_tension`, and `2.2_org_difficulty` as a conflict baseline.
@@ -72,7 +76,7 @@ Wait for it to complete, then read the resulting `responses/processed/{id}.json`
 
 ### 3c — Write result
 
-Merge into `responses/processed/{id}.json` — add the `analysis` key **without overwriting** `schema_version`, `validation`, or `inconsistencies`:
+Merge into `responses/{test|survey}/processed/{id}.json` — add the `analysis` key **without overwriting** `schema_version`, `validation`, or `inconsistencies`:
 
 ```json
 "analysis": {

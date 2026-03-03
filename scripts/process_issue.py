@@ -12,38 +12,23 @@ Windows note: run with PYTHONIOENCODING=utf-8 and PYTHONUTF8=1 if console errors
 import re
 import sys
 import json
-import subprocess
 from pathlib import Path
 from datetime import datetime
 
 import jsonschema
 
-REPO = "amirgott/GrooshiSurveyData"
 ROOT = Path(__file__).parent.parent
 RESPONSES_DIR = ROOT / "responses"
 SCHEMAS_DIR = RESPONSES_DIR / "schemas"
 INDEX_HTML = ROOT / "index.html"
 
 
-def fetch_issue(issue_number: int) -> dict:
-    result = subprocess.run(
-        ["gh", "issue", "view", str(issue_number), "--repo", REPO, "--json", "body,createdAt"],
-        capture_output=True, text=True, check=True, encoding="utf-8",
-    )
-    return json.loads(result.stdout)
 
 
-def parse_payload(issue_data: dict) -> dict:
-    body = issue_data["body"]
-    # Issue body is a Markdown table; extract the survey_data cell value
-    match = re.search(r'\|\s*survey_data\s*\|\s*(\{.*\})\s*\|', body)
-    if not match:
-        raise ValueError("Could not find survey_data in issue body")
-    return json.loads(match.group(1))
-
-
-def get_schema_version(created_at: str) -> str:
+def get_schema_version(created_at) -> str:
     versions = json.loads((SCHEMAS_DIR / "versions.json").read_text(encoding="utf-8"))
+    if created_at is None:
+        return max(versions.keys())
     submission_date = datetime.fromisoformat(created_at.replace("Z", "+00:00")).date()
     best_version, best_date = None, None
     for version, meta in versions.items():
@@ -281,14 +266,18 @@ document.addEventListener('DOMContentLoaded', function() {{
 def main():
     if len(sys.argv) == 3 and sys.argv[1] == "--update-html":
         issue_number = int(sys.argv[2])
-        raw_files = list((RESPONSES_DIR / "raw").glob(f"{issue_number}_*.json"))
+        raw_files = list((RESPONSES_DIR / "test" / "raw").glob(f"{issue_number}_*.json"))
+        subdir = "test"
+        if not raw_files:
+            raw_files = list((RESPONSES_DIR / "survey" / "raw").glob(f"{issue_number}_*.json"))
+            subdir = "survey"
         if not raw_files:
             print(f"No raw file found for issue #{issue_number}", file=sys.stderr)
             sys.exit(1)
         stem = raw_files[0].stem
         raw_path = raw_files[0]
-        processed_path = RESPONSES_DIR / "processed" / f"{stem}.json"
-        html_path = RESPONSES_DIR / "processed" / f"{stem}.html"
+        processed_path = RESPONSES_DIR / subdir / "processed" / f"{stem}.json"
+        html_path = RESPONSES_DIR / subdir / "processed" / f"{stem}.html"
         payload = json.loads(raw_path.read_text(encoding="utf-8"))
         processed = json.loads(processed_path.read_text(encoding="utf-8"))
         analysis = processed.get("analysis")
@@ -301,28 +290,29 @@ def main():
         sys.exit(1)
 
     issue_number = int(sys.argv[1])
-    print(f"Fetching issue #{issue_number} from {REPO}...")
 
-    issue_data = fetch_issue(issue_number)
-    payload = parse_payload(issue_data)
-    survey_id = payload.get("survey_id", "unknown")
-    file_stem = f"{issue_number}_{survey_id}"
+    # Locate existing raw file
+    raw_files = list((RESPONSES_DIR / "test" / "raw").glob(f"{issue_number}_*.json"))
+    subdir = "test"
+    if not raw_files:
+        raw_files = list((RESPONSES_DIR / "survey" / "raw").glob(f"{issue_number}_*.json"))
+        subdir = "survey"
+    if not raw_files:
+        print(f"No raw file for issue #{issue_number}. Run: fetch_issues.py {issue_number}", file=sys.stderr)
+        sys.exit(1)
+
+    file_stem = raw_files[0].stem
+    raw_path = raw_files[0]
+    payload = json.loads(raw_path.read_text(encoding="utf-8"))
 
     # Idempotency check
-    analyzed_json = RESPONSES_DIR / "processed" / f"{file_stem}.json"
+    analyzed_json = RESPONSES_DIR / subdir / "processed" / f"{file_stem}.json"
     if analyzed_json.exists():
         print(f"Already processed: {file_stem}. Skipping.")
         sys.exit(0)
 
-    # Save raw
-    raw_path = RESPONSES_DIR / "raw" / f"{file_stem}.json"
-    raw_path.parent.mkdir(parents=True, exist_ok=True)
-    raw_data = {"_issue_number": issue_number, **payload}
-    raw_path.write_text(json.dumps(raw_data, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"Saved raw: {raw_path.name}")
-
-    # Schema version
-    schema_version = get_schema_version(issue_data["createdAt"])
+    # Schema version -- _created_at written by fetch_issues.py; fall back to latest if absent
+    schema_version = get_schema_version(payload.get("_created_at"))
     print(f"Schema version: {schema_version}")
 
     # Load schema once; used for validation and inconsistency detection
@@ -353,7 +343,7 @@ def main():
     print(f"Saved analyzed: {analyzed_json.name}")
 
     # Generate pre-filled HTML
-    analyzed_html = RESPONSES_DIR / "processed" / f"{file_stem}.html"
+    analyzed_html = RESPONSES_DIR / subdir / "processed" / f"{file_stem}.html"
     generate_prefilled_html(payload, analyzed_html)
     print(f"Generated HTML: {analyzed_html.name}")
 
