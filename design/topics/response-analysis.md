@@ -15,15 +15,20 @@ responses/
   schemas/     # v1.json, v2.json … — JSON schema per survey version (committed)
 analysis/
   aggregate.json  # accumulated conclusions across all processed issues
+personas/          # synthetic personas for test issue generation (gitignored)
+  {segment}_{MMDDHHmm}.json
 ```
 
 Routing: `_test: true` in payload → `responses/test/`; otherwise → `responses/survey/`.
-`responses/test/` and `responses/survey/` are excluded from git; `responses/schemas/` is committed. `.gitignore`:
+`responses/test/`, `responses/survey/`, `analysis/`, and `personas/` are excluded from git; `responses/schemas/` is committed. `.gitignore`:
 ```
 responses/test/
 responses/survey/
 analysis/
+personas/
 ```
+
+**Personas** are created by `/generate-persona <slug>` and consumed by `/generate-test-issue <persona-file>`. Each persona JSON contains: `input` (segment slug + generated_at), `profile` (demographics, narrative), `conflict_baseline` (avg scale values, safety, legal), `state` (survey-day context, recent incident), `behavioral_params` (verbosity, social desirability, etc.), `artifacts` (per-field deviations). After a test issue is submitted from a persona, the file gains an `issued_as` key with the issue number and survey ID.
 
 ## Schema and Versioning
 
