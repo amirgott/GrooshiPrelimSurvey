@@ -252,6 +252,18 @@ document.addEventListener('DOMContentLoaded', function() {{
     el.dispatchEvent(new Event('change', {{bubbles: true}}));
   }});
 
+  // Contact method checkboxes have no name attribute so the fill loop skips them.
+  // Check them explicitly when the corresponding payload fields are present.
+  ['phone', 'email'].forEach(function(type) {{
+    if (data['5_contact_' + type]) {{
+      const cb = document.getElementById('contact_' + type + '_cb');
+      if (cb) {{
+        cb.checked = true;
+        cb.dispatchEvent(new Event('change', {{bubbles: true}}));
+      }}
+    }}
+  }});
+
   // Disable all interactive elements
   document.querySelectorAll('input, textarea, select, button').forEach(el => {{
     el.disabled = true;
