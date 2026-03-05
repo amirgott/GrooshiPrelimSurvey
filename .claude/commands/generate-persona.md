@@ -1,6 +1,6 @@
 ## Overview
 
-Generates a synthetic user persona for a target segment and writes it as JSON to `personas/`. The persona captures stable profile, survey-day state, behavioral parameters, and per-field artifacts — but does NOT fill in survey answers. It is consumed by `/generate-test-issue` (pass the persona file path as the argument) to produce human-realistic payloads.
+Generates a synthetic user persona for a target segment and writes it as JSON to `personas/`. The persona captures stable profile, survey-day state, and behavioral parameters — but does NOT fill in survey answers. It is consumed by `/generate-test-issue` (pass the persona file path as the argument) to produce human-realistic payloads.
 
 **Argument ($ARGUMENTS):** segment slug. If absent or unrecognized, display the menu below and wait for researcher input.
 
@@ -40,7 +40,7 @@ Read `design/topics/response-segmentation.md`. Locate the section for the chosen
 
 ## Step 3 — Generate persona JSON
 
-Construct a JSON object with the following top-level keys: `input`, `profile`, `conflict_baseline`, `state`, `behavioral_params`, `artifacts`.
+Construct a JSON object with the following top-level keys: `input`, `profile`, `conflict_baseline`, `state`, `behavioral_params`.
 
 ### `input`
 
@@ -86,8 +86,6 @@ The persona's *true average* experience — not inflated by survey-day state:
 | `legal` | Bool. True only for high-conflict or when the plot requires it. |
 | `narrative` | 2–3 sentences describing the co-parenting dynamic. Must be consistent with all avg values. |
 
-**Constraint:** decisive criteria must be satisfiable after applying artifact deltas. If an artifact would push a rounded value below a decisive minimum, the avg must be set high enough to survive the delta.
-
 ### `state`
 
 Survey-day context — make it specific and plausible:
@@ -103,7 +101,7 @@ Survey-day context — make it specific and plausible:
 | `incident_salience` | `"low"` / `"medium"` / `"high"` |
 | `trust_in_survey` | Int 1–10. |
 
-Internal consistency: high `emotional_temp` + high `incident_salience` → recency-spike artifacts are plausible. Low fatigue + high motivation → fewer skip artifacts.
+Internal consistency: `emotional_temp`, `incident_salience`, and `recent_incident` should reinforce each other. `motivation` and `fatigue` should be coherent with the survey-day context.
 
 ### `behavioral_params`
 
@@ -117,41 +115,6 @@ All values 1–10:
 | `self_awareness` | Degree to which persona acknowledges own contribution to friction |
 | `survey_patience` | Tolerance for survey length (low → skips more) |
 | `anchoring_sensitivity` | Degree to which seeing listed options triggers additional selections |
-
-### `artifacts`
-
-Array of 3–6 items. Minimum required: at least one numeric delta, at least one `skip_optional`.
-
-**Numeric delta** — adjusts a scale field from its baseline avg:
-```json
-{"field": "2.2_emotional_tension", "type": "recency_spike",      "delta":  1, "reason": "..."}
-{"field": "2.2_comm_quality",       "type": "social_desirability", "delta": -1, "reason": "..."}
-```
-`delta` is an integer. generate-test-issue adds `delta` to the `conflict_baseline` avg, rounds to int, clamps to [1, scale_max], then enforces decisive criteria by clamping to the boundary.
-
-**Skip optional** — field will be omitted from the payload:
-```json
-{"field": "3_worst_example", "type": "skip_optional", "reason": "..."}
-```
-Only use for genuinely optional text fields (`3_worst_example`, `4_tools_missing`, `4_neutral_helper`).
-
-**Anchoring** — use when `anchoring_sensitivity >= 6`:
-```json
-{"field": "3.1_areas", "type": "anchoring", "extra_area": "קבלת החלטות", "reason": "..."}
-```
-
-**Single selection** — use when persona is selective under stress:
-```json
-{"field": "4_barriers", "type": "single_selection", "reason": "..."}
-```
-generate-test-issue picks only the single most salient barrier given `state.recent_incident`.
-
-**Privacy reflex:**
-```json
-{"field": "5_contact_ok", "type": "privacy_reflex", "reason": "..."}
-```
-
-Each `reason` must reference the persona's specific story — recent incident, personality, or background.
 
 ---
 
@@ -173,7 +136,7 @@ Write the complete persona JSON to the file using the Write tool with literal UT
 ### Display
 
 1. The full JSON
-2. A one-paragraph plain-language summary: who this person is, what makes their survey-day state distinctive, and which artifacts will most noticeably shape their answers.
+2. A one-paragraph plain-language summary: who this person is, what makes their survey-day state distinctive, and how their behavioral parameters are likely to shape their survey answers.
 
 ### Report
 
@@ -181,6 +144,5 @@ Write the complete persona JSON to the file using the Write tool with literal UT
 |------|-------|
 | Persona file | `personas/{segment}_{MMDDHHmm}.json` |
 | Segment | (slug) |
-| Key artifacts | (list types) |
 
 Remind the researcher to run `/generate-test-issue personas/{segment}_{MMDDHHmm}.json` to create a test issue using this persona.

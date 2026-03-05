@@ -105,9 +105,9 @@ Override or extend the base profile fields as needed.
 
 ### With persona
 
-Start from `persona.profile` and `persona.conflict_baseline`. Apply artifacts to derive field values. Decisive criteria are still enforced.
-
 #### Step 1 fields (from `persona.profile`)
+
+Map profile fields directly to payload:
 
 | Payload field | Persona source |
 |---------------|---------------|
@@ -122,43 +122,51 @@ Start from `persona.profile` and `persona.conflict_baseline`. Apply artifacts to
 
 Always set `_test: true`, `5_other_filled: "לא"`.
 
-#### Step 2 scale fields (baseline + artifacts)
-
-For each of `2.2_comm_quality`, `2.2_emotional_tension`, `2.2_org_difficulty`:
-1. Start from the matching `conflict_baseline` avg.
-2. Find any artifact whose `field` matches and has a `delta`. Add delta to avg.
-3. Round to nearest integer. Clamp to [1, scale_max] (comm_quality max=5; tension and org max=4).
-4. Enforce decisive criteria: if the value violates a decisive boundary, clamp to that boundary.
-
 For `2.1_safety`: `"כן"` if `conflict_baseline.safety == true`; otherwise use the unsafe value appropriate for safety-critical.
 For `2.3_legal`: `"כן"` if `conflict_baseline.legal == true`; else `"לא"`.
 
+#### Reasoning step — before filling any other field
+
+Read the full persona holistically: `profile`, `conflict_baseline`, `state`, and `behavioral_params` together. Reason about how this specific person would behave when filling the survey on this specific day. Consider:
+
+- Which scale fields they would rate higher or lower than their true baseline, and why (e.g. a recent incident inflating emotional tension; social desirability bias softening a negative self-report; high self-awareness reducing the urge to exaggerate)
+- Whether competing effects on the same field cancel or compound (e.g. high `emotional_temp` pushing a rating up while high `social_desirability_bias` pulls it down)
+- Which friction areas they would select, and whether seeing the full list would draw out an additional area they hadn't planned to mention
+- Which optional text fields they would skip, fill briefly, or fill in detail — based on `verbosity`, `survey_patience`, and whether the field touches the `recent_incident`
+- Whether they would name one barrier or several, and which is most salient given the survey-day context
+- Whether they would consent to contact, considering `trust_in_survey` and `profile.background`
+
+Use this reasoning to inform every field value constructed below. Decisive criteria are still enforced as hard constraints after reasoning.
+
+#### Step 2 scale fields
+
+For each of `2.2_comm_quality`, `2.2_emotional_tension`, `2.2_org_difficulty`:
+1. Start from the matching `conflict_baseline` avg.
+2. Apply reasoning from above to determine the survey-day adjustment.
+3. Round to nearest integer. Clamp to [1, scale_max] (comm_quality max=5; tension and org max=4).
+4. Enforce decisive criteria: if the value violates a decisive boundary, clamp to that boundary.
+
 #### Step 3 areas and subscales
 
-Start with the 1–2 friction areas most consistent with `conflict_baseline.narrative` and the segment's pain profile. Then apply any `anchoring` artifact: add `extra_area` to the selection.
-
-Verify area count satisfies decisive criteria (e.g. boundary-first requires ≤1 area).
+Select friction areas based on `conflict_baseline.narrative` and the segment's pain profile, informed by the reasoning step (e.g. anchoring effects from `anchoring_sensitivity`). Verify area count satisfies decisive criteria.
 
 For area string values in `3.1_areas`: read exact strings from `responses/schemas/v2.json` as in standard flow.
 
-For each selected area's quality and friction subscales: use the same conflict-level calibration as standard flow, but anchor to the clamped baseline rather than the segment extreme. Example: if clamped `comm_quality = 4`, quality subscales should be 3–4, not necessarily 5.
+For each selected area's quality and friction subscales: anchor to the clamped baseline rather than the segment extreme. Apply the same reasoning about survey-day bias.
 
-For `3_tasks_not_done`: set to `"כן"` if `conflict_baseline.org_difficulty_avg >= 2.5`; else `"לא"`.
+For `3_tasks_not_done`: derive from `conflict_baseline.org_difficulty_avg` and reasoning.
 
 #### Optional text fields
 
-For each optional text field (`3_worst_example`, `4_tools_missing`, `4_neutral_helper`):
-- Check `persona.artifacts` for a `skip_optional` entry on this field. If found: omit from payload entirely.
-- If not found: write a 1–2 sentence Hebrew answer consistent with `state.recent_incident` and `profile.background`. Calibrate length to `behavioral_params.verbosity` (≤3 = one short phrase; 4–6 = one full sentence; ≥7 = two sentences).
+For each optional text field (`3_worst_example`, `4_tools_missing`, `4_neutral_helper`): use the reasoning step to decide whether to omit or fill. If filling, write a Hebrew answer consistent with `state.recent_incident` and `profile.background`, calibrated to `behavioral_params.verbosity` (≤3 = one short phrase; 4–6 = one full sentence; ≥7 = two sentences).
 
 #### Step 4 fields
 
-- `4_tools`: choose tools realistic for the persona's digital comfort and segment (e.g. high digital_comfort → may use calendar apps; low → WhatsApp only).
-- `4_barriers`: write a Hebrew phrase reflecting the barrier most salient given `state.recent_incident`. If a `single_selection` artifact is present on `4_barriers`: pick only one barrier even if multiple apply.
-- `4_wtp`: `"כן"` if `motivation >= 6` and segment typically has product need; else `"לא"`.
+- `4_tools`: choose tools realistic for the persona's `digital_comfort` and segment.
+- `4_barriers`: write Hebrew reflecting the barrier(s) most salient given the reasoning step and `state.recent_incident`. Apply judgment about whether this persona would name one or several.
+- `4_wtp`: derive from `state.motivation` and segment need profile.
 - `4_wtp_range`: if wtp is yes, pick the range consistent with persona's financial situation.
-
-For `5_contact_ok`: check for `privacy_reflex` artifact → `"לא"`. Otherwise derive from `trust_in_survey` (≤5 → `"לא"`; >5 → `"כן"`).
+- `5_contact_ok`: derive from reasoning (considering `trust_in_survey` and privacy disposition from `profile.background`).
 
 ---
 

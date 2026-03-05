@@ -28,7 +28,7 @@ analysis/
 personas/
 ```
 
-**Personas** are created by `/generate-persona <slug>` and consumed by `/generate-test-issue <persona-file>`. Each persona JSON contains: `input` (segment slug + generated_at), `profile` (demographics, narrative), `conflict_baseline` (avg scale values, safety, legal), `state` (survey-day context, recent incident), `behavioral_params` (verbosity, social desirability, etc.), `artifacts` (per-field deviations). After a test issue is submitted from a persona, the file gains an `issued_as` key with the issue number and survey ID.
+**Personas** are created by `/generate-persona <slug>` and consumed by `/generate-test-issue <persona-file>`. Each persona JSON contains: `input` (segment slug + generated_at), `profile` (demographics, narrative), `conflict_baseline` (avg scale values, safety, legal), `state` (survey-day context, recent incident), `behavioral_params` (verbosity, social desirability, etc.). `/generate-test-issue` reasons about these holistically to derive survey-day behavioural deviations at payload-construction time. After a test issue is submitted from a persona, the file gains an `issued_as` key with the issue number and survey ID.
 
 ## Schema and Versioning
 
