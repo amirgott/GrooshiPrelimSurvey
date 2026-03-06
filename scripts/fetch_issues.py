@@ -30,7 +30,7 @@ def fetch_issue(issue_number: int) -> dict:
 
 def parse_payload(issue_data: dict) -> dict:
     body = issue_data["body"]
-    match = re.search(r'\|\s*survey_data\s*\|\s*(\{.*\})\s*\|', body)
+    match = re.search(r'^\|\s*(\{.+\})\s*\|\s*$', body, re.MULTILINE)
     if not match:
         raise ValueError("Could not find survey_data in issue body")
     return json.loads(match.group(1))
