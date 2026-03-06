@@ -26,7 +26,7 @@ Creates a synthetic v2 survey response for a target segment and submits it as a 
 
 If $ARGUMENTS contains `/` or ends in `.json`:
 - Read the file at the given path. If it does not exist, print an error and stop.
-- Extract `persona.segment` — use as the target segment for Step 1.
+- Extract `input.segment_slug` — use as the target segment for Step 1.
 - Store the full persona object and the file path for use in Steps 1–4.
 
 Otherwise: no persona — proceed with standard flow.
@@ -178,9 +178,17 @@ Abbreviations matching slug order: sc, hc, aa, cc, bf, fs, cd, dr, bl.
 
 ---
 
+## Execution rules
+
+**Never use `cd`** — run all scripts directly from the working directory; never prefix Bash commands with `cd DIR &&`.
+
+**Never use Edit or Write tools for file modifications.** Both crash on content containing braces or quotes. Default for all file writes: write `scripts/_patch.py` using the Write tool with single-quoted Python strings and `dict()` syntax (no braces in source), run it with Bash, then delete it.
+
+---
+
 ## Step 4 — Create GitHub Issue
 
-Write `scripts/_create_test_issue.py` via Bash with a single-quoted heredoc. Constraints for the script:
+Write `scripts/_create_test_issue.py` using the Write tool (not a Bash heredoc). Constraints for the script:
 - Use single quotes for all Python string literals — never double quotes
 - Build the payload using `dict()` and individual key-assignment statements — never brace-literal dict syntax
 - Serialize: `json.dumps(payload, ensure_ascii=False)`
@@ -198,15 +206,7 @@ PYTHONUTF8=1 python scripts/_create_test_issue.py
 
 Capture the issue number. Delete `scripts/_create_test_issue.py`.
 
-**If a persona was used:** after successful submission, update the persona JSON file with:
-```json
-"issued_as": {
-  "issue_number": N,
-  "survey_id": "Taa03051215",
-  "issued_at": "YYYY-MM-DDTHH:MM:SS"
-}
-```
-Read the persona file, add the `issued_as` key, write it back. Do NOT delete the persona file.
+**If a persona was used:** after successful submission, update the persona JSON file's `issued_as` array via `_patch.py`: write `scripts/_patch.py` using the Write tool (single-quoted strings, `dict()` syntax, no braces in source), run `PYTHONUTF8=1 python scripts/_patch.py` with Bash, then delete it. Do NOT delete the persona file.
 
 ---
 
