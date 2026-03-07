@@ -198,6 +198,7 @@
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.1</span>תחושת בטיחות</label>
                         <div class="space-y-3">
                             <label class="block font-semibold">האם אתה/את מרגיש/ה בטוח/ה בתקשורת מול ההורה האחר?</label>
+                            <p class="text-xs text-gray-500 mt-1 italic">הכוונה לביטחון ביצירת ובזמן תקשורת ישירה עם ההורה האחר</p>
                             <div class="toggle-btns">
                                 <button type="button" class="toggle-btn" onclick="selectSafety(this, 'כן')">כן</button>
                                 <button type="button" class="toggle-btn" onclick="selectSafety(this, 'ברוב המקרים')">ברוב המקרים</button>
@@ -222,13 +223,23 @@
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.2</span>איכות התקשורת</label>
 
                         <div class="space-y-4 bg-gray-50 p-5 rounded-2xl">
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold">באיזו תדירות אתם מתקשרים?</label>
+                                <div class="flex flex-wrap gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.2_comm_frequency" value="כל כמה ימים"> כל כמה ימים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.2_comm_frequency" value="כל כמה שבועות"> כל כמה שבועות</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.2_comm_frequency" value="כל כמה חודשים"> כל כמה חודשים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.2_comm_frequency" value="בכלל לא"> בכלל לא</label>
+                                </div>
+                            </div>
                             <div>
                                 <label class="block text-sm font-bold mb-2">איך היית מתאר/ת את אופי התקשורת ביניכם כיום?</label>
+                                <p class="text-xs text-gray-500 mt-1 italic">להלן סיווגים שונים: בחר/י את הסיווג שמרגיש הקולע ביותר לכלל התקשורות ביניכם</p>
                                 <input type="hidden" id="2.2_comm_quality" name="2.2_comm_quality" value="">
                                 <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_comm_quality')">שיתופית ומכבדת</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_comm_quality')">טובה</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_comm_quality')">נייטרלית</button>
+                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_comm_quality')">שיתופית</button>
+                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_comm_quality')">עסקית</button>
+                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_comm_quality')">מורכבת</button>
                                     <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_comm_quality')">מתוחה</button>
                                     <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_comm_quality')">קונפליקטואלית מאוד</button>
                                 </div>
@@ -236,23 +247,27 @@
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-3">
                                 <div class="p-4 bg-white rounded-xl border border-gray-200">
-                                    <label class="block text-sm font-bold mb-2">מתח רגשי בנושאי הילדים:</label>
-                                    <input type="hidden" id="2.2_emotional_tension" name="2.2_emotional_tension" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_emotional_tension')">אין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_emotional_tension')">קל</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_emotional_tension')">בינוני</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_emotional_tension')">חזק</button>
-                                    </div>
-                                </div>
-                                <div class="p-4 bg-white rounded-xl border border-gray-200">
                                     <label class="block text-sm font-bold mb-2">קושי ארגוני בניהול הילדים:</label>
+                                    <p class="text-xs text-gray-500 mt-1 italic">עד כמה מורגש קושי בתיאום לוגיסטי?</p>
+                                    <p class="text-xs text-gray-500 mt-1 italic">(לו"ז הילדים, מעבר שלהם ביניכם ומשימות שונות)</p>
                                     <input type="hidden" id="2.2_org_difficulty" name="2.2_org_difficulty" value="">
                                     <div class="scale-btns">
                                         <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_org_difficulty')">אין</button>
                                         <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_org_difficulty')">קל</button>
                                         <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_org_difficulty')">בינוני</button>
                                         <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_org_difficulty')">חזק</button>
+                                    </div>
+                                </div>
+                                <div class="p-4 bg-white rounded-xl border border-gray-200">
+                                    <label class="block text-sm font-bold mb-2">מתח רגשי בנושאי הילדים:</label>
+                                    <p class="text-xs text-gray-500 mt-1 italic">עד כמה מורגש מתח עקב עומס רגשי?</p>
+                                    <p class="text-xs text-gray-500 mt-1 italic">(משקעים מהעבר, ריבים ללא סיבה ממשית, תגובות מוקצנות)</p>
+                                    <input type="hidden" id="2.2_emotional_tension" name="2.2_emotional_tension" value="">
+                                    <div class="scale-btns">
+                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'2.2_emotional_tension')">אין</button>
+                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_emotional_tension')">קל</button>
+                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_emotional_tension')">בינוני</button>
+                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_emotional_tension')">חזק</button>
                                     </div>
                                 </div>
                             </div>
@@ -263,9 +278,10 @@
                     <div class="space-y-4">
                         <label class="block font-semibold text-lg"><span class="section-tag ml-2">2.3</span>הליכים משפטיים</label>
                         <div class="space-y-3">
-                            <label class="block font-semibold">האם יש הליכים משפטיים פעילים (בית משפט לענייני משפחה או בית דין רבני)?</label>
+                            <label class="block font-semibold">האם יש או היו הליכים משפטיים (בית משפט לענייני משפחה או בית דין רבני)?</label>
                             <div class="flex gap-6">
-                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="כן" onchange="toggleLegalBox()"> כן</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="יש הליכים פעילים" onchange="toggleLegalBox()"> יש הליכים פעילים</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="היו בעבר" onchange="toggleLegalBox()"> היו בעבר</label>
                                 <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="2.3_legal" value="לא" onchange="toggleLegalBox()"> לא</label>
                             </div>
                         </div>
@@ -430,6 +446,9 @@
                                 </div>
                             </div>
                                 </div>
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="אחר"> אחר</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -452,6 +471,15 @@
                                 <div class="flex gap-6">
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="כן"> כן</label>
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="לא"> לא</label>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold">באיזו תדירות קורה ביניכם חיכוך כלשהוא?</label>
+                                <div class="flex flex-wrap gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה ימים"> כל כמה ימים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה שבועות"> כל כמה שבועות</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה חודשים"> כל כמה חודשים</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="בכלל לא"> בכלל לא</label>
                                 </div>
                             </div>
                         </div>
@@ -767,7 +795,7 @@
         // Legal box toggle
         function toggleLegalBox() {
             const val = document.querySelector('input[name="2.3_legal"]:checked');
-            document.getElementById('logicLegal').classList.toggle('visible', val && val.value === 'כן');
+            document.getElementById('logicLegal').classList.toggle('visible', val && val.value !== 'לא');
         }
 
         // Friction area toggles (step 3)

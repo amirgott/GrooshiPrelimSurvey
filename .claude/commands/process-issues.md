@@ -23,6 +23,14 @@ Then ask the researcher to choose: **process all** unfinished issues, or **selec
 
 ---
 
+## Execution rules
+
+**Never use `cd`** — run all scripts directly from the working directory; never prefix Bash commands with `cd DIR &&`.
+
+**Never use Edit or Write tools for file modifications.** Both crash on content containing braces or quotes. Default for all file writes (processed JSON, persona updates, etc.): write `scripts/_patch.py` using the Write tool with single-quoted Python strings and dict() syntax (no braces in source), run it with Bash, then delete it.
+
+---
+
 ## Step 3 — Process selected issue(s)
 
 Repeat the following for each selected issue (one at a time, in issue-number order):
