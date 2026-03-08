@@ -83,10 +83,10 @@
                 </div>
             </div>
 
-            <!-- STEP 1: פרופיל -->
+            <!-- STEP 1: היכרות -->
             <div class="step" id="step1">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 1: פרופיל</h1>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 1: היכרות</h1>
                     <p class="text-sm text-gray-500 mt-1">כמה פרטים בסיסיים לפני שנתחיל</p>
                 </div>
 
@@ -119,16 +119,16 @@
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold">סוג משמורת:</label>
                                 <div class="space-y-2">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה שלי"> משמורת מלאה שלי</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה שלי"> משמורת שלי</label>
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת משותפת"> משמורת משותפת</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה של ההורה האחר"> משמורת מלאה של ההורה האחר</label>
+                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_custody" value="משמורת מלאה של ההורה האחר"> משמורת של ההורה האחר</label>
                                 </div>
                             </div>
 
                             <!-- Distance -->
                             <div class="space-y-2">
                                 <label class="block text-sm font-bold">מרחק מגורים מההורה האחר:</label>
-                                <div class="space-y-2">
+                                <div class="space-y -2">
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="אותה עיר"> אותה עיר</label>
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="עיר אחרת"> עיר אחרת</label>
                                     <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="1.1_distance" value="חו&quot;ל"> חו"ל</label>
@@ -185,10 +185,10 @@
                 </div>
             </div>
 
-            <!-- STEP 2: בטיחות ורמת קונפליקט -->
+            <!-- STEP 2: רמת קונפליקט -->
             <div class="step" id="step2">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: בטיחות ורמת קונפליקט</h1>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 2: רמת קונפליקט</h1>
                     <p class="text-sm text-gray-500 mt-1">כמה שאלות על אופי הקשר</p>
                 </div>
 
@@ -241,7 +241,7 @@
                                     <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'2.2_comm_quality')">עסקית</button>
                                     <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'2.2_comm_quality')">מורכבת</button>
                                     <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'2.2_comm_quality')">מתוחה</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_comm_quality')">קונפליקטואלית מאוד</button>
+                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'2.2_comm_quality')">מתוחה מאוד</button>
                                 </div>
                             </div>
 
@@ -379,7 +379,7 @@
 
                                 <!-- schedule -->
                                 <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שינויי לו&quot;ז" onchange="toggleFrictionArea('schedule')"> שינוי לו"ז ספציפיים (החלפת ימים או שבתות, חגים, חופשות, חו"ל)</label>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שינויי לו&quot;ז" onchange="toggleFrictionArea('schedule')"> שינוי לו"ז שנקבע מראש (החלפת ימים או שבתות, חגים, חופשות, חו"ל)</label>
                                     <div id="friction_schedule" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
                                         <div class="space-y-2">
                                             <label class="block text-sm font-semibold">דרך אילו ערוצים אתם מתאמים שינויים כאלו?</label>
@@ -517,7 +517,7 @@
                             <p class="text-sm text-indigo-800 font-semibold">שים/שימי לב! זה החלק החשוב ביותר בשאלון. אנא נסה לפרט ולדייק.</p>
                             <div>
                                 <div class="flex justify-between items-center mb-1">
-                                    <label class="text-sm font-semibold">תאר/י את המקרה עם הכי הרבה חיכוך שהיה ביניכם (אופציונלי):</label>
+                                    <label class="text-sm font-semibold">תאר/י את המקרה עם הכי הרבה חיכוך שהיה ביניכם:</label>
                                     <button type="button" onclick="startSTT('3_worst_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                                     </button>
@@ -525,14 +525,14 @@
                                 <textarea id="3_worst_example" name="3_worst_example" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-semibold">אם היה גורם נוסף (מתווך), איך הוא היה יכול לתרום?</label>
+                                <label class="text-sm font-semibold">איך גורם מתווך היה יכול לעזור להפחית חיכוכים כאלה ביניכם?</label>
                                 <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
                                 <div class="toggle-btns">
                                     <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יציע איך לנהל מטלות')">יציע איך לנהל מטלות</button>
                                     <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתזכר אותנו בלו&quot;ז שנקבע')">יתזכר אותנו בלו"ז שנקבע</button>
                                     <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתאם מול גורמים חיצוניים במקומנו')">יתאם מול גורמים חיצוניים במקומנו</button>
                                     <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתווך בינינו על ידי שיחה דרכו')">יתווך בינינו על ידי שיחה דרכו</button>
-                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יבדוק את העובדות וישפוט בינינו')">יבדוק את העובדות וישפוט בינינו</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יבדוק את העובדות וישפוט בינינו')">יבדוק את העובדות ויחליט בינינו</button>
                                     <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','אחר'); toggleCauseOther('3_mediator_role','3_mediator_role_other_ta')">אחר</button>
                                 </div>
                                 <input type="hidden" name="3_mediator_role" value="">
@@ -559,8 +559,7 @@
             <!-- STEP 4: בדיקת הצורך -->
             <div class="step" id="step4">
                 <div class="mb-8 border-b pb-4">
-                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: בדיקת הצורך</h1>
-                    <p class="text-sm text-gray-500 mt-1">ללא קשר לכלי ספציפי — נבין מה היה עוזר</p>
+                    <h1 class="text-2xl font-bold text-indigo-900">חלק 4: בדיקת מוכנות לפתרון טכנולוגי</h1>
                 </div>
 
                 <div class="space-y-8">
