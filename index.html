@@ -67,7 +67,7 @@
 
                     <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200 text-right max-w-lg mx-auto space-y-3">
                         <p><span class="font-bold text-amber-900">מטרת השאלון:</span> <span class="text-amber-800">לברר אם יש צורך באפליקציה שתעזור לזוגות גרושים בהתנהלותם</span></p>
-                        <p><span class="font-bold text-amber-900">הנחיות:</span> <span class="text-amber-800">השאלות הן בנושאים מגוונים שבלב הקשר בין הגרושים.</span></p>
+                        <p><span class="font-bold text-amber-900">מבנה השאלון:</span> <span class="text-amber-800">5 פרקים הכוללים מידע כללי, שאלות בנושאים שבלב הקשר בין הגרושים, ואיך ניתן לשפר אותו.</span></p>
                         <p><span class="font-bold text-amber-900">דגשים:</span> <span class="text-amber-800">אנא התמקד/י בשאלות שמדגישות את הנקודות שהכי מפריעות לך בקשר עם הגרוש/ה</span></p>
                         <p class="text-amber-900 font-semibold pt-2">תודה מראש על ההיענות!</p>
                     </div>
@@ -309,157 +309,215 @@
             <div class="step" id="step3">
                 <div class="mb-8 border-b pb-4">
                     <h1 class="text-2xl font-bold text-indigo-900">חלק 3: תחומי חיכוך</h1>
-                    <p class="text-sm text-gray-500 mt-1">בחר/י את התחומים שגורמים לחיכוכים</p>
-                    <p class="text-xs text-gray-400 mt-1">דלג/י על תחומים שאינם רלוונטיים</p>
+                    <p class="text-sm text-gray-500 mt-1">תדירות וסוג החיכוכים ביניכם</p>
                 </div>
 
                 <div class="space-y-8">
-                    <!-- 3.1 Area multi-select -->
+
+                    <!-- 3.1 Frequency -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.1</span>תחומי חיכוך</label>
-                        <div class="space-y-3">
-                            <label class="block text-sm font-bold">באילו תחומים יש לכם חיכוכים?</label>
-                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שגרה ומטלות" onchange="toggleFrictionArea('routine')"> שגרה ומטלות (הסעות, לו"ז יומי)</label>
-                            <div id="friction_routine" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                                <label class="block font-semibold text-sm">שגרה ומטלות — עד כמה זה מתנהל בצורה טובה?</label>
-                                <input type="hidden" id="3_routine_quality" name="3_routine_quality" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_routine_quality')">מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_routine_quality')">טוב</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_routine_quality')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_routine_quality')">לא טוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_routine_quality')">גרוע</button>
-                                </div>
-                                <div class="pt-2 space-y-2">
-                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
-                                    <input type="hidden" id="3_routine_friction" name="3_routine_friction" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_routine_friction')">מסתדרים מצוין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_routine_friction')">מסתדרים</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_routine_friction')">לפעמים חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_routine_friction')">הרבה חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_routine_friction')">תמיד מריבה</button>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שינויי לו&quot;ז" onchange="toggleFrictionArea('schedule')"> שינויי לו"ז (חגים, אירועים, נסיעות)</label>
-                            <div id="friction_schedule" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                                <label class="block font-semibold text-sm">שינויי לו"ז — עד כמה זה מתנהל בצורה טובה?</label>
-                                <input type="hidden" id="3_schedule_quality" name="3_schedule_quality" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_schedule_quality')">מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_schedule_quality')">טוב</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_schedule_quality')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_schedule_quality')">לא טוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_schedule_quality')">גרוע</button>
-                                </div>
-                                <div class="pt-2 space-y-2">
-                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
-                                    <input type="hidden" id="3_schedule_friction" name="3_schedule_friction" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_schedule_friction')">מסתדרים מצוין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_schedule_friction')">מסתדרים</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_schedule_friction')">לפעמים חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_schedule_friction')">הרבה חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_schedule_friction')">תמיד מריבה</button>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="קבלת החלטות" onchange="toggleFrictionArea('decisions')"> קבלת החלטות (בריאות, חינוך, חברתי)</label>
-                            <div id="friction_decisions" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                                <label class="block font-semibold text-sm">קבלת החלטות — עד כמה זה מתנהל בצורה טובה?</label>
-                                <input type="hidden" id="3_decisions_quality" name="3_decisions_quality" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_decisions_quality')">מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_decisions_quality')">טוב</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_decisions_quality')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_decisions_quality')">לא טוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_decisions_quality')">גרוע</button>
-                                </div>
-                                <div class="pt-2 space-y-2">
-                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
-                                    <input type="hidden" id="3_decisions_friction" name="3_decisions_friction" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_decisions_friction')">מסתדרים מצוין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_decisions_friction')">מסתדרים</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_decisions_friction')">לפעמים חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_decisions_friction')">הרבה חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_decisions_friction')">תמיד מריבה</button>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="ניהול כספים והוצאות" onchange="toggleFrictionArea('finances')"> ניהול כספים והוצאות</label>
-                            <div id="friction_finances" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                                <label class="block font-semibold text-sm">ניהול כספים והוצאות — עד כמה זה מתנהל בצורה טובה?</label>
-                                <input type="hidden" id="3_finances_quality" name="3_finances_quality" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_finances_quality')">מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_finances_quality')">טוב</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_finances_quality')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_finances_quality')">לא טוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_finances_quality')">גרוע</button>
-                                </div>
-                                <div class="pt-2 space-y-2">
-                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
-                                    <input type="hidden" id="3_finances_friction" name="3_finances_friction" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_finances_friction')">מסתדרים מצוין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_finances_friction')">מסתדרים</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_finances_friction')">לפעמים חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_finances_friction')">הרבה חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_finances_friction')">תמיד מריבה</button>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="בריאות וצרכים מיוחדים" onchange="toggleFrictionArea('special')"> בריאות וצרכים מיוחדים</label>
-                            <div id="friction_special" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
-                                <label class="block font-semibold text-sm">בריאות וצרכים מיוחדים — עד כמה זה מתנהל בצורה טובה?</label>
-                                <input type="hidden" id="3_special_quality" name="3_special_quality" value="">
-                                <div class="scale-btns">
-                                    <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_special_quality')">מצוין</button>
-                                    <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_special_quality')">טוב</button>
-                                    <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_special_quality')">בינוני</button>
-                                    <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_special_quality')">לא טוב</button>
-                                    <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_special_quality')">גרוע</button>
-                                </div>
-                                <div class="pt-2 space-y-2">
-                                    <label class="block text-sm">עד כמה זה גורם לחיכוכים?</label>
-                                    <input type="hidden" id="3_special_friction" name="3_special_friction" value="">
-                                    <div class="scale-btns">
-                                        <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_special_friction')">מסתדרים מצוין</button>
-                                        <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_special_friction')">מסתדרים</button>
-                                        <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_special_friction')">לפעמים חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_special_friction')">הרבה חיכוכים</button>
-                                        <button type="button" class="scale-btn" data-value="5" onclick="selectScale(this,'3_special_friction')">תמיד מריבה</button>
-                                    </div>
-                                </div>
-                            </div>
-                                </div>
-                                <div>
-                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="אחר"> אחר</label>
-                                </div>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.1</span>תדירות</label>
+                        <div class="bg-gray-50 p-5 rounded-2xl space-y-2">
+                            <label class="text-sm font-semibold">באיזו תדירות קורה ביניכם חיכוך כלשהוא?</label>
+                            <div class="flex flex-wrap gap-4">
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה ימים"> כל כמה ימים</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה שבועות"> כל כמה שבועות</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה חודשים"> כל כמה חודשים</label>
+                                <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="בכלל לא"> בכלל לא</label>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 3.2 Worst area follow-up -->
+                    <!-- 3.2 Areas -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.2</span>המקרה המתסכל ביותר</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.2</span>תחומי חיכוך</label>
+                        <div class="space-y-3">
+                            <label class="block text-sm font-bold">באילו תחומים יש לכם חיכוכים?</label>
+                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                            <div class="space-y-3">
+
+                                <!-- routine -->
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שגרה ומטלות" onchange="toggleFrictionArea('routine')"> שגרה ומטלות ילדים בשוטף (לו"ז יומי כגון הסעות לחוגים ולחברים, אסיפות הורים)</label>
+                                    <div id="friction_routine" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">דרך אילו ערוצים אתם מתאמים שגרה ומטלות?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_channels','וואטסאפ')">וואטסאפ</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_channels','שיחת טלפון')">שיחת טלפון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_channels','אימייל')">אימייל</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_channels','יומן משותף')">יומן משותף</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_channels','אחר')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_routine_channels" value="">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">עד כמה זה גורם לחיכוכים?</label>
+                                            <input type="hidden" id="3_routine_friction" name="3_routine_friction" value="">
+                                            <div class="scale-btns">
+                                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_routine_friction')">מסתדרים</button>
+                                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_routine_friction')">לפעמים חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_routine_friction')">הרבה חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_routine_friction')">תמיד מריבה</button>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">מה גורם לחיכוך?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_cause','חלוקת אחריות לא ברורה / לא הוגנת')">חלוקת אחריות לא ברורה / לא הוגנת</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_cause','בקשות לשינויים מרובות או ברגע האחרון')">בקשות לשינויים מרובות או ברגע האחרון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_cause','אי-עמידה בהתחייבויות')">אי-עמידה בהתחייבויות</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_routine_cause','אחר'); toggleCauseOther('3_routine_cause','3_routine_cause_other_ta')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_routine_cause" value="">
+                                            <textarea id="3_routine_cause_other_ta" name="3_routine_cause_other" class="logic-box w-full border rounded-xl p-2 h-10 outline-none focus:ring-2 focus:ring-indigo-500 mt-2" data-optional="true" placeholder="פרט/י..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- schedule -->
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="שינויי לו&quot;ז" onchange="toggleFrictionArea('schedule')"> שינוי לו"ז ספציפיים (החלפת ימים או שבתות, חגים, חופשות, חו"ל)</label>
+                                    <div id="friction_schedule" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">דרך אילו ערוצים אתם מתאמים שינויים כאלו?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_channels','וואטסאפ')">וואטסאפ</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_channels','שיחת טלפון')">שיחת טלפון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_channels','אימייל')">אימייל</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_channels','יומן משותף')">יומן משותף</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_channels','אחר')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_schedule_channels" value="">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">עד כמה זה גורם לחיכוכים?</label>
+                                            <input type="hidden" id="3_schedule_friction" name="3_schedule_friction" value="">
+                                            <div class="scale-btns">
+                                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_schedule_friction')">מסתדרים</button>
+                                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_schedule_friction')">לפעמים חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_schedule_friction')">הרבה חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_schedule_friction')">תמיד מריבה</button>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">מה גורם לחיכוך?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_cause','בקשות לשינויים ברגע האחרון')">בקשות לשינויים ברגע האחרון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_cause','אי-עמידה בזמנים')">אי-עמידה בזמנים</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_cause','שינויים ללא תיאום מראש')">שינויים ללא תיאום מראש</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_schedule_cause','אחר'); toggleCauseOther('3_schedule_cause','3_schedule_cause_other_ta')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_schedule_cause" value="">
+                                            <textarea id="3_schedule_cause_other_ta" name="3_schedule_cause_other" class="logic-box w-full border rounded-xl p-2 h-10 outline-none focus:ring-2 focus:ring-indigo-500 mt-2" data-optional="true" placeholder="פרט/י..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- decisions -->
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="קבלת החלטות" onchange="toggleFrictionArea('decisions')"> קבלת החלטות שאינן קשורות ללו"ז (בריאות, חינוך, חברתי, שימוש במחשב או בנייד)</label>
+                                    <div id="friction_decisions" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">דרך אילו ערוצים אתם מתייעצים כדי לקבלת החלטות כאלו?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_channels','וואטסאפ')">וואטסאפ</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_channels','שיחת טלפון')">שיחת טלפון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_channels','אימייל')">אימייל</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_channels','שיחות פנים אל פנים')">שיחות פנים אל פנים</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_channels','אחר')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_decisions_channels" value="">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">עד כמה זה גורם לחיכוכים?</label>
+                                            <input type="hidden" id="3_decisions_friction" name="3_decisions_friction" value="">
+                                            <div class="scale-btns">
+                                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_decisions_friction')">מסתדרים</button>
+                                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_decisions_friction')">לפעמים חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_decisions_friction')">הרבה חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_decisions_friction')">תמיד מריבה</button>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">מה גורם לחיכוך?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_cause','כל צד מתעקש על הדרך שלו')">כל צד מתעקש על הדרך שלו</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_cause','צד אחד מחליט בלי להתייעץ')">צד אחד מחליט בלי להתייעץ</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_cause','כל התייעצות הופכת לוויכוח')">כל התייעצות הופכת לוויכוח</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_decisions_cause','אחר'); toggleCauseOther('3_decisions_cause','3_decisions_cause_other_ta')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_decisions_cause" value="">
+                                            <textarea id="3_decisions_cause_other_ta" name="3_decisions_cause_other" class="logic-box w-full border rounded-xl p-2 h-10 outline-none focus:ring-2 focus:ring-indigo-500 mt-2" data-optional="true" placeholder="פרט/י..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- finances -->
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="ניהול כספים והוצאות" onchange="toggleFrictionArea('finances')"> ניהול כספים והוצאות</label>
+                                    <div id="friction_finances" class="logic-box bg-indigo-50 p-5 rounded-2xl border border-indigo-100 space-y-4 mt-2">
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">דרך אילו ערוצים אתם מתאמים ניהול כספים?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','וואטסאפ')">וואטסאפ</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','שיחת טלפון')">שיחת טלפון</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','אימייל')">אימייל</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','אקסל')">אקסל</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','חשבון בנק משותף')">חשבון בנק משותף</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_channels','אחר')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_finances_channels" value="">
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">עד כמה זה גורם לחיכוכים?</label>
+                                            <input type="hidden" id="3_finances_friction" name="3_finances_friction" value="">
+                                            <div class="scale-btns">
+                                                <button type="button" class="scale-btn" data-value="1" onclick="selectScale(this,'3_finances_friction')">מסתדרים</button>
+                                                <button type="button" class="scale-btn" data-value="2" onclick="selectScale(this,'3_finances_friction')">לפעמים חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="3" onclick="selectScale(this,'3_finances_friction')">הרבה חיכוכים</button>
+                                                <button type="button" class="scale-btn" data-value="4" onclick="selectScale(this,'3_finances_friction')">תמיד מריבה</button>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-2">
+                                            <label class="block text-sm font-semibold">מה גורם לחיכוך?</label>
+                                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                            <div class="toggle-btns">
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_cause','מחלוקות על סכומים')">מחלוקות על סכומים</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_cause','תשלומים לא מגיעים בזמן')">תשלומים לא מגיעים בזמן</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_cause','הוצאות לא מאושרות מראש')">הוצאות לא מאושרות מראש</button>
+                                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_finances_cause','אחר'); toggleCauseOther('3_finances_cause','3_finances_cause_other_ta')">אחר</button>
+                                            </div>
+                                            <input type="hidden" name="3_finances_cause" value="">
+                                            <textarea id="3_finances_cause_other_ta" name="3_finances_cause_other" class="logic-box w-full border rounded-xl p-2 h-10 outline-none focus:ring-2 focus:ring-indigo-500 mt-2" data-optional="true" placeholder="פרט/י..."></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- other -->
+                                <div>
+                                    <label class="flex items-center gap-2"><input type="checkbox" name="3.1_areas" value="אחר"> אחר</label>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3.3 Worst area -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">3.3</span>התחום המתסכל ביותר</label>
                         <div class="bg-gray-50 p-5 rounded-2xl space-y-4">
+                            <p class="text-sm text-indigo-800 font-semibold">שים/שימי לב! זה החלק החשוב ביותר בשאלון. אנא נסה לפרט ולדייק.</p>
                             <div>
                                 <div class="flex justify-between items-center mb-1">
-                                    <label class="text-sm font-semibold">תן דוגמה מהתחום שהכי מתסכל אותך (אופציונלי):</label>
+                                    <label class="text-sm font-semibold">תאר/י את המקרה עם הכי הרבה חיכוך שהיה ביניכם (אופציונלי):</label>
                                     <button type="button" onclick="startSTT('3_worst_example', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
                                     </button>
@@ -467,23 +525,29 @@
                                 <textarea id="3_worst_example" name="3_worst_example" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
                             </div>
                             <div class="space-y-2">
-                                <label class="text-sm font-semibold">האם קורה שדברים לא מתבצעים בגלל חיכוך?</label>
-                                <div class="flex gap-6">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="כן"> כן</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_tasks_not_done" value="לא"> לא</label>
+                                <label class="text-sm font-semibold">אם היה גורם נוסף (מתווך), איך הוא היה יכול לתרום?</label>
+                                <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
+                                <div class="toggle-btns">
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יציע איך לנהל מטלות')">יציע איך לנהל מטלות</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתזכר אותנו בלו&quot;ז שנקבע')">יתזכר אותנו בלו"ז שנקבע</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתאם מול גורמים חיצוניים במקומנו')">יתאם מול גורמים חיצוניים במקומנו</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יתווך בינינו על ידי שיחה דרכו')">יתווך בינינו על ידי שיחה דרכו</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','יבדוק את העובדות וישפוט בינינו')">יבדוק את העובדות וישפוט בינינו</button>
+                                    <button type="button" class="toggle-btn" onclick="toggleMulti(this,'3_mediator_role','אחר'); toggleCauseOther('3_mediator_role','3_mediator_role_other_ta')">אחר</button>
                                 </div>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="text-sm font-semibold">באיזו תדירות קורה ביניכם חיכוך כלשהוא?</label>
-                                <div class="flex flex-wrap gap-4">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה ימים"> כל כמה ימים</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה שבועות"> כל כמה שבועות</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="כל כמה חודשים"> כל כמה חודשים</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="3_friction_frequency" value="בכלל לא"> בכלל לא</label>
+                                <input type="hidden" name="3_mediator_role" value="">
+                                <div id="3_mediator_role_other_ta" class="logic-box mt-2">
+                                    <div class="flex justify-end mb-1">
+                                        <button type="button" onclick="startSTT('3_mediator_role_other', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
+                                        </button>
+                                    </div>
+                                    <textarea id="3_mediator_role_other" name="3_mediator_role_other" class="w-full border rounded-xl p-2 h-10 outline-none focus:ring-2 focus:ring-indigo-500" data-optional="true" placeholder="פרט/י..."></textarea>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -500,49 +564,10 @@
                 </div>
 
                 <div class="space-y-8">
-                    <!-- 4.1 Tool limitations -->
+
+                    <!-- 4.1 Barriers -->
                     <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.1</span>כלים קיימים</label>
-
-                        <div class="space-y-3">
-                            <label class="block font-semibold">מהם הכלים שאתם משתמשים בהם לתקשורת?</label>
-                            <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
-                            <div class="toggle-btns">
-                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','וואטסאפ')">וואטסאפ</button>
-                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','אימייל')">אימייל</button>
-                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','טלפון')">טלפון</button>
-                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','לוח שנה משותף')">לוח שנה משותף</button>
-                                <button type="button" class="toggle-btn" onclick="toggleMulti(this,'4_tools','אחר')">אחר</button>
-                            </div>
-                            <input type="hidden" name="4_tools" value="">
-                        </div>
-
-                        <div class="space-y-2">
-                            <div class="flex justify-between items-center">
-                                <label class="block font-semibold">מה הכי חסר לך בכלים הקיימים? (אופציונלי)</label>
-                                <button type="button" onclick="startSTT('4_tools_missing', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                                </button>
-                            </div>
-                            <textarea id="4_tools_missing" name="4_tools_missing" data-optional="true" class="w-full border rounded-xl p-3 h-20 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                        </div>
-                    </div>
-
-                    <!-- 4.2 Neutral helper -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.2</span>גורם ניטרלי</label>
-                        <div class="flex justify-between items-center">
-                            <label class="block font-semibold">אילו בעיות היית הכי רוצה שגורם ניטרלי יפתור עבורך? (אופציונלי)</label>
-                            <button type="button" onclick="startSTT('4_neutral_helper', this)" class="mic-btn text-indigo-600 hover:text-indigo-800 transition">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" /></svg>
-                            </button>
-                        </div>
-                        <textarea id="4_neutral_helper" name="4_neutral_helper" data-optional="true" class="w-full border rounded-xl p-3 h-24 outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-
-                    <!-- 4.3 Barriers -->
-                    <div class="space-y-4">
-                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.3</span>חסמים</label>
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.1</span>חסמים</label>
                         <div class="space-y-3">
                             <label class="block font-semibold">מה היה מונע ממך להשתמש בכלי דיגיטלי לניהול ההורות?</label>
                             <p class="text-xs text-gray-400">ניתן לבחור כמה שצריך</p>
@@ -558,13 +583,10 @@
                         </div>
                     </div>
 
-                    <!-- 4.4 WTP accordion -->
-                    <div class="border border-gray-200 rounded-2xl overflow-hidden">
-                        <div class="accordion-header bg-gray-50 p-4 flex justify-between items-center" onclick="toggleAccordionWTP()">
-                            <span class="font-semibold text-gray-700">נכונות לשלם (אופציונלי)</span>
-                            <svg id="accordionWTPIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                        </div>
-                        <div id="accordionWTPBody" class="accordion-body p-5 space-y-4 border-t border-gray-200">
+                    <!-- 4.2 WTP -->
+                    <div class="space-y-4">
+                        <label class="block font-semibold text-lg"><span class="section-tag ml-2">4.2</span>נכונות לשלם</label>
+                        <div class="space-y-4">
                             <div class="space-y-2">
                                 <label class="block font-semibold">אם היה כלי שבאמת עוזר — האם היית מוכנ/ה לשלם?</label>
                                 <div class="flex gap-6">
@@ -584,6 +606,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <div class="pt-10 flex justify-between">
@@ -814,6 +837,15 @@
             });
             const div = document.getElementById('friction_' + key);
             if (div) div.classList.toggle('visible', checked);
+        }
+
+        function toggleCauseOther(fieldName, textareaId) {
+            var inputs = document.getElementsByName(fieldName);
+            var ta = document.getElementById(textareaId);
+            if (ta && inputs.length > 0) {
+                var vals = inputs[0].value ? inputs[0].value.split(', ') : [];
+                ta.classList.toggle('visible', vals.indexOf('אחר') >= 0);
+            }
         }
 
         // WTP accordion

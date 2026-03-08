@@ -123,34 +123,13 @@
     "3.1_areas": {
       "type": "string"
     },
-    "3_routine_quality": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
-      ]
-    },
     "3_routine_friction": {
       "type": "string",
       "enum": [
         "1",
         "2",
         "3",
-        "4",
-        "5"
-      ]
-    },
-    "3_schedule_quality": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
+        "4"
       ]
     },
     "3_schedule_friction": {
@@ -159,18 +138,7 @@
         "1",
         "2",
         "3",
-        "4",
-        "5"
-      ]
-    },
-    "3_decisions_quality": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
+        "4"
       ]
     },
     "3_decisions_friction": {
@@ -179,18 +147,7 @@
         "1",
         "2",
         "3",
-        "4",
-        "5"
-      ]
-    },
-    "3_finances_quality": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
+        "4"
       ]
     },
     "3_finances_friction": {
@@ -199,39 +156,11 @@
         "1",
         "2",
         "3",
-        "4",
-        "5"
-      ]
-    },
-    "3_special_quality": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
-      ]
-    },
-    "3_special_friction": {
-      "type": "string",
-      "enum": [
-        "1",
-        "2",
-        "3",
-        "4",
-        "5"
+        "4"
       ]
     },
     "3_worst_example": {
       "type": "string"
-    },
-    "3_tasks_not_done": {
-      "type": "string",
-      "enum": [
-        "כן",
-        "לא"
-      ]
     },
     "4_tools": {
       "type": "string"
@@ -305,6 +234,48 @@
         "כל כמה חודשים",
         "בכלל לא"
       ]
+    },
+    "3_routine_channels": {
+      "type": "string"
+    },
+    "3_routine_cause": {
+      "type": "string"
+    },
+    "3_routine_cause_other": {
+      "type": "string"
+    },
+    "3_schedule_channels": {
+      "type": "string"
+    },
+    "3_schedule_cause": {
+      "type": "string"
+    },
+    "3_schedule_cause_other": {
+      "type": "string"
+    },
+    "3_decisions_channels": {
+      "type": "string"
+    },
+    "3_decisions_cause": {
+      "type": "string"
+    },
+    "3_decisions_cause_other": {
+      "type": "string"
+    },
+    "3_finances_channels": {
+      "type": "string"
+    },
+    "3_finances_cause": {
+      "type": "string"
+    },
+    "3_finances_cause_other": {
+      "type": "string"
+    },
+    "3_mediator_role": {
+      "type": "string"
+    },
+    "3_mediator_role_other": {
+      "type": "string"
     }
   },
   "patternProperties": {
@@ -348,25 +319,11 @@
         "value": "לא"
       }
     },
-    "3_routine_quality": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "שגרה ומטלות"
-      }
-    },
     "3_routine_friction": {
       "shown_when": {
         "field": "3.1_areas",
         "op": "contains",
         "value": "שגרה ומטלות"
-      }
-    },
-    "3_schedule_quality": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "שינויי לו\"ז"
       }
     },
     "3_schedule_friction": {
@@ -376,13 +333,6 @@
         "value": "שינויי לו\"ז"
       }
     },
-    "3_decisions_quality": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "קבלת החלטות"
-      }
-    },
     "3_decisions_friction": {
       "shown_when": {
         "field": "3.1_areas",
@@ -390,39 +340,11 @@
         "value": "קבלת החלטות"
       }
     },
-    "3_finances_quality": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "ניהול כספים והוצאות"
-      }
-    },
     "3_finances_friction": {
       "shown_when": {
         "field": "3.1_areas",
         "op": "contains",
         "value": "ניהול כספים והוצאות"
-      }
-    },
-    "3_special_quality": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "בריאות וצרכים מיוחדים"
-      }
-    },
-    "3_special_friction": {
-      "shown_when": {
-        "field": "3.1_areas",
-        "op": "contains",
-        "value": "בריאות וצרכים מיוחדים"
-      }
-    },
-    "3_tasks_not_done": {
-      "shown_when": {
-        "field": "2.1_safety",
-        "op": "!=",
-        "value": "לא"
       }
     },
     "3_worst_example": {
@@ -458,6 +380,104 @@
         "field": "5_contact_ok",
         "op": "==",
         "value": "כן"
+      }
+    },
+    "3_routine_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause_other": {
+      "shown_when": {
+        "field": "3_routine_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_schedule_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause_other": {
+      "shown_when": {
+        "field": "3_schedule_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_decisions_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause_other": {
+      "shown_when": {
+        "field": "3_decisions_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_finances_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause_other": {
+      "shown_when": {
+        "field": "3_finances_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_mediator_role": {
+      "shown_when": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_mediator_role_other": {
+      "shown_when": {
+        "field": "3_mediator_role",
+        "op": "contains",
+        "value": "אחר"
       }
     }
   }
