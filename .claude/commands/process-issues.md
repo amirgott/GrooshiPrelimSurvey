@@ -70,7 +70,7 @@ Wait for it to complete, then read the resulting processed JSON and raw JSON to 
 4. Assign a **category** — follow `design/topics/response-segmentation.md` (Steps 1–4): derive computed values, evaluate each segment, assign primary + optional secondary, apply modifiers, run coherence checks.
 5. Write a **conclusion** paragraph (3–5 sentences) characterizing: who this person is, what their main pain is, and how strong their product need appears.
 6. Write a **conclusion_one_liner** (≤15 words) summarizing the pain profile.
-7. Set **`potential_user`** (boolean): `true` if **both** conditions hold — (a) some friction is present: any `2.2_*` or `3_*` quality scale > 1, or `3_tasks_not_done` == "כן", or `2.1_safety` is set; **AND** (b) the respondent does not deny needing the product — no explicit denial (`4_wtp` == "לא" AND `4_barriers` contains no-need language) and no implicit dismissal (step 4 is uniformly negative with zero positive signal). `false` in all other cases, including low-conflict skip cases.
+7. Set **`potential_user`** (boolean): `true` if **both** conditions hold — (a) some friction is present: any `2.2_*` scale > 1, or any `3_*_friction` field > 1, or `2.1_safety` is set; **AND** (b) the respondent does not deny needing the product — no explicit denial (`4_wtp` == "לא" AND `4_barriers` contains no-need language) and no implicit dismissal (step 4 is uniformly negative with zero positive signal). `false` in all other cases, including low-conflict skip cases.
 8. Set **`potential_payer`** (boolean): `true` only if `potential_user` is `true` AND `4_wtp` == "כן". Otherwise `false`.
 9. **Coherence check** — after setting `potential_user`/`potential_payer`, scan for the following contradiction patterns. No human confirmation required: record all triggered patterns in `coherence_warnings` (array of strings) and proceed directly to 3c. Omit `coherence_warnings` from the JSON if the array is empty.
 
@@ -78,7 +78,7 @@ Wait for it to complete, then read the resulting processed JSON and raw JSON to 
    |---------|---------|----------------|-----------------|
    | Friction-denial (explicit) | friction found (condition a true) AND `4_wtp` == "לא" AND `4_barriers` contains no-need language | `"Friction detected but respondent explicitly denies need"` | Keep `potential_user: false`, `potential_payer: false` |
    | Friction-denial (implicit) | friction found (condition a true) but need implicitly dismissed (condition b fails for non-explicit reasons) | `"Friction detected but respondent implicitly denies need"` | Set `potential_user: "uncertain"`, `potential_payer: "uncertain"` |
-   | Tension-friction gap | `2.2_emotional_tension` or `2.2_org_difficulty` ≥ 3 but all step 3 quality scores = 1, or vice versa | `"Step 2 tension and step 3 friction diverge significantly"` | No change to fields |
+   | Tension-friction gap | `2.2_emotional_tension` or `2.2_org_difficulty` ≥ 3 but all step 3 friction scores = 1, or vice versa | `"Step 2 tension and step 3 friction diverge significantly"` | No change to fields |
    | WTP-without-friction | `4_wtp` == "כן" but `potential_user: false` | `"Willing to pay but no friction detected"` | No change to fields |
    | Category-score mismatch | category is `high-conflict` but median step 3 score ≤ 2, or `low-conflict` with any score ≥ 4 | `"Assigned category may not match scale data"` | No change to fields |
 

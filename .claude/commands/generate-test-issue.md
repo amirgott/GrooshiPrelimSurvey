@@ -83,23 +83,23 @@ Two paths depending on whether a persona is present.
 | 5_other_filled | לא |
 | 5_contact_ok | לא |
 
-Include a plausible step 4 block: `4_tools`, `4_wtp`, `4_wtp_range` (if wtp is yes), `4_barriers`, `4_neutral_helper`. Values should be realistic and consistent with the segment's pain profile.
+Include a plausible step 4 block: `4_wtp`, `4_wtp_range` (if wtp is yes), `4_barriers`. Values should be realistic and consistent with the segment's pain profile.
 
 #### Applying criteria
 
 Set field values to clearly satisfy all decisive criteria — use extreme values within the allowed range rather than borderline ones. For example, if the criterion is comm_quality ≤ 2, set it to 1 rather than 2.
 
-For any area selected in `3.1_areas`, always include both the quality field and the friction field for that area.
+For any area selected in `3.1_areas`, always include the friction field for that area.
 
 For the safety-critical segment: omit all step 3 fields (`3.1_areas` and all `3_*` fields) — safety routing intentionally skips step 3 when `2.1_safety` is set to the unsafe value.
 
-For area string values in `3.1_areas`: read the exact strings from the `x-conditional-fields` section of `responses/schemas/v2.json`. Some values contain special characters — do not retype them; copy directly from the schema.
+For area string values in `3.1_areas`: read the exact strings from the `x-conditional-fields` section of `responses/schemas/v3.json`. Some values contain special characters — do not retype them; copy directly from the schema.
 
 Override or extend the base profile fields as needed.
 
 **Profile consistency**: Beyond the decisive criteria, always set `2.2_comm_quality`, `2.2_emotional_tension`, and `2.2_org_difficulty` to values that clearly reflect the segment's described typical profile — do not leave these fields absent or at a default. Use the segment description and the scale direction note in `response-segmentation.md` (higher raw `comm_quality` = worse communication) to infer appropriate values. For example: safety-critical → `comm_quality=5`, `emotional_tension=5`; cooperative-colleagues → `comm_quality=1`, `emotional_tension=1`. Also set relevant free-text fields (e.g. `2.1_safety_detail`) with language consistent with the segment's tone. A test issue that only satisfies decisive criteria but misrepresents the broader profile will produce spurious coherence warnings during analysis.
 
-**Step 3 subscale consistency**: For every area selected in `3.1_areas`, also set its quality and friction scores to values that match the segment's conflict level. Scale directions (from the HTML): quality runs 1 (מצוין — excellent) → 5 (גרוע — terrible); friction runs 1 (manage excellently) → 5 (always fighting). Both scales go in the same direction — higher = worse. Examples: high-conflict → quality 4–5, friction 4–5; cooperative-colleagues → quality 2–3, friction 2–3; angry-associates → quality 3–4, friction 3–4. Do not set quality to 1 (excellent) for a high-conflict or angry-associates profile.
+**Step 3 subscale consistency**: For every area selected in `3.1_areas`, set its friction score to a value that matches the segment's conflict level. Scale direction (from the HTML): friction runs 1 (מסתדרים מצוין) → 4 (כמעט תמיד נלחמים). Higher = worse. Examples: high-conflict → friction 4; cooperative-colleagues → friction 2; angry-associates → friction 3.
 
 ---
 
@@ -150,19 +150,16 @@ For each of `2.2_comm_quality`, `2.2_emotional_tension`, `2.2_org_difficulty`:
 
 Select friction areas based on `conflict_baseline.narrative` and the segment's pain profile, informed by the reasoning step (e.g. anchoring effects from `anchoring_sensitivity`). Verify area count satisfies decisive criteria.
 
-For area string values in `3.1_areas`: read exact strings from `responses/schemas/v2.json` as in standard flow.
+For area string values in `3.1_areas`: read exact strings from `responses/schemas/v3.json` as in standard flow.
 
-For each selected area's quality and friction subscales: anchor to the clamped baseline rather than the segment extreme. Apply the same reasoning about survey-day bias.
-
-For `3_tasks_not_done`: derive from `conflict_baseline.org_difficulty_avg` and reasoning.
+For each selected area's friction subscale: anchor to the clamped baseline rather than the segment extreme. Apply the same reasoning about survey-day bias.
 
 #### Optional text fields
 
-For each optional text field (`3_worst_example`, `4_tools_missing`, `4_neutral_helper`): use the reasoning step to decide whether to omit or fill. If filling, write a Hebrew answer consistent with `state.recent_incident` and `profile.background`, calibrated to `behavioral_params.verbosity` (≤3 = one short phrase; 4–6 = one full sentence; ≥7 = two sentences).
+For each optional text field (`3_worst_example`): use the reasoning step to decide whether to omit or fill. If filling, write a Hebrew answer consistent with `state.recent_incident` and `profile.background`, calibrated to `behavioral_params.verbosity` (≤3 = one short phrase; 4–6 = one full sentence; ≥7 = two sentences).
 
 #### Step 4 fields
 
-- `4_tools`: choose tools realistic for the persona's `digital_comfort` and segment.
 - `4_barriers`: write Hebrew reflecting the barrier(s) most salient given the reasoning step and `state.recent_incident`. Apply judgment about whether this persona would name one or several.
 - `4_wtp`: derive from `state.motivation` and segment need profile.
 - `4_wtp_range`: if wtp is yes, pick the range consistent with persona's financial situation.
