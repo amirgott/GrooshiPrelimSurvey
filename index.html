@@ -301,7 +301,7 @@
 
                 <div class="pt-10 flex justify-between">
                     <button type="button" onclick="goToStep(1)" class="text-indigo-600 font-bold px-8 py-3">חזרה לחלק 1</button>
-                    <button type="button" onclick="handleStep2Continue()" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 3</button>
+                    <button type="button" id="step2ContinueBtn" onclick="handleStep2Continue()" class="bg-indigo-600 text-white px-10 py-3 rounded-full font-bold hover:bg-indigo-700 transition">המשך לחלק 3</button>
                 </div>
             </div>
 
@@ -793,6 +793,8 @@
             const isNo = value === 'לא';
             document.getElementById('logicSafetyNo').classList.toggle('visible', isNo);
             document.getElementById('safetyFlagInput').value = isNo ? 'כן' : '';
+            var btn = document.getElementById('step2ContinueBtn');
+            if (btn) btn.textContent = isNo ? 'המשך לחלק 4' : 'המשך לחלק 3';
         }
 
         // Step 2 continue — route based on safety flag
