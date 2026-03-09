@@ -1,0 +1,10 @@
+{
+  "gh_repo": "amirgott/GrooshiSurveyData",
+  "issue_body_key": "survey_data",
+  "current_schema": "responses/schemas/v3.json",
+  "schema_dir": "responses/schemas",
+  "segmentation_doc": "design/topics/response-segmentation.md",
+  "output_dir": "responses",
+  "personas_dir": "personas",
+  "survey_id_prefix": "T"
+}

@@ -6,7 +6,7 @@ Downloads GitHub Issues (survey responses) and saves them as raw JSON files.
 Run this when network is available; process_issue.py can then run offline.
 Idempotent -- skips if the raw file already exists.
 
-Dependencies: gh CLI authenticated to amirgott/GrooshiSurveyData.
+Dependencies: gh CLI authenticated to the repo in survey.config.json.
 Windows note: run with PYTHONUTF8=1 if console errors occur.
 """
 import re
@@ -15,9 +15,17 @@ import json
 import subprocess
 from pathlib import Path
 
-REPO = "amirgott/GrooshiSurveyData"
 ROOT = Path(__file__).parent.parent
-RESPONSES_DIR = ROOT / "responses"
+
+
+def load_config():
+    return json.loads((ROOT / "survey.config.json").read_text(encoding="utf-8"))
+
+
+CFG = load_config()
+REPO = CFG["gh_repo"]
+ISSUE_BODY_KEY = CFG["issue_body_key"]
+RESPONSES_DIR = ROOT / CFG["output_dir"]
 
 
 def fetch_issue(issue_number: int) -> dict:
@@ -30,7 +38,11 @@ def fetch_issue(issue_number: int) -> dict:
 
 def parse_payload(issue_data: dict) -> dict:
     body = issue_data["body"]
-    match = re.search(r'\|\s*survey_data\s*\|\s*(\{.+\})\s*\|', body) or re.search(r'^\|\s*(\{.+\})\s*\|\s*$', body, re.MULTILINE)
+    key = ISSUE_BODY_KEY
+    escaped = re.escape(key)
+    pat1 = r'\|\s*' + escaped + r'\s*\|\s*(\{.+\})\s*\|'
+    pat2 = r'^\|\s*(\{.+\})\s*\|\s*$'
+    match = re.search(pat1, body) or re.search(pat2, body, re.MULTILINE)
     if not match:
         raise ValueError("Could not find survey_data in issue body")
     return json.loads(match.group(1))

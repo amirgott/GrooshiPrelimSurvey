@@ -6,6 +6,23 @@ Used by: `/process-issues` skill (step 3b.4). Also the researcher's tracing refe
 
 ---
 
+## Segment abbreviations
+
+Used by `/generate-test-issue` for survey ID generation.
+
+| Slug | Abbreviation |
+|------|-------------|
+| safety-critical | sc |
+| high-conflict | hc |
+| angry-associates | aa |
+| cooperative-colleagues | cc |
+| boundary-first | bf |
+| financially-stressed | fs |
+| complex-care | cd |
+| distance | dr |
+| blended-family | bl |
+
+---
 ## Step 1 — Derive before classifying
 
 | Derivation | Formula |
