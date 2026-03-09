@@ -1,6 +1,6 @@
 # Response Segmentation
 
-Status: Planned
+Status: Partial
 
 Used by: `/process-issues` skill (step 3b.4). Also the researcher's tracing reference for why a category was assigned.
 
@@ -16,16 +16,17 @@ Used by: `/process-issues` skill (step 3b.4). Also the researcher's tracing refe
 | `tension_max` | max(`2.2_emotional_tension`, `2.2_org_difficulty`) |
 | `tension_type` | `"emotional"` if `2.2_emotional_tension` > `2.2_org_difficulty`; `"organizational"` if reverse; `"balanced"` if equal |
 | `friction_area_count` | count of selected `3.1_areas` values |
-| `friction_quality_min` | min of quality scores for selected areas |
-| `friction_quality_avg` | avg of quality scores for selected areas (1 decimal) |
+| `friction_score_max` | max of `3_*_friction` values for selected areas |
+| `friction_score_avg` | avg of `3_*_friction` values for selected areas (1 decimal) |
 
-If step 3 was skipped (safety routing): treat `friction_area_count` as 0 and all quality scores as N/A — do not interpret absence of friction areas as low-conflict.
+If step 3 was skipped (safety routing): treat `friction_area_count` as 0 and all friction scores as N/A — do not interpret absence of friction areas as low-conflict.
 
 ---
 
 ## Step 2 — Evaluate segments
 
 > **Scale note:** `2.2_comm_quality` raw values run 1 (cooperative/respectful) → 5 (very conflictual). Thresholds below use this same direction: higher raw value = worse communication.
+> `3_*_friction` fields run 1 (מסתדרים מצוין) → 4 (כמעט תמיד נלחמים). Higher = worse.
 
 Evaluate each segment independently. Assign the best-fit **primary** segment; assign a **second** only when evidence is clearly split. Maximum two segments in output.
 
@@ -52,7 +53,7 @@ Active legal proceedings combined with very poor communication and high tension.
 | | |
 |-|-|
 | **Decisive** | `2.3_legal` == `"כן"` AND `2.2_comm_quality` ≥ 4 AND `tension_max` ≥ 3 |
-| **Supporting** | `friction_quality_min` == 1 · `2.3_legal_type` includes `"משמורת"` · `tension_type` == `"emotional"` · `3_tasks_not_done` == `"כן"` |
+| **Supporting** | `friction_score_max` ≥ 4 · `2.3_legal_type` includes `"משמורת"` · `tension_type` == `"emotional"` |
 | **Notes** | `2.3_legal_type` == `"מזונות"` alone (no custody/property dispute) does not trigger this segment — route to Financially-stressed instead. `age_oldest` ≥ 15 + `"משמורת"` strengthens read. |
 
 ---
@@ -64,7 +65,7 @@ Moderate-to-high conflict without active litigation. Communication is poor and t
 | | |
 |-|-|
 | **Decisive** | `2.2_comm_quality` ≥ 4 AND `tension_max` in 2–3 AND `2.3_legal` != `"כן"` |
-| **Supporting** | `friction_area_count` ≥ 2 · `3_decisions_friction` or `3_schedule_friction` elevated · `tension_type` == `"emotional"` · `3_tasks_not_done` == `"כן"` |
+| **Supporting** | `friction_area_count` ≥ 2 · `3_decisions_friction` or `3_schedule_friction` ≥ 3 · `tension_type` == `"emotional"` |
 | **Notes** | If `2.3_legal` == `"כן"` but `tension_max` < 3, still consider this segment over High-conflict. |
 
 ---
@@ -76,7 +77,7 @@ Good communication and low tension despite real operational friction. Logistics 
 | | |
 |-|-|
 | **Decisive** | `2.2_comm_quality` ≤ 3 AND `tension_max` ≤ 2 AND `friction_area_count` ≥ 1 AND `kids_under_10` ≥ 1 |
-| **Supporting** | Friction in `"שגרה ומטלות"` or `"שינויי לו"ז"` · `tension_type` == `"organizational"` · `3_tasks_not_done` == `"כן"` despite decent comm |
+| **Supporting** | Friction in `"שגרה ומטלות"` or `"שינויי לו"ז"` · `tension_type` == `"organizational"` · elevated `3_routine_friction` or `3_schedule_friction` despite decent comm |
 | **Notes** | Defining pattern: logistics friction despite cooperation — friction is structural, not conflictual. `kids_under_10` ≥ 1 required; absence of young kids shifts to Boundary-first. |
 
 ---
@@ -99,7 +100,7 @@ Financial management and expense transparency are the dominant friction source. 
 
 | | |
 |-|-|
-| **Decisive** | `3.1_areas` includes `"ניהול כספים והוצאות"` AND `3_finances_quality` ≤ 2 |
+| **Decisive** | `3.1_areas` includes `"ניהול כספים והוצאות"` AND `3_finances_friction` ≥ 3 |
 | **Supporting** | `2.3_legal_type` includes `"מזונות"` · `4_barriers` contains financial language · `tension_type` == `"organizational"` · `1.1_custody` == `"משמורת מלאה של ההורה האחר"` (non-custodial) |
 | **Notes** | Frequently combines with Angry Associates or High-conflict. Assign as secondary when another segment is primary and financial friction is present. |
 
@@ -111,9 +112,9 @@ Medical, therapeutic, or special-needs coordination adds a layer of complexity b
 
 | | |
 |-|-|
-| **Decisive** | `3.1_areas` includes `"בריאות וצרכים מיוחדים"` AND `3_special_quality` ≤ 2 |
+| **Decisive** | `3.1_areas` includes `"בריאות וצרכים מיוחדים"` AND `3_special_friction` ≥ 3 |
 | **Supporting** | Age mix (some `< 10`, some `≥ 10`) · `2.2_org_difficulty` elevated · `friction_area_count` ≥ 2 |
-| **Notes** | Age mix amplifies this read even without an explicit special-needs flag. Assign alongside primary segment. |
+| **Notes** | **v3 note:** `"בריאות וצרכים מיוחדים"` area was removed from the survey in v3 — this segment cannot be triggered by v3 responses. Age mix still amplifies logistical reads in other segments. |
 
 ---
 
@@ -160,7 +161,7 @@ Modifiers are listed alongside the segment(s) in the output. Multiple modifiers 
 | Pattern | Trigger | Action |
 |---------|---------|--------|
 | WTP without friction | `4_wtp` == `"כן"` but `friction_area_count` == 0 and `tension_max` ≤ 1 | Add coherence warning |
-| Many areas, low tension | `friction_area_count` ≥ 3 but `tension_max` ≤ 1 | Confirms Cooperative Colleagues even if quality scores are poor |
+| Many areas, low tension | `friction_area_count` ≥ 3 but `tension_max` ≤ 1 | Confirms Cooperative Colleagues even if friction scores are moderate |
 | Tension asymmetry — emotional | `tension_type` == `"emotional"` with low `friction_area_count` | Consider Angry Associates even if fewer areas selected |
 | Tension asymmetry — organizational | `tension_type` == `"organizational"` with high `friction_area_count` | Strengthens logistically-overwhelmed read within the primary segment |
-| Segment–score mismatch | Primary segment implies high conflict but `friction_quality_avg` > 2.5, or vice versa | Add coherence warning |
+| Segment–score mismatch | Primary segment implies high conflict but `friction_score_avg` < 2, or low-conflict primary but `friction_score_avg` ≥ 3 | Add coherence warning |
