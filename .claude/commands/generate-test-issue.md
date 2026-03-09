@@ -179,13 +179,13 @@ Abbreviations matching slug order: sc, hc, aa, cc, bf, fs, cd, dr, bl.
 
 **Never use `cd`** — run all scripts directly from the working directory; never prefix Bash commands with `cd DIR &&`.
 
-**Never use Edit or Write tools for file modifications.** Both crash on content containing braces or quotes. Default for all file writes: write `scripts/_patch.py` using the Write tool with single-quoted Python strings and `dict()` syntax (no braces in source), run it with Bash, then delete it.
+**Never use Edit or Write tools for file modifications.** Use `PYTHONUTF8=1 python << 'PYEOF' ... PYEOF` via Bash for all file writes and edits.
 
 ---
 
 ## Step 4 — Create GitHub Issue
 
-Write `scripts/_create_test_issue.py` using the Write tool (not a Bash heredoc). Constraints for the script:
+Write `scripts/_create_test_issue.py` using a Python heredoc via Bash. Constraints for the script:
 - Use single quotes for all Python string literals — never double quotes
 - Build the payload using `dict()` and individual key-assignment statements — never brace-literal dict syntax
 - Serialize: `json.dumps(payload, ensure_ascii=False)`
@@ -203,7 +203,7 @@ PYTHONUTF8=1 python scripts/_create_test_issue.py
 
 Capture the issue number. Delete `scripts/_create_test_issue.py`.
 
-**If a persona was used:** after successful submission, update the persona JSON file's `issued_as` array via `_patch.py`: write `scripts/_patch.py` using the Write tool (single-quoted strings, `dict()` syntax, no braces in source), run `PYTHONUTF8=1 python scripts/_patch.py` with Bash, then delete it. Do NOT delete the persona file.
+**If a persona was used:** after successful submission, update the persona JSON file's `issued_as` array using a Python heredoc via Bash. Do NOT delete the persona file.
 
 ---
 
