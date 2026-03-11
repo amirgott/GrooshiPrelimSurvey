@@ -6,13 +6,12 @@ argument-hint: "segment-slug"
 ## Startup
 
 Read `survey.config.json` from the project root. Extract:
-- `current_schema` — path to the active schema JSON
 - `segmentation_doc` — path to the response segmentation criteria document
 - `personas_dir` — directory to write persona files
 
-Read the file at `segmentation_doc`. It defines the segment list, decisive criteria, and typical conflict profiles.
+Read `survey.skills.json` from the project root. It contains `field_index`, `persona_profile`, and `test_baseline`.
 
-Read the file at `current_schema`. Use the field enum definitions for valid Step 1 profile field values (custody, distance, religious_divorce, new_partner, time_since_sep, gender) and scale ranges.
+Read the file at `segmentation_doc`. It defines the segment list, decisive criteria, and typical conflict profiles.
 
 ---
 
@@ -49,7 +48,7 @@ Use current date/time for `generated_at`.
 
 ### `profile`
 
-Invent a realistic person for this segment. For all field values (custody, distance, religious_divorce, new_partner, time_since_sep, gender): use the exact enum strings from the schema loaded at startup — do not invent values.
+**Fixed fields** (universal — always include):
 
 | Field | Notes |
 |-------|-------|
@@ -57,15 +56,14 @@ Invent a realistic person for this segment. For all field values (custody, dista
 | `age` | Integer 25–55 |
 | `occupation` | Realistic for the demographic |
 | `city` | Israeli city |
-| `time_since_sep_months` | Integer; 6–36 for most segments |
-| `kids` | Array of `{"name": "...", "age": N}`. Ages must satisfy segment constraints. |
-| `gender` | From schema enum |
-| `custody` | From schema enum |
-| `distance` | From schema enum |
-| `religious_divorce` | From schema enum |
-| `new_partner` | From schema enum |
-| `co_parent_description` | 1–2 sentences on co-parent personality and behavior |
 | `background` | 2–3 sentence narrative of the relationship history and current dynamic |
+
+**Survey-specific fields** — read from `survey.skills.json → persona_profile`:
+
+- **`schema_fields`**: for each entry, include the field using the exact enum string from `field_index[field].enum`. Do not invent values outside the enum.
+- **`domain_fields`**: for each entry, generate a value matching the `type` and `hint`. Do not add domain fields not listed here.
+
+Ages in any kids-type domain field must satisfy segment constraints per the segmentation doc.
 
 ### `conflict_baseline`
 

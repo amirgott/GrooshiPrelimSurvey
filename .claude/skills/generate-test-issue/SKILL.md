@@ -15,7 +15,9 @@ Read `survey.config.json` from the project root. Extract:
 
 Read the file at `segmentation_doc`. It defines the segment list, decisive criteria, and segment abbreviations.
 
-Read the file at `current_schema`. The `x-conditional-fields` section contains exact area string values for `3.1_areas`. Field definitions contain enum values for all Step 1 profile fields.
+Read the file at `current_schema`. The `x-conditional-fields` section contains exact area string values for `3.1_areas`.
+
+Read `survey.skills.json` from the project root. It contains `field_index`, `persona_profile`, and `test_baseline`.
 
 ---
 
@@ -62,23 +64,7 @@ Two paths depending on whether a persona is present.
 
 #### Base profile
 
-| Field | Value |
-|-------|-------|
-| _test | true (boolean) |
-| 1.1_time_since_sep | 1–3 שנים |
-| 1.1_num_kids | 2 |
-| 1.1_kid_age_1 | 6 |
-| 1.1_kid_age_2 | 9 |
-| 1.1_custody | משמורת משותפת |
-| 1.1_distance | אותה עיר |
-| 1.2_gender | נקבה |
-| 1.2_religious_divorce | לא רלוונטי |
-| 1.2_new_partner | לאף אחד |
-| 2.1_safety | כן |
-| 5_other_filled | לא |
-| 5_contact_ok | לא |
-
-For field enum values (custody, distance, religious_divorce, new_partner, time_since_sep, gender): use the exact strings from the schema loaded at startup. Copy directly — do not retype.
+Use `survey.skills.json → test_baseline.fields` as the starting point. For any enum field value, use the exact string from `field_index[field].enum`.
 
 Include a plausible step 4 block: `4_wtp`, `4_wtp_range` (if wtp is yes), `4_barriers`. Values should be realistic and consistent with the segment's pain profile.
 
@@ -102,16 +88,9 @@ For area string values in `3.1_areas`: use the exact strings from the `x-conditi
 
 #### Step 1 fields (from `persona.profile`)
 
-| Payload field | Persona source |
-|---------------|---------------|
-| `1.1_time_since_sep` | Convert `time_since_sep_months`: <12 → "עד שנה"; 12–36 → "1–3 שנים"; 36–84 → "3–7 שנים"; >84 → "7+ שנים" |
-| `1.1_num_kids` | `len(persona.profile.kids)` as string |
-| `1.1_kid_age_N` | `persona.profile.kids[N-1].age` as string |
-| `1.1_custody` | `persona.profile.custody` |
-| `1.1_distance` | `persona.profile.distance` |
-| `1.2_gender` | `persona.profile.gender` |
-| `1.2_religious_divorce` | `persona.profile.religious_divorce` |
-| `1.2_new_partner` | `persona.profile.new_partner` |
+For each entry in `survey.skills.json → persona_profile.schema_fields`: set `entry.field` to `persona.profile[entry.field]`.
+
+For each entry in `persona_profile.domain_fields` with a `maps_to`: apply `entry.conversion` to `persona.profile[entry.field]` to get the payload value.
 
 Always set `_test: true`, `5_other_filled: "לא"`.
 
