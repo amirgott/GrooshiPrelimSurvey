@@ -26,6 +26,15 @@ Conditional logic lives in `index.html` as `logic-box` divs with show/hide behav
 6. Review `design/topics/response-segmentation.md` — update any segment criteria or derivations that reference field names changed or removed in the new version
 7. Push to `main` to publish
 
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| v4 | 2026-03-13 | Replaced cause labels for all 4 friction areas (3_routine_cause, 3_schedule_cause, 3_decisions_cause, 3_finances_cause) and mediator role options (3_mediator_role). Added 3_areas_other field (textarea shown when "אחר" selected in 3.1_areas). No field names removed or renamed. |
+| v3 | 2026-03-08 | (see git tag survey-v3) |
+| v2 | 2026-02-27 | (see git tag survey-v2) |
+| v1 | 2026-02-14 | (see git tag survey-v1) |
+
 ## Notes
 
 - `changes.md` is a freeform developer scratchpad; no enforced format, not part of the workflow

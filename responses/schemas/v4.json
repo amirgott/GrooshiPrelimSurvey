@@ -1,0 +1,494 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "description": "Survey v4 payload schema — derived from index.html at survey-v4 tag",
+  "type": "object",
+  "properties": {
+    "survey_id": {
+      "type": "string"
+    },
+    "safety_flag": {
+      "type": "string",
+      "enum": [
+        "כן",
+        "ברוב המקרים",
+        "לא"
+      ]
+    },
+    "1.1_time_since_sep": {
+      "type": "string",
+      "enum": [
+        "עדיין פרודים",
+        "עד שנה",
+        "1–3 שנים",
+        "3–7 שנים",
+        "7+ שנים"
+      ]
+    },
+    "1.1_num_kids": {
+      "type": "string",
+      "pattern": "^([1-9]|10)$"
+    },
+    "1.1_custody": {
+      "type": "string",
+      "enum": [
+        "משמורת מלאה שלי",
+        "משמורת משותפת",
+        "משמורת מלאה של ההורה האחר"
+      ]
+    },
+    "1.1_distance": {
+      "type": "string",
+      "enum": [
+        "אותה עיר",
+        "עיר אחרת",
+        "חו\"ל"
+      ]
+    },
+    "1.2_gender": {
+      "type": "string",
+      "enum": [
+        "זכר",
+        "נקבה",
+        "אחר"
+      ]
+    },
+    "1.2_religious_divorce": {
+      "type": "string",
+      "enum": [
+        "גרוש/ה דתית",
+        "בתהליך",
+        "עיגון",
+        "לא רלוונטי"
+      ]
+    },
+    "1.2_new_partner": {
+      "type": "string",
+      "enum": [
+        "לאף אחד",
+        "לי בלבד",
+        "לשותפ/ת ההורות בלבד",
+        "לשנינו"
+      ]
+    },
+    "2.1_safety": {
+      "type": "string",
+      "enum": [
+        "כן",
+        "ברוב המקרים",
+        "לא"
+      ]
+    },
+    "2.1_safety_detail": {
+      "type": "string"
+    },
+    "2.2_comm_quality": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "2.2_emotional_tension": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "2.2_org_difficulty": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "2.3_legal": {
+      "type": "string",
+      "enum": [
+        "יש הליכים פעילים",
+        "היו בעבר",
+        "לא"
+      ]
+    },
+    "2.3_legal_type": {
+      "type": "string"
+    },
+    "3.1_areas": {
+      "type": "string"
+    },
+    "3_routine_friction": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "3_schedule_friction": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "3_decisions_friction": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "3_finances_friction": {
+      "type": "string",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ]
+    },
+    "3_worst_example": {
+      "type": "string"
+    },
+    "4_tools": {
+      "type": "string"
+    },
+    "4_tools_missing": {
+      "type": "string"
+    },
+    "4_neutral_helper": {
+      "type": "string"
+    },
+    "4_barriers": {
+      "type": "string"
+    },
+    "4_wtp": {
+      "type": "string",
+      "enum": [
+        "כן",
+        "לא"
+      ]
+    },
+    "4_wtp_range": {
+      "type": "string",
+      "enum": [
+        "עד ₪20/חודש",
+        "₪20–50/חודש",
+        "₪50–100/חודש",
+        "מעל ₪100/חודש",
+        "תשלום חד-פעמי"
+      ]
+    },
+    "5_other_filled": {
+      "type": "string",
+      "enum": [
+        "כן",
+        "לא"
+      ]
+    },
+    "5_other_survey_id": {
+      "type": "string"
+    },
+    "5_contact_ok": {
+      "type": "string",
+      "enum": [
+        "כן",
+        "לא"
+      ]
+    },
+    "5_contact_phone": {
+      "type": "string"
+    },
+    "5_contact_email": {
+      "type": "string"
+    },
+    "5_free_notes": {
+      "type": "string"
+    },
+    "3_friction_frequency": {
+      "type": "string",
+      "enum": [
+        "כל כמה ימים",
+        "כל כמה שבועות",
+        "כל כמה חודשים",
+        "בכלל לא"
+      ]
+    },
+    "2.2_comm_frequency": {
+      "type": "string",
+      "enum": [
+        "כל כמה ימים",
+        "כל כמה שבועות",
+        "כל כמה חודשים",
+        "בכלל לא"
+      ]
+    },
+    "3_routine_channels": {
+      "type": "string"
+    },
+    "3_routine_cause": {
+      "type": "string"
+    },
+    "3_routine_cause_other": {
+      "type": "string"
+    },
+    "3_schedule_channels": {
+      "type": "string"
+    },
+    "3_schedule_cause": {
+      "type": "string"
+    },
+    "3_schedule_cause_other": {
+      "type": "string"
+    },
+    "3_decisions_channels": {
+      "type": "string"
+    },
+    "3_decisions_cause": {
+      "type": "string"
+    },
+    "3_decisions_cause_other": {
+      "type": "string"
+    },
+    "3_finances_channels": {
+      "type": "string"
+    },
+    "3_finances_cause": {
+      "type": "string"
+    },
+    "3_finances_cause_other": {
+      "type": "string"
+    },
+    "3_mediator_role": {
+      "type": "string"
+    },
+    "3_mediator_role_other": {
+      "type": "string"
+    },
+    "3_areas_other": {
+      "type": "string"
+    }
+  },
+  "patternProperties": {
+    "^1\\.1_kid_age_[0-9]+$": {
+      "type": "string",
+      "pattern": "^[0-9]+$"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "survey_id",
+    "1.1_time_since_sep",
+    "1.1_num_kids",
+    "1.1_custody",
+    "1.1_distance",
+    "1.2_gender",
+    "1.2_religious_divorce",
+    "1.2_new_partner",
+    "2.1_safety",
+    "2.2_comm_frequency",
+    "2.2_comm_quality",
+    "2.2_emotional_tension",
+    "2.2_org_difficulty",
+    "2.3_legal",
+    "4_wtp",
+    "5_other_filled",
+    "5_contact_ok"
+  ],
+  "x-conditional-fields": {
+    "2.3_legal_type": {
+      "shown_when": {
+        "field": "2.3_legal",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3.1_areas": {
+      "shown_when": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_routine_friction": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_schedule_friction": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_decisions_friction": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_finances_friction": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_worst_example": {
+      "shown_when": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "4_wtp_range": {
+      "shown_when": {
+        "field": "4_wtp",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_other_survey_id": {
+      "shown_when": {
+        "field": "5_other_filled",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_contact_phone": {
+      "shown_when": {
+        "field": "5_contact_ok",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_contact_email": {
+      "shown_when": {
+        "field": "5_contact_ok",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "3_routine_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause_other": {
+      "shown_when": {
+        "field": "3_routine_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_schedule_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause_other": {
+      "shown_when": {
+        "field": "3_schedule_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_decisions_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause_other": {
+      "shown_when": {
+        "field": "3_decisions_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_finances_channels": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause_other": {
+      "shown_when": {
+        "field": "3_finances_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_mediator_role": {
+      "shown_when": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_mediator_role_other": {
+      "shown_when": {
+        "field": "3_mediator_role",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_areas_other": {
+      "shown_when": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "אחר"
+      }
+    }
+  }
+}
