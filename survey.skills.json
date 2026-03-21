@@ -1,0 +1,749 @@
+{
+  "_meta": {
+    "schema_version": "v4",
+    "schema_file": "responses/schemas/v4.json",
+    "html_file": "index.html",
+    "generated_at": "2026-03-21T08:04:43Z"
+  },
+  "field_index": {
+    "survey_id": {
+      "step": "meta",
+      "label": "מזהה שאלון",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "safety_flag": {
+      "step": "meta",
+      "label": "דגל בטיחות",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "_referrer_source": {
+      "step": "meta",
+      "label": "מקור הגעה",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "_utm_source": {
+      "step": "meta",
+      "label": "UTM source",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "_utm_medium": {
+      "step": "meta",
+      "label": "UTM medium",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "_utm_campaign": {
+      "step": "meta",
+      "label": "UTM campaign",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "1.1_time_since_sep": {
+      "step": "1",
+      "label": "כמה זמן עבר מאז הפרידה?",
+      "type": "enum",
+      "enum": [
+        "עדיין פרודים",
+        "עד שנה",
+        "1–3 שנים",
+        "3–7 שנים",
+        "7+ שנים"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "1.1_num_kids": {
+      "step": "1",
+      "label": "מספר ילדים משותפים:",
+      "type": "pattern",
+      "required": false,
+      "conditional": null
+    },
+    "1.1_kid_age_*": {
+      "step": "1",
+      "label": "גיל ילד N:",
+      "type": "pattern",
+      "required": false,
+      "conditional": null
+    },
+    "1.1_custody": {
+      "step": "1",
+      "label": "סוג משמורת:",
+      "type": "enum",
+      "enum": [
+        "משמורת מלאה שלי",
+        "משמורת משותפת",
+        "משמורת מלאה של ההורה האחר"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "1.1_distance": {
+      "step": "1",
+      "label": "מרחק מגורים מההורה האחר:",
+      "type": "enum",
+      "enum": [
+        "אותה עיר",
+        "עיר אחרת",
+        "חו\"ל"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "1.2_gender": {
+      "step": "1",
+      "label": "מגדר:",
+      "type": "enum",
+      "enum": [
+        "זכר",
+        "נקבה",
+        "אחר"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "1.2_religious_divorce": {
+      "step": "1",
+      "label": "סטטוס גירושין דתיים:",
+      "type": "enum",
+      "enum": [
+        "גרוש/ה דתית",
+        "בתהליך",
+        "עיגון",
+        "לא רלוונטי"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "1.2_new_partner": {
+      "step": "1",
+      "label": "האם יש לך או להורה האחר בן/בת זוג חדש/ה?",
+      "type": "enum",
+      "enum": [
+        "לאף אחד",
+        "לי בלבד",
+        "לשותפ/ת ההורות בלבד",
+        "לשנינו"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "2.1_safety": {
+      "step": "2",
+      "label": "האם אתה/את מרגיש/ה בטוח/ה בתקשורת מול ההורה האחר?",
+      "type": "enum",
+      "enum": [
+        "כן",
+        "ברוב המקרים",
+        "לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "2.1_safety_detail": {
+      "step": "2",
+      "label": "תוכל/י לספר בקצרה? (אופציונלי)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "==",
+        "value": "לא"
+      }
+    },
+    "2.2_comm_frequency": {
+      "step": "2",
+      "label": "באיזו תדירות אתם מתקשרים?",
+      "type": "enum",
+      "enum": [
+        "כל כמה ימים",
+        "כל כמה שבועות",
+        "כל כמה חודשים",
+        "כמעט ובכלל לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "2.2_comm_quality": {
+      "step": "2",
+      "label": "איך היית מתאר/ת את אופי התקשורת ביניכם כיום?",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "range": [
+        1,
+        5
+      ],
+      "scale_labels": {
+        "1": "שיתופית (כמעט חברים)",
+        "5": "מתסכלת (התקשורת קשה לי)"
+      },
+      "required": false,
+      "conditional": null
+    },
+    "2.2_org_difficulty": {
+      "step": "2",
+      "label": "קושי ארגוני בניהול הילדים:",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "אין",
+        "4": "חזק"
+      },
+      "required": false,
+      "conditional": null
+    },
+    "2.2_emotional_tension": {
+      "step": "2",
+      "label": "עוצמה רגשית בנושאי הילדים:",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "אין",
+        "4": "חזק"
+      },
+      "required": false,
+      "conditional": null
+    },
+    "2.3_legal": {
+      "step": "2",
+      "label": "האם יש או היו הליכים משפטיים בנוסף להליך הגירושין הרגיל?",
+      "type": "enum",
+      "enum": [
+        "יש הליכים פעילים",
+        "היו בעבר",
+        "לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "2.3_legal_type": {
+      "step": "2",
+      "label": "איזה סוג הליך?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.3_legal",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_channels": {
+      "step": "3",
+      "label": "באילו ערוצים אתם משתמשים?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_friction_frequency": {
+      "step": "3",
+      "label": "באיזו תדירות עולות אצלכם אי-הסכמות?",
+      "type": "enum",
+      "enum": [
+        "כל כמה ימים",
+        "כל כמה שבועות",
+        "כל כמה חודשים",
+        "בכלל לא"
+      ],
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3.1_areas": {
+      "step": "3",
+      "label": "באילו תחומים הכי קשה לכם להגיע להסכמה?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_routine_friction": {
+      "step": "3",
+      "label": "עד כמה קשה לנהל שגרה ומטלות?",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "מסתדרים",
+        "4": "מאוד קשה לנו"
+      },
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause": {
+      "step": "3",
+      "label": "מה מקשה על ניהול שגרה?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שגרה ומטלות"
+      }
+    },
+    "3_routine_cause_other": {
+      "step": "3",
+      "label": "פרט/י (שגרה)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3_routine_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_schedule_friction": {
+      "step": "3",
+      "label": "עד כמה קשה לנהל שינויי לוז?",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "מסתדרים",
+        "4": "מאוד קשה לנו"
+      },
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause": {
+      "step": "3",
+      "label": "מה מקשה על ניהול שינויי לוז?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "שינויי לו\"ז"
+      }
+    },
+    "3_schedule_cause_other": {
+      "step": "3",
+      "label": "פרט/י (לוז)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3_schedule_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_decisions_friction": {
+      "step": "3",
+      "label": "עד כמה קשה לנהל קבלת החלטות?",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "מסתדרים",
+        "4": "מאוד קשה לנו"
+      },
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause": {
+      "step": "3",
+      "label": "מה מקשה על קבלת החלטות?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "קבלת החלטות"
+      }
+    },
+    "3_decisions_cause_other": {
+      "step": "3",
+      "label": "פרט/י (החלטות)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3_decisions_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_finances_friction": {
+      "step": "3",
+      "label": "עד כמה קשה לנהל כספים והוצאות?",
+      "type": "scale",
+      "enum": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "range": [
+        1,
+        4
+      ],
+      "scale_labels": {
+        "1": "מסתדרים",
+        "4": "מאוד קשה לנו"
+      },
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause": {
+      "step": "3",
+      "label": "מה מקשה על ניהול כספים?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "ניהול כספים והוצאות"
+      }
+    },
+    "3_finances_cause_other": {
+      "step": "3",
+      "label": "פרט/י (כספים)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3_finances_cause",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_worst_example": {
+      "step": "3",
+      "label": "תאר/י מקרה שהיה קשה במיוחד לניהול או גרם למתחים:",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_mediator_role": {
+      "step": "3",
+      "label": "איך גורם מתווך היה יכול לעזור לכם להתמודד בצורה טובה יותר?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "2.1_safety",
+        "op": "!=",
+        "value": "לא"
+      }
+    },
+    "3_mediator_role_other": {
+      "step": "3",
+      "label": "פרט/י (מתווך)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3_mediator_role",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "3_areas_other": {
+      "step": "3",
+      "label": "פרט/י (תחומים)",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "3.1_areas",
+        "op": "contains",
+        "value": "אחר"
+      }
+    },
+    "4_barriers": {
+      "step": "4",
+      "label": "מה היה מונע ממך להשתמש בכלי דיגיטלי כגורם מתווך?",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    },
+    "4_wtp": {
+      "step": "4",
+      "label": "אם היה כלי שבאמת עוזר — האם היית מוכנ/ה לשלם?",
+      "type": "enum",
+      "enum": [
+        "כן",
+        "לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "4_wtp_range": {
+      "step": "4",
+      "label": "כמה היית מוכנ/ה לשלם?",
+      "type": "enum",
+      "enum": [
+        "עד ₪20/חודש",
+        "₪20–50/חודש",
+        "₪50–100/חודש",
+        "מעל ₪100/חודש",
+        "תשלום חד-פעמי"
+      ],
+      "required": false,
+      "conditional": {
+        "field": "4_wtp",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_other_filled": {
+      "step": "5",
+      "label": "האם ההורה האחר מילא את השאלון גם כן?",
+      "type": "enum",
+      "enum": [
+        "כן",
+        "לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "5_other_survey_id": {
+      "step": "5",
+      "label": "מה מספר השאלון שלו/שלה?",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "5_other_filled",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_contact_ok": {
+      "step": "5",
+      "label": "האם תהיה/תהיי מוכנ/ה שניצור איתך קשר לשאלות נוספות?",
+      "type": "enum",
+      "enum": [
+        "כן",
+        "לא"
+      ],
+      "required": false,
+      "conditional": null
+    },
+    "5_contact_phone": {
+      "step": "5",
+      "label": "מספר טלפון",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "5_contact_ok",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_contact_email": {
+      "step": "5",
+      "label": "כתובת אימייל",
+      "type": "free-text",
+      "required": false,
+      "conditional": {
+        "field": "5_contact_ok",
+        "op": "==",
+        "value": "כן"
+      }
+    },
+    "5_free_notes": {
+      "step": "5",
+      "label": "הערות נוספות",
+      "type": "free-text",
+      "required": false,
+      "conditional": null
+    }
+  },
+  "persona_profile": {
+    "schema_fields": [
+      {
+        "field": "1.1_time_since_sep",
+        "label": "כמה זמן עבר מאז הפרידה?",
+        "enum": [
+          "עדיין פרודים",
+          "עד שנה",
+          "1–3 שנים",
+          "3–7 שנים",
+          "7+ שנים"
+        ]
+      },
+      {
+        "field": "1.1_custody",
+        "label": "סוג משמורת:",
+        "enum": [
+          "משמורת מלאה שלי",
+          "משמורת משותפת",
+          "משמורת מלאה של ההורה האחר"
+        ]
+      },
+      {
+        "field": "1.1_distance",
+        "label": "מרחק מגורים מההורה האחר:",
+        "enum": [
+          "אותה עיר",
+          "עיר אחרת",
+          "חו\"ל"
+        ]
+      },
+      {
+        "field": "1.2_gender",
+        "label": "מגדר:",
+        "enum": [
+          "זכר",
+          "נקבה",
+          "אחר"
+        ]
+      },
+      {
+        "field": "1.2_religious_divorce",
+        "label": "סטטוס גירושין דתיים:",
+        "enum": [
+          "גרוש/ה דתית",
+          "בתהליך",
+          "עיגון",
+          "לא רלוונטי"
+        ]
+      },
+      {
+        "field": "1.2_new_partner",
+        "label": "האם יש לך או להורה האחר בן/בת זוג חדש/ה?",
+        "enum": [
+          "לאף אחד",
+          "לי בלבד",
+          "לשותפ/ת ההורות בלבד",
+          "לשנינו"
+        ]
+      }
+    ],
+    "domain_fields": [
+      {
+        "field": "months_since_sep",
+        "type": "int",
+        "hint": "Approximate months since separation as an integer",
+        "maps_to": "1.1_time_since_sep",
+        "conversion": "עדיין פרודים→0, עד שנה→6, 1–3 שנים→24, 3–7 שנים→60, 7+ שנים→84"
+      },
+      {
+        "field": "kids_ages",
+        "type": "array",
+        "hint": "List of children ages as integers",
+        "maps_to": "1.1_kid_age_{n}",
+        "conversion": "set 1.1_kid_age_1, 1.1_kid_age_2, … for each element; also set 1.1_num_kids to array length"
+      },
+      {
+        "field": "background_story",
+        "type": "text",
+        "hint": "1-paragraph narrative describing the persona co-parenting situation, tone, and key friction points"
+      }
+    ]
+  },
+  "test_baseline": {
+    "description": "Neutral default synthetic respondent: joint custody, 2 kids school-age, same city, male, 1-3 years post-separation, safe communication, minimal friction",
+    "fields": {
+      "_test": true,
+      "1.1_time_since_sep": "1–3 שנים",
+      "1.1_num_kids": "2",
+      "1.1_kid_age_1": "8",
+      "1.1_kid_age_2": "6",
+      "1.1_custody": "משמורת משותפת",
+      "1.1_distance": "אותה עיר",
+      "1.2_gender": "זכר",
+      "1.2_religious_divorce": "לא רלוונטי",
+      "1.2_new_partner": "לאף אחד",
+      "2.1_safety": "כן",
+      "safety_flag": "כן",
+      "2.2_comm_frequency": "כל כמה שבועות",
+      "2.2_comm_quality": "2",
+      "2.2_org_difficulty": "2",
+      "2.2_emotional_tension": "2",
+      "2.3_legal": "לא",
+      "3_channels": "וואטסאפ",
+      "3_friction_frequency": "כל כמה שבועות",
+      "3.1_areas": "שגרה ומטלות",
+      "3_routine_friction": "2",
+      "3_routine_cause": "העברת מידע חלקית או חסרה",
+      "3_mediator_role": "לשמור היסטוריה שניתן לחזור אליה",
+      "4_barriers": "עלות",
+      "4_wtp": "לא",
+      "5_other_filled": "לא",
+      "5_contact_ok": "לא"
+    }
+  }
+}
