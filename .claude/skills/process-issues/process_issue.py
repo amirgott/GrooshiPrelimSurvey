@@ -16,7 +16,7 @@ from datetime import datetime
 
 import jsonschema
 
-ROOT = Path(__file__).parent.parent
+ROOT = Path.cwd()
 
 
 def load_config():

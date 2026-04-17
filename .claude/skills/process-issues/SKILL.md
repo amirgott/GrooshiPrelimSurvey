@@ -1,6 +1,6 @@
 ---
 description: "Fetch, validate, and analyze unprocessed survey responses from GitHub Issues."
-argument-hint: "issue-number, 'all', or leave blank to list and choose"
+argument-hint: "issue-number, 'all', --report [issue range], --since YYYY-MM-DD, or leave blank to list and choose"
 ---
 
 ## Startup
@@ -10,15 +10,26 @@ Read `survey.config.json` from the project root. Extract:
 - `output_dir` — base path for raw and processed response files
 - `segmentation_doc` — path to the response segmentation criteria document
 
+If the argument is `--report` (optionally followed by an issue range, e.g. `--report 52-61`):
+- Do NOT read the segmentation doc, do NOT query GitHub, do NOT run any scripts.
+- Glob all files matching `{output_dir}/survey/processed/*.json` and `{output_dir}/test/processed/*.json`.
+- If an issue range was given, filter to those issue numbers only.
+- For each processed file that has a complete `analysis` key: read the corresponding raw file at `{output_dir}/{survey|test}/raw/{filename}` to get `_utm_campaign` and `5_contact_ok`.
+- Print the results table (defined in Execution rules).
+- Also save the table as `{output_dir}/reports/report_<timestamp>.md` (timestamp format: `YYYYMMDD_HHMMSS`). Create the `reports/` folder if it does not exist.
+- Stop.
+
 Read the file at `segmentation_doc`. This document is the classification reference used throughout Step 3b analysis — keep it in context.
 
-Copy `fetch_issues.py` and `process_issue.py` from the skill directory (`.claude/skills/process-issues/`) to `scripts/` if they do not already exist.
+If `--since YYYY-MM-DD` is provided as an argument, store the date and apply it as a filter in Step 1 (exclude issues created before that date). The flag may be combined with other arguments (e.g. `--since 2026-03-01 all`).
+
+If a single issue number was provided as an argument, skip Steps 1 and 2 and proceed directly to Step 3 for that issue.
 
 ---
 
 ## Step 1 — Discover unfinished issues
 
-1. Run `gh issue list --repo {gh_repo} --state open --limit 200 --json number,createdAt`. **Always execute as a live query — never use a cached list.**
+1. Run `gh issue list --repo {gh_repo} --state open --limit 200 --json number,createdAt`. **Always execute as a live query — never use a cached list.** If `--since` was provided, discard issues with `createdAt` before that date.
 2. For each issue number, look for a file matching `{output_dir}/survey/processed/{number}_*.json` or `{output_dir}/test/processed/{number}_*.json` (check both).
 3. Classify each issue:
    - **Not processed** — no processed JSON exists
@@ -47,6 +58,19 @@ Then ask the researcher to choose: **process all** unfinished issues, or **selec
 
 **Never use Edit or Write tools for file modifications.** Use `PYTHONUTF8=1 python << 'PYEOF' ... PYEOF` via Bash for all file writes and edits.
 
+**Output** — print errors immediately if encountered. For each issue, print exactly these status lines at the relevant moments:
+- `fetching issue {number}...` — before running fetch_issues.py
+- `processing issue {number}...` — before running process_issue.py
+- `analysing issue {number}...` — before starting 3b
+- `issue {number} done.` — after writing the result in 3c
+
+No other intermediate output. After all requested issues are processed, print a single results table:
+
+| Issue | Survey ID | Category | Potential User | Potential Payer | Campaign | Contact | One-liner | Warnings |
+|-------|-----------|----------|---------------|-----------------|----------|---------|-----------|----------|
+
+`Campaign` is `_utm_campaign` from the raw file. `Contact` is `yes` if `5_contact_ok` == `"כן"`, blank otherwise. **When rendering any table cell, replace every `|` character with `\|`** to prevent markdown column breaks.
+
 ---
 
 ## Step 3 — Process selected issue(s)
@@ -57,11 +81,11 @@ Repeat the following for each selected issue (one at a time, in issue-number ord
 
 If no processed JSON exists, first check for a raw file at `{output_dir}/{test|survey}/raw/{number}_*.json`. If absent, fetch it (requires network):
 ```
-PYTHONUTF8=1 python scripts/fetch_issues.py {number}
+PYTHONUTF8=1 python .claude/skills/process-issues/fetch_issues.py {number}
 ```
 Then process it (runs offline):
 ```
-PYTHONUTF8=1 python scripts/process_issue.py {number}
+PYTHONUTF8=1 python .claude/skills/process-issues/process_issue.py {number}
 ```
 Wait for completion, then read the resulting processed JSON and raw JSON. Path rule: if the processed JSON has `"test": true`, files are under `{output_dir}/test/`; otherwise `{output_dir}/survey/`.
 
@@ -87,9 +111,9 @@ Wait for completion, then read the resulting processed JSON and raw JSON. Path r
 5. Write a **conclusion_one_liner** (≤15 words).
 6. Set **`potential_user`** (boolean): `true` if (a) friction present — any `2.2_*` scale > 1, any `3_*_friction` > 1, or `2.1_safety` set — AND (b) no explicit/implicit need denial. `false` otherwise, including low-conflict skip cases.
 7. Set **`potential_payer`** (boolean): `true` only if `potential_user` is `true` AND `4_wtp` == `"כן"`.
-8. **Coherence check** — record triggered patterns in `coherence_warnings`; proceed to 3c without confirmation:
+8. **Coherence check** — record triggered patterns in `coherence_warnings`; proceed to 3c without confirmation. The **Effect** column modifies the `potential_user` field set in step 6:
 
-   | Pattern | Trigger | Warning string | Effect |
+   | Pattern | Trigger | Warning string | Effect on `potential_user` |
    |---------|---------|----------------|--------|
    | Friction-denial (explicit) | friction AND `4_wtp`==`"לא"` AND no-need language in barriers | `"Friction detected but respondent explicitly denies need"` | Keep false |
    | Friction-denial (implicit) | friction but need implicitly dismissed | `"Friction detected but respondent implicitly denies need"` | Set `"uncertain"` |
@@ -102,7 +126,8 @@ Wait for completion, then read the resulting processed JSON and raw JSON. Path r
 Merge into `{output_dir}/{test|survey}/processed/{id}.json` — add the `analysis` key **without overwriting** `schema_version`, `validation`, or `inconsistencies`:
 
 ```json
-"analysis": {
+{
+  "analysis": {
   "conclusion": "...",
   "category": "...",
   "conclusion_one_liner": "...",
@@ -110,9 +135,12 @@ Merge into `{output_dir}/{test|survey}/processed/{id}.json` — add the `analysi
   "potential_payer": false,
   "coherence_warnings": ["..."]
 }
+}
 ```
 
 `coherence_warnings` is omitted when empty.
 
-Confirm completion to the researcher, then move to the next issue if processing all.
+Print `issue {number} done.` then move to the next issue if processing all.
+
+After all issues are processed, save the results table as `{output_dir}/reports/report_<timestamp>.md` (timestamp format: `YYYYMMDD_HHMMSS`). The report covers only the issues processed in this run. Create the `reports/` folder if it does not exist.
 

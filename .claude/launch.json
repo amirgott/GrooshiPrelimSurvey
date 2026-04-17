@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "Survey (static site)",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8080", "--directory", "."],
+      "port": 8080
+    },
+    {
+      "name": "Analysis tools",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8081", "--directory", "analysis"],
+      "port": 8081
+    }
+  ]
+}

@@ -320,3 +320,4 @@ responses/test/
 responses/survey/
 analysis/
 personas/
+.claude/settings.local.json
