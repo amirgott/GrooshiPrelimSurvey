@@ -339,7 +339,7 @@
                                 <!-- Custody -->
                                 <div class="space-y-2">
                                     <label class="block text-sm font-bold"
-                                        >סוג משמורת:</label
+                                        >זמני שהות (משמורת):</label
                                     >
                                     <div class="space-y-2">
                                         <label
@@ -588,8 +588,7 @@
                         <!-- 2.1 Safety signal -->
                         <div class="space-y-4">
                             <label class="block font-semibold text-lg"
-                                ><span class="section-tag ml-2">2.1</span>תחושת
-                                בטיחות</label
+                                ><span class="section-tag ml-2">2.1</span>ביטחון אישי</label
                             >
                             <div class="space-y-3">
                                 <label class="block font-semibold"
@@ -597,8 +596,7 @@
                                     האחר?</label
                                 >
                                 <p class="text-sm text-gray-500 mt-1 italic">
-                                    הכוונה לביטחון ביצירת ובזמן תקשורת ישירה עם
-                                    ההורה האחר
+                                    (סמנ/י "לא" אם הצד השני מתקשר באופן אגרסיבי עד כדי פגיעה בתחושת הביטחון האישי שלך)
                                 </p>
                                 <div class="toggle-btns">
                                     <button
@@ -898,7 +896,7 @@
                                     >
                                         <label
                                             class="block text-sm font-bold mb-2"
-                                            >עוצמה רגשית בנושאי הילדים:</label
+                                            >מתח רגשי בניהול הילדים:</label
                                         >
                                         <p
                                             class="text-sm text-gray-500 mt-1 italic"
@@ -1031,9 +1029,9 @@
                                         ><input
                                             type="checkbox"
                                             name="2.3_legal_type"
-                                            value="משמורת"
+                                            value="זמני שהות (משמורת)"
                                         />
-                                        משמורת</label
+                                        זמני שהות (משמורת)</label
                                     >
                                     <label class="flex items-center gap-2"
                                         ><input
@@ -1219,11 +1217,27 @@
                                                     this,
                                                     '3_channels',
                                                     'אחר',
-                                                )
+                                                );
+                                                document
+                                                    .getElementById('channels_other_ta')
+                                                    .classList.toggle(
+                                                        'visible',
+                                                        this.classList.contains('selected'),
+                                                    );
                                             "
                                         >
                                             אחר
                                         </button>
+                                    </div>
+                                    <div id="channels_other_ta" class="logic-box mt-2">
+                                        <input
+                                            type="text"
+                                            id="3_channels_other"
+                                            name="3_channels_other"
+                                            data-optional="true"
+                                            placeholder="פרט/י..."
+                                            class="w-full border rounded-xl p-2 outline-none focus:ring-2 focus:ring-indigo-500"
+                                        />
                                     </div>
                                     <input
                                         type="hidden"
@@ -1330,7 +1344,7 @@
                                                     )
                                                 "
                                             />
-                                            שינוי לו"ז משמורת הילדים (החלפת ימים
+                                            שינוי לו"ז שהות הילדים (החלפת ימים
                                             או שבתות, חגים, חופשות, חו"ל)</label
                                         >
                                     </div>
